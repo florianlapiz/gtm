@@ -1,0 +1,1308 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>GTM-Audit Quiz | GTM FLO</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0A0A0A;
+    --surface: #141414;
+    --surface-2: #1A1A1A;
+    --border: #262626;
+    --border-strong: #3A3A3A;
+    --text: #F5F5F5;
+    --text-muted: #888888;
+    --text-dim: #555555;
+    --orange: #FF6B1A;
+    --orange-bright: #FF8438;
+    --orange-deep: #E8531A;
+    --orange-glow: rgba(255, 107, 26, 0.35);
+    --orange-glow-soft: rgba(255, 107, 26, 0.12);
+    --orange-soft: rgba(255, 107, 26, 0.08);
+    --orange-line: rgba(255, 107, 26, 0.22);
+    --green: #4ADE80;
+    --red: #F87171;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 17.25px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* AMBIENT BACKGROUND */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 50% at 20% 0%, rgba(255, 107, 26, 0.12) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 80% 100%, rgba(255, 107, 26, 0.08) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+    z-index: 0;
+    mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+  }
+
+  .mono {
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.02em;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 32px 24px 80px;
+  }
+
+  /* HEADER WITH ORANGE GLOW */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 20px;
+    margin-bottom: 48px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, rgba(255, 107, 26, 0.08) 0%, rgba(255, 107, 26, 0.02) 100%);
+    border: 1px solid var(--orange-line);
+    box-shadow:
+      0 0 24px rgba(255, 107, 26, 0.15),
+      inset 0 1px 0 rgba(255, 255, 255, 0.02);
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -10%;
+    width: 60%;
+    height: 200%;
+    background: radial-gradient(ellipse at center, rgba(255, 107, 26, 0.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .brand {
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: -0.01em;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .brand-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--orange);
+    box-shadow: 0 0 12px var(--orange);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  .brand-mark { color: var(--orange); }
+  .header-meta {
+    font-size: 12.5px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    position: relative;
+  }
+  .header-meta span { color: var(--orange); }
+
+  /* SCREEN MANAGEMENT */
+  .screen { animation: fadeIn 0.4s ease-out; }
+  .screen.hidden { display: none; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+  @keyframes slideUpFade {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .q-wrap.animate-in { animation: slideUpFade 0.42s cubic-bezier(0.16, 1, 0.3, 1); }
+  .q-wrap.animate-in .quiz-meta { animation: slideUpFade 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.05s backwards; }
+  .q-wrap.animate-in .quiz-question { animation: slideUpFade 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.1s backwards; }
+  .q-wrap.animate-in .quiz-cost { animation: slideUpFade 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.15s backwards; }
+  .q-wrap.animate-in .options .option:nth-child(1) { animation: slideUpFade 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.2s backwards; }
+  .q-wrap.animate-in .options .option:nth-child(2) { animation: slideUpFade 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.27s backwards; }
+  .q-wrap.animate-in .options .option:nth-child(3) { animation: slideUpFade 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.34s backwards; }
+
+  /* INTRO */
+  .intro-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    background: var(--orange-soft);
+    border: 1px solid var(--orange-line);
+    border-radius: 100px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--orange);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 24px;
+    box-shadow: 0 0 16px var(--orange-glow-soft);
+  }
+  .intro-eyebrow::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--orange);
+    box-shadow: 0 0 10px var(--orange);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  h1 {
+    font-size: 60px;
+    line-height: 1.05;
+    font-weight: 800;
+    letter-spacing: -0.035em;
+    margin-bottom: 24px;
+  }
+  h1 .accent {
+    background: linear-gradient(135deg, var(--orange) 0%, var(--orange-bright) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .lede {
+    font-size: 19.5px;
+    color: var(--text-muted);
+    max-width: 560px;
+    line-height: 1.55;
+    margin-bottom: 40px;
+  }
+
+  .intro-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--orange-line);
+    border: 1px solid var(--orange-line);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 40px;
+    box-shadow:
+      0 0 32px var(--orange-glow-soft),
+      inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  }
+  .stat-cell {
+    background: var(--surface);
+    padding: 18px 20px;
+    position: relative;
+  }
+  .stat-cell .label {
+    font-size: 11.5px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 6px;
+  }
+  .stat-cell .value {
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: -0.01em;
+  }
+  .stat-cell .value .num {
+    color: var(--orange);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* BUTTONS */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: linear-gradient(135deg, var(--orange-bright) 0%, var(--orange) 50%, var(--orange-deep) 100%);
+    color: #FFFFFF;
+    padding: 16px 28px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 17.25px;
+    letter-spacing: -0.01em;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow:
+      0 0 0 1px var(--orange-line),
+      0 8px 24px rgba(255, 107, 26, 0.35),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    position: relative;
+    overflow: hidden;
+  }
+  .btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+    transition: left 0.6s;
+  }
+  .btn:hover {
+    transform: translateY(-1px);
+    box-shadow:
+      0 0 0 1px rgba(255, 107, 26, 0.6),
+      0 14px 36px rgba(255, 107, 26, 0.5),
+      inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  }
+  .btn:hover::before { left: 100%; }
+  .btn:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+  .btn-secondary {
+    background: var(--surface);
+    color: var(--text-muted);
+    box-shadow: 0 0 0 1px var(--border);
+    border: 1px solid var(--border);
+  }
+  .btn-secondary:hover {
+    background: var(--surface-2);
+    color: var(--text);
+    box-shadow: 0 0 0 1px var(--border-strong);
+    transform: none;
+  }
+  .btn-secondary::before { display: none; }
+
+  /* QUIZ SCREEN */
+  .progress-bar-wrap {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 32px;
+  }
+  .progress-segment {
+    flex: 1;
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+    position: relative;
+  }
+  .progress-segment.completed {
+    background: linear-gradient(90deg, var(--orange-deep), var(--orange-bright));
+    box-shadow: 0 0 10px var(--orange-glow);
+  }
+  .progress-segment.active::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, var(--orange-deep), var(--orange-bright));
+    box-shadow: 0 0 10px var(--orange-glow);
+    animation: progressGrow 0.4s ease-out forwards;
+  }
+  @keyframes progressGrow {
+    from { transform: scaleX(0); transform-origin: left; }
+    to { transform: scaleX(1); transform-origin: left; }
+  }
+
+  .quiz-meta {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .quiz-counter {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    color: var(--text-dim);
+    letter-spacing: 0.05em;
+  }
+  .quiz-counter .current { color: var(--orange); }
+  .quiz-hebel-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+
+  .quiz-question {
+    font-size: 37px;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.15;
+    margin-bottom: 14px;
+  }
+  .quiz-cost {
+    font-size: 16px;
+    color: var(--text-muted);
+    margin-bottom: 32px;
+    line-height: 1.5;
+    padding-left: 14px;
+    border-left: 2px solid var(--orange);
+    box-shadow: -2px 0 16px var(--orange-glow-soft);
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 40px;
+  }
+  .option {
+    background: var(--surface);
+    border: 1px solid var(--orange-line);
+    border-radius: 10px;
+    padding: 18px 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    transition: all 0.25s;
+    text-align: left;
+    font-family: inherit;
+    color: var(--text);
+    font-size: 16px;
+    line-height: 1.5;
+    width: 100%;
+    box-shadow: 0 0 16px var(--orange-glow-soft);
+  }
+  .option:hover {
+    background: var(--surface-2);
+    border-color: rgba(255, 107, 26, 0.4);
+    box-shadow: 0 0 24px rgba(255, 107, 26, 0.18);
+    transform: translateX(2px);
+  }
+  .option.selected {
+    background: var(--orange-soft);
+    border-color: var(--orange);
+    box-shadow:
+      0 0 0 1px var(--orange),
+      0 0 32px var(--orange-glow);
+  }
+  .option-marker {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+  .option.selected .option-marker {
+    background: linear-gradient(135deg, var(--orange-bright), var(--orange-deep));
+    border-color: var(--orange);
+    color: #FFFFFF;
+    box-shadow: 0 0 12px var(--orange-glow);
+  }
+  .option-text {
+    flex: 1;
+    padding-top: 4px;
+  }
+
+  .nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .nav-hint {
+    font-size: 12.5px;
+    color: var(--text-dim);
+    letter-spacing: 0.05em;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  #btn-next { display: none; }
+
+  /* GATE SCREEN */
+  .gate-card {
+    background: var(--surface);
+    border: 1px solid var(--orange-line);
+    border-radius: 14px;
+    padding: 40px 36px;
+    box-shadow:
+      0 0 48px var(--orange-glow-soft),
+      inset 0 1px 0 rgba(255, 255, 255, 0.03);
+    position: relative;
+    overflow: hidden;
+  }
+  .gate-card::before {
+    content: '';
+    position: absolute;
+    top: -120px;
+    right: -120px;
+    width: 320px;
+    height: 320px;
+    background: radial-gradient(circle, var(--orange-glow) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .gate-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 12px;
+    background: var(--orange-soft);
+    border: 1px solid var(--orange-line);
+    border-radius: 100px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--orange);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 20px;
+    position: relative;
+  }
+  .gate-eyebrow svg { stroke: var(--orange); }
+  .gate-card h2 {
+    font-size: 34.5px;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.15;
+    margin-bottom: 12px;
+    position: relative;
+  }
+  .gate-card h2 .accent {
+    background: linear-gradient(135deg, var(--orange) 0%, var(--orange-bright) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .gate-text {
+    font-size: 16px;
+    color: var(--text-muted);
+    margin-bottom: 28px;
+    max-width: 460px;
+    line-height: 1.55;
+    position: relative;
+  }
+  .form-group {
+    margin-bottom: 16px;
+    position: relative;
+  }
+  .form-label {
+    display: block;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+  }
+  .form-input {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    font-size: 17.25px;
+    color: var(--text);
+    font-family: inherit;
+    transition: all 0.2s;
+  }
+  .form-input::placeholder { color: var(--text-dim); }
+  .form-input:focus {
+    outline: none;
+    border-color: var(--orange);
+    background: var(--surface);
+    box-shadow: 0 0 0 3px var(--orange-soft), 0 0 24px var(--orange-glow-soft);
+  }
+  .form-error {
+    color: var(--red);
+    font-size: 14px;
+    margin-top: 6px;
+    display: none;
+  }
+  .form-error.visible { display: block; }
+  .form-meta {
+    font-size: 12.5px;
+    color: var(--text-dim);
+    line-height: 1.5;
+    margin-top: 18px;
+    position: relative;
+  }
+  .gate-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+    align-items: center;
+    position: relative;
+  }
+
+  /* RESULT */
+  .result-hero {
+    text-align: center;
+    padding: 48px 0 32px;
+  }
+  .result-eyebrow {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--orange);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-bottom: 16px;
+  }
+  .result-greeting {
+    font-size: 16px;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+  .result-greeting strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+  .result-score {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+  .result-score .number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 110px;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--orange) 0%, var(--orange-bright) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    filter: drop-shadow(0 0 24px var(--orange-glow));
+  }
+  .result-score .max {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 37px;
+    color: var(--text-dim);
+    font-weight: 500;
+  }
+
+  .tier-badge {
+    display: inline-block;
+    padding: 8px 18px;
+    border-radius: 100px;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin-bottom: 12px;
+  }
+  .tier-badge.high {
+    background: rgba(248, 113, 113, 0.12);
+    color: var(--red);
+    border: 1px solid rgba(248, 113, 113, 0.3);
+    box-shadow: 0 0 16px rgba(248, 113, 113, 0.2);
+  }
+  .tier-badge.mid {
+    background: var(--orange-soft);
+    color: var(--orange);
+    border: 1px solid var(--orange-line);
+    box-shadow: 0 0 16px var(--orange-glow-soft);
+  }
+  .tier-badge.low {
+    background: rgba(74, 222, 128, 0.1);
+    color: var(--green);
+    border: 1px solid rgba(74, 222, 128, 0.3);
+    box-shadow: 0 0 16px rgba(74, 222, 128, 0.18);
+  }
+  .tier-impact {
+    font-size: 18.5px;
+    color: var(--text-muted);
+    max-width: 480px;
+    margin: 0 auto;
+    line-height: 1.5;
+  }
+
+  .breakdown {
+    margin: 48px 0;
+    background: var(--surface);
+    border: 1px solid var(--orange-line);
+    border-radius: 12px;
+    padding: 28px;
+    box-shadow: 0 0 32px var(--orange-glow-soft);
+  }
+  .breakdown-title {
+    font-size: 15px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .breakdown-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+  .breakdown-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .breakdown-row:last-child { border-bottom: none; }
+  .breakdown-label {
+    flex: 1;
+    font-size: 16px;
+    font-weight: 500;
+  }
+  .breakdown-bars {
+    display: flex;
+    gap: 4px;
+  }
+  .bar {
+    width: 28px;
+    height: 8px;
+    border-radius: 2px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+  }
+  .bar.filled {
+    background: linear-gradient(90deg, var(--orange-deep), var(--orange-bright));
+    border-color: var(--orange);
+    box-shadow: 0 0 10px var(--orange-glow);
+  }
+  .breakdown-score {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-muted);
+    width: 32px;
+    text-align: right;
+  }
+  .breakdown-row.weakest {
+    background: linear-gradient(90deg, rgba(248, 113, 113, 0.06) 0%, transparent 100%);
+    margin: 0 -12px;
+    padding: 12px;
+    border-radius: 6px;
+    border-bottom: 1px solid var(--border);
+  }
+  .weakest-marker {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    color: var(--red);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 2px 6px;
+    border: 1px solid rgba(248, 113, 113, 0.3);
+    border-radius: 3px;
+    margin-left: 8px;
+  }
+
+  /* CTA */
+  .cta {
+    background: var(--surface);
+    border: 1px solid var(--orange-line);
+    border-radius: 14px;
+    padding: 32px;
+    margin-top: 48px;
+    display: flex;
+    gap: 28px;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    box-shadow:
+      0 0 48px var(--orange-glow-soft),
+      inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  }
+  .cta::before {
+    content: '';
+    position: absolute;
+    top: -120px;
+    right: -120px;
+    width: 320px;
+    height: 320px;
+    background: radial-gradient(circle, var(--orange-glow) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .cta-content {
+    flex: 1;
+    position: relative;
+    min-width: 0;
+  }
+  .cta-eyebrow {
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--orange);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-bottom: 10px;
+  }
+  .cta h3 {
+    font-size: 25px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    margin-bottom: 10px;
+    max-width: 440px;
+  }
+  .cta-text {
+    font-size: 15px;
+    color: var(--text-muted);
+    margin-bottom: 18px;
+    max-width: 440px;
+    line-height: 1.55;
+  }
+  .cta-author {
+    flex-shrink: 0;
+    text-align: center;
+    position: relative;
+  }
+  .cta-avatar {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center top;
+    border: 2px solid var(--orange);
+    margin-bottom: 10px;
+    background: var(--orange-soft);
+    box-shadow:
+      0 0 0 4px rgba(255, 107, 26, 0.12),
+      0 0 32px var(--orange-glow);
+  }
+  .cta-author-name {
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .cta-author-role {
+    font-size: 11.5px;
+    color: var(--text-dim);
+    letter-spacing: 0.02em;
+  }
+
+  .restart {
+    text-align: center;
+    margin-top: 32px;
+  }
+  .restart a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 14px;
+    border-bottom: 1px dotted var(--text-dim);
+    padding-bottom: 1px;
+  }
+  .restart a:hover { color: var(--text-muted); border-color: var(--text-muted); }
+
+  /* FOOTER */
+  .footer {
+    margin-top: 64px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    font-size: 12.5px;
+    color: var(--text-dim);
+  }
+
+  @media (max-width: 720px) {
+    .container { padding: 20px 16px 60px; }
+    h1 { font-size: 41px; }
+    .quiz-question { font-size: 27.5px; }
+    .gate-card { padding: 28px 22px; }
+    .gate-card h2 { font-size: 27.5px; }
+    .result-score .number { font-size: 83px; }
+    .intro-stats { grid-template-columns: 1fr; }
+    .cta { flex-direction: column; align-items: flex-start; padding: 24px; }
+    .cta-author { align-self: center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <header class="header">
+    <div class="brand">
+      <span class="brand-dot"></span>
+      GTM <span class="brand-mark">FLO</span>
+    </div>
+    <div class="header-meta">GTM-Audit <span>·</span> Interactive</div>
+  </header>
+
+  <!-- INTRO SCREEN -->
+  <div class="screen" id="screen-intro">
+    <div class="intro-eyebrow">Selbstdiagnose · 3 Minuten</div>
+    <h1>Wie viel Pipeline lässt Dein Vertrieb <span class="accent">jeden Monat liegen?</span></h1>
+    <p class="lede">
+      Sechs Hebel entscheiden im B2B-Mittelstand, ob Lead-Generierung mit Personal skaliert oder mit System.
+      Beantworte sie ehrlich. Am Ende weißt Du, wo Dein größter ROI im nächsten Quartal liegt.
+    </p>
+
+    <div class="intro-stats">
+      <div class="stat-cell">
+        <div class="label">Fragen</div>
+        <div class="value"><span class="num">6</span> Hebel</div>
+      </div>
+      <div class="stat-cell">
+        <div class="label">Dauer</div>
+        <div class="value"><span class="num">3</span> Minuten</div>
+      </div>
+      <div class="stat-cell">
+        <div class="label">Output</div>
+        <div class="value">Score + nächster Schritt</div>
+      </div>
+    </div>
+
+    <button class="btn" onclick="startQuiz()">
+      Quiz starten <span>→</span>
+    </button>
+  </div>
+
+  <!-- QUIZ SCREEN -->
+  <div class="screen hidden" id="screen-quiz">
+    <div class="progress-bar-wrap" id="progress"></div>
+    <div class="q-wrap" id="q-wrap">
+      <div class="quiz-meta">
+        <span class="quiz-counter mono">FRAGE <span class="current" id="q-current">1</span> / <span id="q-total">6</span></span>
+        <span class="quiz-hebel-name" id="q-hebel"></span>
+      </div>
+      <h2 class="quiz-question" id="q-question"></h2>
+      <p class="quiz-cost" id="q-cost"></p>
+      <div class="options" id="q-options"></div>
+    </div>
+    <div class="nav">
+      <button class="btn btn-secondary" id="btn-back" onclick="goBack()">← Zurück</button>
+      <span class="nav-hint">Klick eine Antwort an, geht automatisch weiter</span>
+      <button class="btn" id="btn-next" onclick="goNext()" disabled>Weiter →</button>
+    </div>
+  </div>
+
+  <!-- GATE SCREEN (E-Mail-Eintragung) -->
+  <div class="screen hidden" id="screen-gate">
+    <div class="gate-card">
+      <div class="gate-eyebrow">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
+        </svg>
+        Quiz abgeschlossen
+      </div>
+      <h2>Dein <span class="accent">GTM-Score</span> ist berechnet.</h2>
+      <p class="gate-text">
+        Trag Dich kurz ein und Du siehst sofort Dein Ergebnis: Score, Hebel-Klasse, Aufschlüsselung pro Hebel
+        und Deine zwei größten Pipeline-Hebel fürs nächste Quartal.
+      </p>
+
+      <form id="gate-form" onsubmit="submitGate(event)">
+        <div class="form-group">
+          <label class="form-label" for="input-name">Name</label>
+          <input class="form-input" type="text" id="input-name" name="name" placeholder="Vor- und Nachname" required autocomplete="name">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="input-email">Geschäftliche E-Mail</label>
+          <input class="form-input" type="email" id="input-email" name="email" placeholder="dein.name@unternehmen.de" required autocomplete="email">
+          <div class="form-error" id="email-error">Bitte eine gültige E-Mail eingeben.</div>
+        </div>
+
+        <div class="gate-actions">
+          <button type="submit" class="btn">
+            Score freischalten <span>→</span>
+          </button>
+        </div>
+
+        <p class="form-meta">
+          Kein Spam. Du bekommst Dein Ergebnis sofort und maximal eine Follow-up-Mail mit Tipps zu Deinen schwächsten Hebeln. Abmeldung jederzeit per Klick.
+        </p>
+      </form>
+    </div>
+  </div>
+
+  <!-- RESULT SCREEN -->
+  <div class="screen hidden" id="screen-result">
+    <div class="result-hero">
+      <div class="result-eyebrow">Dein GTM-Score</div>
+      <p class="result-greeting" id="result-greeting"></p>
+      <div class="result-score">
+        <span class="number" id="result-number">0</span>
+        <span class="max">/ 12</span>
+      </div>
+      <div class="tier-badge" id="tier-badge"></div>
+      <p class="tier-impact" id="tier-impact"></p>
+    </div>
+
+    <div class="breakdown">
+      <div class="breakdown-title">Hebel-Aufschlüsselung</div>
+      <div id="breakdown-list"></div>
+    </div>
+
+    <div class="cta">
+      <div class="cta-content">
+        <div class="cta-eyebrow">Nächster Schritt</div>
+        <h3 id="cta-headline">30 Minuten. Ich gehe Deine Hebel mit Dir durch und zeige Dir die zwei mit dem höchsten Pipeline-ROI.</h3>
+        <p class="cta-text">
+          Kein Pitch. Kein Verkaufsgespräch. Ein ehrlicher Außenblick und ein klarer nächster Schritt, wenn Du willst.
+        </p>
+        <a href="https://calendly.com/florian-lapiz/diagnose" class="btn" target="_blank">
+          GTM-Diagnose buchen <span>→</span>
+        </a>
+      </div>
+      <div class="cta-author">
+        <img src="assets/florian-portrait.png" alt="Florian Lapiz" class="cta-avatar">
+        <div class="cta-author-name">Florian Lapiz</div>
+        <div class="cta-author-role">GTM Engineer</div>
+      </div>
+    </div>
+
+    <div class="restart">
+      <a href="#" onclick="restart(); return false;">Quiz neu starten</a>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div>GTM FLO · GTM Engineering Consultancy</div>
+    <div>florianlapiz.de</div>
+  </footer>
+
+</div>
+
+<script>
+  const QUESTIONS = [
+    {
+      hebel: "ICP-Schärfe",
+      question: "Wie klar ist Euer Wunschkunden-Profil?",
+      cost: "Wenn das fehlt: Vertrieb verkauft an die Falschen. Closed-Won-Rate stagniert.",
+      options: [
+        { score: 0, text: "Bauchgefühl. Wir nehmen jeden Lead mit Budget." },
+        { score: 1, text: "Grobe Filter (Branche, Größe). Nicht aktuell gepflegt." },
+        { score: 2, text: "Schriftliches ICP plus Anti-ICP. Quartalsweise reviewed." }
+      ]
+    },
+    {
+      hebel: "Trigger-Erkennung",
+      question: "Erkennt Ihr Kauf-Signale, wenn sie entstehen?",
+      cost: "Wenn das fehlt: Du kontaktierst Accounts, die heute gar nicht kaufen können.",
+      options: [
+        { score: 0, text: "Wir kontaktieren Listen kalt, ohne Trigger." },
+        { score: 1, text: "Wir reagieren auf Inbound. Kein systematisches Tracking." },
+        { score: 2, text: "Drei oder mehr Kauf-Signale pro Account mit Scoring." }
+      ]
+    },
+    {
+      hebel: "Daten-Tiefe",
+      question: "Wie wird Eure Outbound-Liste angereichert?",
+      cost: "Wenn das fehlt: SDR verbringt 60 % des Tages mit Recherche statt Outreach.",
+      options: [
+        { score: 0, text: "Manuelles LinkedIn-Scraping oder Excel-Käufe." },
+        { score: 1, text: "Sales Nav plus E-Mail-Finder, ohne Anreicherung." },
+        { score: 2, text: "Multi-Source-Anreicherung mit AI-Auswertung pro Lead." }
+      ]
+    },
+    {
+      hebel: "Personalisierung",
+      question: "Wie personalisiert sind Eure Outbound-Nachrichten?",
+      cost: "Wenn das fehlt: Antwortrate unter 2 %. Outreach fühlt sich nach Spam an.",
+      options: [
+        { score: 0, text: "Generische Templates. Maximal 'Hey {firstName}'." },
+        { score: 1, text: "Snippet-Personalisierung aus dem LinkedIn-Profil." },
+        { score: 2, text: "AI-Recherche-Personalisierung in Skala. Mensch reviewed." }
+      ]
+    },
+    {
+      hebel: "Channel-Cadence",
+      question: "Wie sind Eure Kanäle orchestriert?",
+      cost: "Wenn das fehlt: Leads gehen verloren, weil ein Kanal allein nicht durchkommt.",
+      options: [
+        { score: 0, text: "Ein Kanal. Kein dokumentierter Cadence-Plan." },
+        { score: 1, text: "Zwei Kanäle parallel ohne abgestimmte Logik." },
+        { score: 2, text: "Trigger-basierte Sequenz über drei Kanäle. Telefon nach Engagement." }
+      ]
+    },
+    {
+      hebel: "Closed-Loop-Messung",
+      question: "Wie misst Ihr Eure Outbound-Performance?",
+      cost: "Wenn das fehlt: Du iterierst gegen Bauchgefühl statt gegen Daten.",
+      options: [
+        { score: 0, text: "SDR meldet Termine. Mehr nicht." },
+        { score: 1, text: "Standard-CRM-Reports zu Volumen und Conversion." },
+        { score: 2, text: "Funnel-Metriken pro Vertikale. Wöchentliche Iteration." }
+      ]
+    }
+  ];
+
+  // Webhook URL für Lead-Erfassung (Make.com)
+  const LEAD_WEBHOOK_URL = "https://hook.eu1.make.com/1npebtm7jcj283enhqvmulnfxcnkhm47";
+
+  const state = {
+    currentIndex: 0,
+    answers: new Array(QUESTIONS.length).fill(null),
+    lead: { name: "", email: "" }
+  };
+
+  let advanceTimeout = null;
+  function clearAdvance() {
+    if (advanceTimeout) {
+      clearTimeout(advanceTimeout);
+      advanceTimeout = null;
+    }
+  }
+
+  const $ = (id) => document.getElementById(id);
+  function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(el => el.classList.add('hidden'));
+    $(id).classList.remove('hidden');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function renderProgress() {
+    const wrap = $('progress');
+    wrap.innerHTML = '';
+    for (let i = 0; i < QUESTIONS.length; i++) {
+      const seg = document.createElement('div');
+      seg.className = 'progress-segment';
+      if (i < state.currentIndex) seg.classList.add('completed');
+      else if (i === state.currentIndex) seg.classList.add('active');
+      wrap.appendChild(seg);
+    }
+  }
+
+  function renderQuestion() {
+    const q = QUESTIONS[state.currentIndex];
+    $('q-current').textContent = state.currentIndex + 1;
+    $('q-total').textContent = QUESTIONS.length;
+    $('q-hebel').textContent = q.hebel;
+    $('q-question').textContent = q.question;
+    $('q-cost').textContent = q.cost;
+
+    const optsWrap = $('q-options');
+    optsWrap.innerHTML = '';
+    q.options.forEach((opt) => {
+      const btn = document.createElement('button');
+      btn.className = 'option';
+      if (state.answers[state.currentIndex] === opt.score) {
+        btn.classList.add('selected');
+      }
+      btn.innerHTML = `
+        <div class="option-marker">${opt.score}</div>
+        <div class="option-text">${opt.text}</div>
+      `;
+      btn.onclick = () => selectOption(opt.score);
+      optsWrap.appendChild(btn);
+    });
+
+    $('btn-back').style.visibility = state.currentIndex === 0 ? 'hidden' : 'visible';
+    $('btn-next').disabled = state.answers[state.currentIndex] === null;
+    $('btn-next').textContent = state.currentIndex === QUESTIONS.length - 1 ? 'Auswerten →' : 'Weiter →';
+
+    renderProgress();
+
+    // Retrigger slide-up animation
+    const wrap = $('q-wrap');
+    wrap.classList.remove('animate-in');
+    void wrap.offsetWidth;
+    wrap.classList.add('animate-in');
+  }
+
+  function selectOption(score) {
+    state.answers[state.currentIndex] = score;
+    // Update only the selection state, keep options static (no re-animate)
+    const optsWrap = $('q-options');
+    const opts = QUESTIONS[state.currentIndex].options;
+    Array.from(optsWrap.children).forEach((btn, i) => {
+      btn.classList.toggle('selected', opts[i].score === score);
+    });
+    $('btn-next').disabled = false;
+
+    clearAdvance();
+    advanceTimeout = setTimeout(() => {
+      advanceTimeout = null;
+      goNext();
+    }, 420);
+  }
+
+  function goNext() {
+    clearAdvance();
+    if (state.answers[state.currentIndex] === null) return;
+    if (state.currentIndex === QUESTIONS.length - 1) {
+      showScreen('screen-gate');
+    } else {
+      state.currentIndex++;
+      renderQuestion();
+    }
+  }
+
+  function goBack() {
+    clearAdvance();
+    if (state.currentIndex === 0) return;
+    state.currentIndex--;
+    renderQuestion();
+  }
+
+  function startQuiz() {
+    state.currentIndex = 0;
+    state.answers = new Array(QUESTIONS.length).fill(null);
+    showScreen('screen-quiz');
+    renderQuestion();
+  }
+
+  function restart() {
+    state.currentIndex = 0;
+    state.answers = new Array(QUESTIONS.length).fill(null);
+    state.lead = { name: "", email: "" };
+    $('input-name').value = "";
+    $('input-email').value = "";
+    showScreen('screen-intro');
+  }
+
+  // GATE SUBMIT
+  function isValidEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  }
+
+  async function submitGate(event) {
+    event.preventDefault();
+    const name = $('input-name').value.trim();
+    const email = $('input-email').value.trim();
+    const errorEl = $('email-error');
+
+    if (!isValidEmail(email)) {
+      errorEl.classList.add('visible');
+      return;
+    }
+    errorEl.classList.remove('visible');
+
+    state.lead.name = name;
+    state.lead.email = email;
+
+    const total = state.answers.reduce((a, b) => a + b, 0);
+    const payload = {
+      name,
+      email,
+      score: total,
+      answers: state.answers,
+      hebel: QUESTIONS.map((q, i) => ({ name: q.hebel, score: state.answers[i] })),
+      timestamp: new Date().toISOString()
+    };
+
+    if (LEAD_WEBHOOK_URL) {
+      try {
+        await fetch(LEAD_WEBHOOK_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+      } catch (e) {
+        console.error('Webhook submit failed:', e);
+      }
+    } else {
+      console.log('Lead captured (no webhook configured):', payload);
+    }
+
+    showResult();
+  }
+
+  // RESULT
+  function getTier(score) {
+    if (score <= 4) return {
+      cls: 'high',
+      name: 'Hoher Hebel',
+      impact: '30 bis 50 % geschätzte Pipeline-Lücke. Wachstum hängt aktuell direkt am Personal-Aufbau.',
+      headline: 'Du sitzt auf 30 bis 50 % ungenutzter Pipeline. Lass uns die zwei größten Hebel identifizieren.'
+    };
+    if (score <= 8) return {
+      cls: 'mid',
+      name: 'Mittlerer Hebel',
+      impact: '15 bis 25 % Output-Lücke. Jeder zusätzliche qualifizierte Termin kostet linear mehr Aufwand.',
+      headline: '30 Minuten. Wir gehen die zwei Hebel durch, die Dein Quartal am stärksten beschleunigen.'
+    };
+    return {
+      cls: 'low',
+      name: 'Marginaler Hebel',
+      impact: 'Unter 10 % Lücke. Top 10 % im DACH-Mittelstand. Fokus liegt auf Vertikal-Expansion oder Qualität.',
+      headline: 'Du bist im Top-10-%-Bereich. Lass uns über Vertikal-Expansion oder ROI-Verfeinerung reden.'
+    };
+  }
+
+  function showResult() {
+    const total = state.answers.reduce((a, b) => a + b, 0);
+    const tier = getTier(total);
+
+    const firstName = state.lead.name.split(' ')[0] || '';
+    if (firstName) {
+      $('result-greeting').innerHTML = `Danke, <strong>${firstName}</strong>.`;
+    }
+
+    $('tier-badge').textContent = tier.name;
+    $('tier-badge').className = 'tier-badge ' + tier.cls;
+    $('tier-impact').textContent = tier.impact;
+    $('cta-headline').textContent = tier.headline;
+
+    const numEl = $('result-number');
+    let current = 0;
+    const target = total;
+    const step = Math.max(1, Math.ceil(target / 24));
+    const interval = setInterval(() => {
+      current = Math.min(current + step, target);
+      numEl.textContent = current;
+      if (current >= target) clearInterval(interval);
+    }, 40);
+
+    const sortedIdx = state.answers
+      .map((s, i) => ({ score: s, idx: i }))
+      .sort((a, b) => a.score - b.score)
+      .slice(0, 2)
+      .map(o => o.idx);
+
+    const list = $('breakdown-list');
+    list.innerHTML = '';
+    QUESTIONS.forEach((q, idx) => {
+      const score = state.answers[idx];
+      const isWeak = sortedIdx.includes(idx) && score < 2;
+      const row = document.createElement('div');
+      row.className = 'breakdown-row' + (isWeak ? ' weakest' : '');
+
+      const bars = [0, 1, 2].map(i =>
+        `<div class="bar${i <= score ? ' filled' : ''}"></div>`
+      ).join('');
+
+      row.innerHTML = `
+        <div class="breakdown-label">
+          ${q.hebel}
+          ${isWeak ? '<span class="weakest-marker">Hebel</span>' : ''}
+        </div>
+        <div class="breakdown-bars">${bars}</div>
+        <div class="breakdown-score mono">${score}/2</div>
+      `;
+      list.appendChild(row);
+    });
+
+    showScreen('screen-result');
+  }
+
+  renderProgress();
+</script>
+
+</body>
+</html>
