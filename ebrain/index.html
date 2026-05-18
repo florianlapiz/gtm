@@ -1,0 +1,1887 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>Event-Automatisierungs-Check | eBrain</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="3-Minuten-Selbsttest für Eventmanager. 8 Fragen, dein Automatisierungs-Score auf 3 Achsen: Admin, Kosten, Teilnehmer-Erlebnis. Plus 14 Tage eBrain kostenlos testen.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FFFFFF;
+    --bg-soft: #F7F7FA;
+    --bg-card: #FFFFFF;
+    --bg-dark: #0E0B1F;
+    --surface: #F7F7FA;
+    --surface-2: #EFEFF5;
+    --border: #E5E5EC;
+    --border-strong: #D4D4DE;
+    --text: #0E0B1F;
+    --text-muted: #5A5668;
+    --text-dim: #8A8696;
+    --violet: #712EE5;
+    --violet-bright: #8849FF;
+    --violet-deep: #5418C7;
+    --violet-soft: rgba(113, 46, 229, 0.08);
+    --violet-line: rgba(113, 46, 229, 0.25);
+    --violet-glow: rgba(113, 46, 229, 0.35);
+    --lemon: #DCE43E;
+    --lemon-bright: #E8F050;
+    --lemon-deep: #B8C228;
+    --lemon-soft: rgba(220, 228, 62, 0.20);
+    --green-ok: #16A34A;
+    --amber: #D97706;
+    --red: #DC2626;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 17px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 100% 0%, rgba(113, 46, 229, 0.07) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 40% at 0% 100%, rgba(220, 228, 62, 0.10) 0%, transparent 55%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .mono { font-family: 'JetBrains Mono', monospace; letter-spacing: 0.02em; }
+  .display {
+    font-family: 'Space Grotesk', 'Inter', sans-serif;
+    letter-spacing: -0.02em;
+    font-weight: 700;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 32px 24px 80px;
+  }
+
+  /* HEADER */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px;
+    margin-bottom: 56px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid var(--border);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+  .brand-lockup { display: flex; align-items: center; gap: 12px; }
+  .brand-logo-wrap {
+    display: inline-flex;
+    align-items: center;
+    background: var(--violet);
+    padding: 8px 14px;
+    border-radius: 8px;
+    box-shadow: 0 4px 14px rgba(113, 46, 229, 0.22);
+  }
+  .brand-logo-img {
+    height: 22px;
+    width: auto;
+    display: block;
+  }
+  .header-meta {
+    font-size: 11px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    font-weight: 600;
+  }
+  .header-meta .dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--violet);
+    margin: 0 8px;
+    vertical-align: middle;
+  }
+
+  /* SCREEN MANAGEMENT */
+  .screen { animation: fadeIn 0.4s ease-out; }
+  .screen.hidden { display: none; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.45; }
+  }
+  @keyframes slideUpFade {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .q-wrap.animate-in { animation: slideUpFade 0.42s cubic-bezier(0.16, 1, 0.3, 1); }
+  .q-wrap.animate-in .quiz-meta { animation: slideUpFade 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.05s backwards; }
+  .q-wrap.animate-in .quiz-question { animation: slideUpFade 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.1s backwards; }
+  .q-wrap.animate-in .quiz-cost { animation: slideUpFade 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.15s backwards; }
+  .q-wrap.animate-in .options .option:nth-child(1) { animation: slideUpFade 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.2s backwards; }
+  .q-wrap.animate-in .options .option:nth-child(2) { animation: slideUpFade 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.27s backwards; }
+  .q-wrap.animate-in .options .option:nth-child(3) { animation: slideUpFade 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.34s backwards; }
+
+  /* INTRO */
+  .intro-eyebrow {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--violet);
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+    margin-bottom: 28px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .intro-eyebrow::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--lemon);
+    box-shadow: 0 0 12px var(--lemon);
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+
+  h1.display-hero {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(44px, 7.5vw, 78px);
+    line-height: 0.98;
+    letter-spacing: -0.035em;
+    margin-bottom: 28px;
+    color: var(--text);
+    font-weight: 700;
+  }
+  h1.display-hero .accent {
+    color: var(--violet);
+    display: block;
+  }
+  h1.display-hero .accent-lemon {
+    background: linear-gradient(135deg, var(--violet) 0%, var(--violet) 60%, var(--lemon-deep) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    display: block;
+  }
+  .lede {
+    font-size: 19px;
+    color: var(--text-muted);
+    max-width: 640px;
+    line-height: 1.55;
+    margin-bottom: 44px;
+  }
+  .lede strong { color: var(--text); font-weight: 600; }
+
+  .intro-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 40px;
+    background: var(--bg-soft);
+  }
+  .stat-cell {
+    padding: 22px 22px;
+    border-right: 1px solid var(--border);
+  }
+  .stat-cell:last-child { border-right: none; }
+  .stat-cell .label {
+    font-size: 10.5px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    margin-bottom: 10px;
+    font-weight: 700;
+  }
+  .stat-cell .value {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 32px;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    line-height: 1;
+  }
+  .stat-cell .value .num {
+    color: var(--violet);
+  }
+
+  /* TRUST STRIP — pulls in eBrain stats */
+  .trust-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 36px;
+  }
+  .trust-cell {
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 22px 20px;
+    text-align: left;
+  }
+  .trust-cell .num {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 42px;
+    line-height: 1;
+    color: var(--violet);
+    margin-bottom: 8px;
+    letter-spacing: -0.02em;
+  }
+  .trust-cell .desc {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.4;
+    font-weight: 500;
+  }
+
+  /* BUTTONS */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--violet);
+    color: #FFFFFF;
+    padding: 18px 32px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    border: 1px solid var(--violet);
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 10px 28px rgba(113, 46, 229, 0.30);
+    position: relative;
+    overflow: hidden;
+  }
+  .btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.18), transparent);
+    transition: left 0.6s;
+  }
+  .btn:hover {
+    background: var(--violet-bright);
+    border-color: var(--violet-bright);
+    transform: translateY(-1px);
+    box-shadow: 0 14px 36px rgba(113, 46, 229, 0.45);
+  }
+  .btn:hover::before { left: 100%; }
+  .btn:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+  .btn-lemon {
+    background: var(--lemon);
+    color: var(--text);
+    border-color: var(--lemon);
+    box-shadow: 0 10px 28px rgba(220, 228, 62, 0.40);
+  }
+  .btn-lemon:hover {
+    background: var(--lemon-bright);
+    border-color: var(--lemon-bright);
+    box-shadow: 0 14px 36px rgba(220, 228, 62, 0.55);
+  }
+  .btn-secondary {
+    background: transparent;
+    color: var(--text-muted);
+    border: 1px solid var(--border-strong);
+    box-shadow: none;
+  }
+  .btn-secondary:hover {
+    background: var(--surface);
+    color: var(--text);
+    border-color: var(--text-dim);
+    box-shadow: none;
+    transform: none;
+  }
+  .btn-secondary::before { display: none; }
+
+  /* QUIZ */
+  .progress-bar-wrap {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 40px;
+  }
+  .progress-segment {
+    flex: 1;
+    height: 4px;
+    background: var(--border);
+    overflow: hidden;
+    position: relative;
+    border-radius: 2px;
+  }
+  .progress-segment.completed { background: var(--violet); }
+  .progress-segment.active::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--violet);
+    box-shadow: 0 0 8px var(--violet-glow);
+    animation: progressGrow 0.4s ease-out forwards;
+  }
+  @keyframes progressGrow {
+    from { transform: scaleX(0); transform-origin: left; }
+    to { transform: scaleX(1); transform-origin: left; }
+  }
+
+  .quiz-meta {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+  }
+  .quiz-counter {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .quiz-counter .current { color: var(--violet); font-weight: 600; }
+  .quiz-hebel-name {
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--violet);
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+  }
+  .quiz-dimension {
+    font-size: 10.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    padding: 4px 10px;
+    border-radius: 4px;
+    background: var(--lemon-soft);
+    color: var(--text);
+    border: 1px solid rgba(220, 228, 62, 0.50);
+  }
+
+  .quiz-question {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(28px, 4.6vw, 44px);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+    margin-bottom: 16px;
+    color: var(--text);
+  }
+  .quiz-cost {
+    font-size: 15.5px;
+    color: var(--text-muted);
+    margin-bottom: 32px;
+    line-height: 1.55;
+    padding-left: 16px;
+    border-left: 3px solid var(--violet);
+    max-width: 640px;
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 40px;
+  }
+  .option {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 22px;
+    cursor: pointer;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    transition: all 0.22s;
+    text-align: left;
+    font-family: 'Inter', sans-serif;
+    color: var(--text);
+    font-size: 16px;
+    line-height: 1.5;
+    width: 100%;
+  }
+  .option:hover {
+    background: var(--surface);
+    border-color: var(--violet-line);
+    transform: translateX(2px);
+  }
+  .option.selected {
+    background: var(--violet-soft);
+    border-color: var(--violet);
+    box-shadow: 0 0 0 1px var(--violet), 0 4px 16px var(--violet-glow);
+  }
+  .option-marker {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    background: var(--surface);
+    border: 1px solid var(--border-strong);
+    color: var(--text-dim);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+  .option.selected .option-marker {
+    background: var(--violet);
+    border-color: var(--violet);
+    color: #FFFFFF;
+  }
+  .option-text {
+    flex: 1;
+    padding-top: 3px;
+  }
+
+  .nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+  }
+  .nav-hint {
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 0.14em;
+    font-family: 'JetBrains Mono', monospace;
+    text-transform: uppercase;
+  }
+  #btn-next { display: none; }
+
+  /* EMAIL GATE */
+  .gate-hero {
+    padding: 24px 0 8px;
+  }
+  .gate-eyebrow {
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--violet);
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .gate-eyebrow::before {
+    content: '';
+    width: 32px;
+    height: 1px;
+    background: var(--violet);
+  }
+  h2.gate-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(36px, 5.5vw, 56px);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.02;
+    margin-bottom: 18px;
+    color: var(--text);
+  }
+  h2.gate-title .accent {
+    color: var(--violet);
+  }
+  .gate-lede {
+    font-size: 17px;
+    color: var(--text-muted);
+    margin-bottom: 36px;
+    line-height: 1.55;
+    max-width: 620px;
+  }
+  .gate-lede strong { color: var(--text); font-weight: 600; }
+
+  .gate-form {
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px;
+  }
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+  .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .form-field.full { grid-column: 1 / -1; }
+  .form-field label {
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+  }
+  .form-field label .req { color: var(--violet); }
+  .form-field input, .form-field select {
+    background: #FFFFFF;
+    border: 1px solid var(--border-strong);
+    border-radius: 10px;
+    padding: 14px 16px;
+    font-size: 16px;
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    transition: all 0.2s;
+    outline: none;
+  }
+  .form-field input:focus, .form-field select:focus {
+    border-color: var(--violet);
+    box-shadow: 0 0 0 3px var(--violet-soft);
+  }
+  .form-field .error {
+    font-size: 12px;
+    color: var(--red);
+    font-weight: 600;
+    display: none;
+  }
+  .form-field.invalid .error { display: block; }
+  .form-field.invalid input, .form-field.invalid select {
+    border-color: var(--red);
+  }
+  .gate-trust {
+    margin-top: 18px;
+    font-size: 12px;
+    color: var(--text-dim);
+    text-align: center;
+    line-height: 1.5;
+  }
+  .gate-trust strong { color: var(--text-muted); font-weight: 700; }
+
+  /* RESULT */
+  .result-hero {
+    padding: 16px 0 24px;
+  }
+  .result-eyebrow {
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--violet);
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .result-eyebrow::before {
+    content: '';
+    width: 32px;
+    height: 1px;
+    background: var(--violet);
+  }
+  .result-greeting {
+    font-size: 15px;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-weight: 600;
+  }
+  .result-greeting strong { color: var(--text); font-weight: 700; }
+  .result-score-block {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+  .result-score-block .number {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(120px, 18vw, 180px);
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--violet) 0%, var(--violet-bright) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+  }
+  .result-score-block .max {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(40px, 6vw, 60px);
+    color: var(--text-dim);
+    font-weight: 700;
+  }
+
+  .tier-badge {
+    display: inline-block;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+  }
+  .tier-badge.high {
+    background: rgba(220, 38, 38, 0.10);
+    color: var(--red);
+    border: 1px solid rgba(220, 38, 38, 0.30);
+  }
+  .tier-badge.mid {
+    background: rgba(217, 119, 6, 0.10);
+    color: var(--amber);
+    border: 1px solid rgba(217, 119, 6, 0.30);
+  }
+  .tier-badge.low {
+    background: rgba(22, 163, 74, 0.10);
+    color: var(--green-ok);
+    border: 1px solid rgba(22, 163, 74, 0.30);
+  }
+  .tier-impact {
+    font-size: 19px;
+    color: var(--text-muted);
+    max-width: 640px;
+    line-height: 1.5;
+  }
+
+  /* SUB-SCORES */
+  .subscores {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin: 48px 0;
+  }
+  .subscore {
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+  }
+  .subscore .label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    margin-bottom: 12px;
+  }
+  .subscore .value {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 4px;
+    letter-spacing: -0.03em;
+    color: var(--violet);
+  }
+  .subscore .max {
+    font-size: 22px;
+    color: var(--text-dim);
+    font-weight: 700;
+  }
+  .subscore .meter {
+    height: 6px;
+    background: var(--surface-2);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-top: 14px;
+  }
+  .subscore .meter-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--violet) 0%, var(--violet-bright) 100%);
+    border-radius: 3px;
+    transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .subscore.tier-high .value { color: var(--red); }
+  .subscore.tier-high .meter-fill { background: linear-gradient(90deg, var(--red) 0%, #F87171 100%); }
+  .subscore.tier-mid .value { color: var(--amber); }
+  .subscore.tier-mid .meter-fill { background: linear-gradient(90deg, var(--amber) 0%, #FBBF24 100%); }
+  .subscore.tier-low .value { color: var(--green-ok); }
+  .subscore.tier-low .meter-fill { background: linear-gradient(90deg, var(--green-ok) 0%, #4ADE80 100%); }
+  .subscore .note {
+    font-size: 12.5px;
+    color: var(--text-dim);
+    margin-top: 12px;
+    line-height: 1.45;
+  }
+
+  /* DIAGNOSIS */
+  .diagnosis {
+    margin: 48px 0;
+    background: linear-gradient(135deg, var(--bg-dark) 0%, #1A1538 100%);
+    border-radius: 18px;
+    padding: 40px;
+    color: #FFFFFF;
+    position: relative;
+    overflow: hidden;
+  }
+  .diagnosis::before {
+    content: '';
+    position: absolute;
+    top: -100px;
+    right: -100px;
+    width: 320px;
+    height: 320px;
+    background: radial-gradient(circle, rgba(220, 228, 62, 0.20) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .diagnosis-eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--lemon);
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+    margin-bottom: 16px;
+    position: relative;
+  }
+  .diagnosis-text {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(22px, 3vw, 28px);
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+    position: relative;
+    max-width: 700px;
+  }
+  .diagnosis-text strong {
+    color: var(--lemon);
+    font-weight: 700;
+  }
+
+  /* MODULE MAPPING */
+  .modules { margin: 56px 0; }
+  .modules-header {
+    font-size: 11.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: var(--text-muted);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .modules-header::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+  .modules-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(28px, 4vw, 38px);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+    margin-bottom: 12px;
+    color: var(--text);
+  }
+  .modules-title .accent { color: var(--violet); }
+  .modules-sub {
+    font-size: 15.5px;
+    color: var(--text-muted);
+    margin-bottom: 28px;
+    line-height: 1.55;
+    max-width: 620px;
+  }
+  .module-card {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 24px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+    margin-bottom: 14px;
+    transition: all 0.22s;
+    position: relative;
+  }
+  .module-card:hover {
+    border-color: var(--violet-line);
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px rgba(113, 46, 229, 0.08);
+  }
+  .module-card.highlighted {
+    border-color: var(--violet);
+    background: linear-gradient(135deg, var(--violet-soft) 0%, var(--bg-card) 60%);
+  }
+  .module-card .rank {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 56px;
+    font-weight: 700;
+    color: var(--violet);
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+    opacity: 0.9;
+    min-width: 60px;
+  }
+  .module-card .content { min-width: 0; }
+  .module-card .kind {
+    font-size: 10.5px;
+    color: var(--violet);
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .module-card .title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+  .module-card .pain {
+    font-size: 14.5px;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin-bottom: 12px;
+  }
+  .module-card .solution {
+    font-size: 14.5px;
+    color: var(--text);
+    line-height: 1.5;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+  }
+  .module-card .solution strong {
+    color: var(--violet);
+    font-weight: 700;
+  }
+  .module-card .module-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 12px;
+    padding: 5px 10px;
+    background: var(--lemon-soft);
+    border: 1px solid rgba(220, 228, 62, 0.50);
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+
+  /* BREAKDOWN */
+  .breakdown {
+    margin: 48px 0;
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 28px;
+  }
+  .breakdown-title {
+    font-size: 11.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: var(--text-muted);
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .breakdown-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+  .breakdown-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .breakdown-row:last-child { border-bottom: none; }
+  .breakdown-label {
+    flex: 1;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .breakdown-bars { display: flex; gap: 4px; }
+  .bar {
+    width: 28px;
+    height: 8px;
+    background: var(--surface-2);
+    border-radius: 2px;
+  }
+  .bar.filled {
+    background: var(--violet);
+  }
+  .breakdown-score {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-muted);
+    width: 36px;
+    text-align: right;
+  }
+
+  /* CTA BLOCK — Trial + Demo */
+  .cta-stack {
+    margin-top: 48px;
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 16px;
+  }
+  .cta-card {
+    border-radius: 18px;
+    padding: 32px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 280px;
+  }
+  .cta-card.primary {
+    background: linear-gradient(135deg, var(--violet) 0%, var(--violet-deep) 100%);
+    color: #FFFFFF;
+  }
+  .cta-card.primary::before {
+    content: '';
+    position: absolute;
+    bottom: -100px;
+    right: -100px;
+    width: 280px;
+    height: 280px;
+    background: radial-gradient(circle, rgba(220, 228, 62, 0.30) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .cta-card.secondary {
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    color: var(--text);
+  }
+  .cta-eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+    margin-bottom: 16px;
+    position: relative;
+  }
+  .cta-card.primary .cta-eyebrow { color: var(--lemon); }
+  .cta-card.secondary .cta-eyebrow { color: var(--violet); }
+  .cta-card h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(24px, 3vw, 32px);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+    margin-bottom: 14px;
+    position: relative;
+  }
+  .cta-text {
+    font-size: 14.5px;
+    line-height: 1.55;
+    margin-bottom: 24px;
+    position: relative;
+    opacity: 0.92;
+  }
+  .cta-card.primary .cta-text { color: rgba(255, 255, 255, 0.85); }
+  .cta-card.secondary .cta-text { color: var(--text-muted); }
+  .cta-card .btn-row {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+  }
+  .cta-mini {
+    font-size: 12px;
+    margin-top: 8px;
+    opacity: 0.75;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.08em;
+  }
+
+  .restart {
+    text-align: center;
+    margin-top: 40px;
+  }
+  .restart a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 11.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-weight: 600;
+    border-bottom: 1px dotted var(--text-dim);
+    padding-bottom: 2px;
+  }
+  .restart a:hover { color: var(--text-muted); border-color: var(--text-muted); }
+
+  /* FOOTER */
+  .footer {
+    margin-top: 64px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-weight: 600;
+  }
+
+  @media (max-width: 720px) {
+    .container { padding: 20px 16px 60px; }
+    .header { padding: 12px 16px; margin-bottom: 36px; }
+    h1.display-hero { font-size: 40px; }
+    .lede { font-size: 16.5px; }
+    .stat-cell { padding: 14px; }
+    .stat-cell .value { font-size: 22px; }
+    .trust-strip { grid-template-columns: 1fr; gap: 10px; }
+    .trust-cell .num { font-size: 36px; }
+    .subscores { grid-template-columns: 1fr; }
+    .module-card { grid-template-columns: 1fr; gap: 12px; padding: 20px; }
+    .module-card .rank { font-size: 36px; }
+    .cta-stack { grid-template-columns: 1fr; }
+    .cta-card { min-height: auto; padding: 24px; }
+    .form-row { grid-template-columns: 1fr; }
+    .nav { flex-direction: column-reverse; align-items: stretch; }
+    .nav-hint { text-align: center; }
+    .footer { flex-direction: column; gap: 8px; text-align: center; }
+    .diagnosis { padding: 28px 24px; }
+    .quiz-meta { gap: 10px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <header class="header">
+    <div class="brand-lockup">
+      <span class="brand-logo-wrap">
+        <img src="assets/logo.png" alt="eBrain" class="brand-logo-img">
+      </span>
+    </div>
+    <div class="header-meta">Event-Automatisierungs-Check <span class="dot"></span> 3 Min</div>
+  </header>
+
+  <!-- INTRO -->
+  <div class="screen" id="screen-intro">
+    <div class="intro-eyebrow">Für Eventmanager &amp; Agenturen &mdash; 3 Min</div>
+
+    <h1 class="display-hero">
+      Wie viel<br>
+      Admin-Zeit<br>
+      <span class="accent-lemon">verbrennst Du?</span>
+    </h1>
+
+    <p class="lede">
+      8 Fragen entscheiden, ob Dein Eventmanagement Dich mitzieht oder Dir Zeit zurückgibt.
+      Am Ende: <strong>Dein Automatisierungs-Score auf drei Achsen</strong> &mdash; Admin-Zeit,
+      Kosten, Teilnehmer-Erlebnis &mdash; plus konkrete Hebel, wo eBrain Dich entlastet.
+    </p>
+
+    <div class="intro-stats">
+      <div class="stat-cell">
+        <div class="label">Fragen</div>
+        <div class="value"><span class="num">8</span></div>
+      </div>
+      <div class="stat-cell">
+        <div class="label">Minuten</div>
+        <div class="value"><span class="num">3</span></div>
+      </div>
+      <div class="stat-cell">
+        <div class="label">Trial</div>
+        <div class="value"><span class="num">14</span> Tage</div>
+      </div>
+    </div>
+
+    <div class="trust-strip">
+      <div class="trust-cell">
+        <div class="num">70%</div>
+        <div class="desc">weniger Administration bei eBrain-Kunden</div>
+      </div>
+      <div class="trust-cell">
+        <div class="num">50%</div>
+        <div class="desc">Einsparung auf Eventkosten</div>
+      </div>
+      <div class="trust-cell">
+        <div class="num">60%</div>
+        <div class="desc">höhere Teilnehmerzufriedenheit</div>
+      </div>
+    </div>
+
+    <button class="btn" onclick="startQuiz()">
+      Check starten <span>&rarr;</span>
+    </button>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="screen hidden" id="screen-quiz">
+    <div class="progress-bar-wrap" id="progress"></div>
+    <div class="q-wrap" id="q-wrap">
+      <div class="quiz-meta">
+        <span class="quiz-counter mono">Frage <span class="current" id="q-current">1</span> / <span id="q-total">8</span></span>
+        <span class="quiz-hebel-name" id="q-hebel"></span>
+        <span class="quiz-dimension" id="q-dimension"></span>
+      </div>
+      <h2 class="quiz-question" id="q-question"></h2>
+      <p class="quiz-cost" id="q-cost"></p>
+      <div class="options" id="q-options"></div>
+    </div>
+    <div class="nav">
+      <button class="btn btn-secondary" id="btn-back" onclick="goBack()">&larr; Zurück</button>
+      <span class="nav-hint">Antwort klicken &mdash; auto-weiter</span>
+      <button class="btn" id="btn-next" onclick="goNext()" disabled>Weiter &rarr;</button>
+    </div>
+  </div>
+
+  <!-- EMAIL GATE -->
+  <div class="screen hidden" id="screen-gate">
+    <div class="progress-bar-wrap" id="progress-gate"></div>
+    <div class="gate-hero">
+      <div class="gate-eyebrow">Fast geschafft</div>
+      <h2 class="gate-title">
+        Dein persönlicher <span class="accent">Automatisierungs-Report</span> &mdash; wohin schicken wir den?
+      </h2>
+      <p class="gate-lede">
+        Du bekommst Deinen Score auf drei Achsen, die <strong>3 größten Hebel</strong> für Dein
+        Eventmanagement und eine Übersicht, welche eBrain-Module Dich konkret entlasten.
+      </p>
+    </div>
+
+    <form class="gate-form" id="gate-form" onsubmit="submitGate(event)">
+      <div class="form-row">
+        <div class="form-field" id="field-firstname">
+          <label for="firstname">Vorname <span class="req">*</span></label>
+          <input type="text" id="firstname" name="firstname" autocomplete="given-name" required>
+          <span class="error">Bitte ausfüllen.</span>
+        </div>
+        <div class="form-field" id="field-company">
+          <label for="company">Firma <span class="req">*</span></label>
+          <input type="text" id="company" name="company" autocomplete="organization" required>
+          <span class="error">Bitte ausfüllen.</span>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-field full" id="field-email">
+          <label for="email">Geschäftliche E-Mail <span class="req">*</span></label>
+          <input type="email" id="email" name="email" autocomplete="email" required>
+          <span class="error">Bitte eine gültige E-Mail-Adresse.</span>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-field full">
+          <label for="role">Deine Rolle (optional)</label>
+          <select id="role" name="role">
+            <option value="">Bitte wählen &hellip;</option>
+            <option value="agency-owner">Agentur-Owner / Geschäftsführung</option>
+            <option value="event-manager">Eventmanager / Projektleitung</option>
+            <option value="marketing">Marketing / Brand</option>
+            <option value="inhouse-corporate">Inhouse Corporate Events</option>
+            <option value="service-provider">Event-Dienstleister</option>
+            <option value="other">Andere</option>
+          </select>
+        </div>
+      </div>
+      <button type="submit" class="btn" style="width: 100%; justify-content: center; margin-top: 8px;">
+        Auswerten &amp; Report anzeigen <span>&rarr;</span>
+      </button>
+      <div class="gate-trust">
+        <strong>Keine Newsletter-Spamflut.</strong> Du bekommst den Report und ein optionales Follow-up,
+        wenn Du eBrain ausprobieren willst. Jederzeit abbestellbar.
+      </div>
+    </form>
+  </div>
+
+  <!-- RESULT -->
+  <div class="screen hidden" id="screen-result">
+    <div class="result-hero">
+      <div class="result-eyebrow">Dein Automatisierungs-Score</div>
+      <p class="result-greeting" id="result-greeting"></p>
+      <div class="result-score-block">
+        <span class="number" id="result-number">0</span>
+        <span class="max">/ 100</span>
+      </div>
+      <div class="tier-badge" id="tier-badge"></div>
+      <p class="tier-impact" id="tier-impact"></p>
+    </div>
+
+    <div class="subscores" id="subscores"></div>
+
+    <div class="diagnosis">
+      <div class="diagnosis-eyebrow">Kerndiagnose</div>
+      <div class="diagnosis-text" id="diagnosis-text"></div>
+    </div>
+
+    <div class="modules">
+      <div class="modules-header">Deine 3 größten Hebel</div>
+      <h3 class="modules-title">
+        Hier löst <span class="accent">eBrain</span> Dein Problem.
+      </h3>
+      <p class="modules-sub" id="modules-sub">
+        Die drei Bereiche, in denen Du am meisten Zeit, Geld oder Erlebnisqualität verlierst &mdash;
+        und das eBrain-Modul, das dort konkret ansetzt.
+      </p>
+      <div id="modules-list"></div>
+    </div>
+
+    <div class="breakdown">
+      <div class="breakdown-title">Komplett-Übersicht aller 8 Hebel</div>
+      <div id="breakdown-list"></div>
+    </div>
+
+    <div class="cta-stack">
+      <div class="cta-card primary">
+        <div>
+          <div class="cta-eyebrow">14 Tage kostenlos</div>
+          <h3>Statt weiterlesen &mdash; ausprobieren.</h3>
+          <p class="cta-text">
+            Setze Deine nächste Event-Seite in unter 30 Minuten mit eBrain auf. Keine Kreditkarte,
+            keine Verpflichtung. Du siehst sofort, wo die 70% Admin-Zeit hingehen.
+          </p>
+        </div>
+        <div class="btn-row">
+          <a href="https://ebrain.events/trial" class="btn btn-lemon" id="cta-trial" target="_blank" rel="noopener">
+            14 Tage kostenlos testen <span>&rarr;</span>
+          </a>
+          <div class="cta-mini">Kein Vertrag &middot; Keine Kreditkarte</div>
+        </div>
+      </div>
+
+      <div class="cta-card secondary">
+        <div>
+          <div class="cta-eyebrow">Lieber sprechen</div>
+          <h3>30 Min Demo mit dem Team.</h3>
+          <p class="cta-text">
+            Du zeigst uns Dein nächstes Event, wir zeigen Dir, was eBrain konkret automatisiert.
+            Ohne Sales-Pitch.
+          </p>
+        </div>
+        <div class="btn-row">
+          <a href="https://calendly.com/ebrain-demo/30min" class="btn btn-secondary" id="cta-demo" target="_blank" rel="noopener">
+            Demo buchen <span>&rarr;</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="restart">
+      <a href="#" onclick="restart(); return false;">Check neu starten</a>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div>eBrain &mdash; Event-Management, das mitdenkt.</div>
+    <div>DSGVO &middot; EU-AI-Act &middot; IONOS EU-Server</div>
+  </footer>
+
+</div>
+
+<script>
+  // ============================================================
+  // CONFIG — easy to swap by Florian / E-Brain team
+  // ============================================================
+  const LEAD_WEBHOOK_URL = ""; // TODO: Make.com webhook für Lead-Tracking eintragen
+  const TRIAL_URL = "https://ebrain.events/trial"; // TODO: echter Trial-Link
+  const DEMO_URL = "https://calendly.com/ebrain-demo/30min"; // TODO: echter Calendly-Slot
+  const SOURCE_TAG = "ebrain-automation-check";
+
+  // URL params for personalization: ?company=X&firstname=Y
+  const urlParams = new URLSearchParams(window.location.search);
+  const prefillCompany = urlParams.get('company') || urlParams.get('utm_company') || '';
+  const prefillFirstname = urlParams.get('firstname') || urlParams.get('utm_firstname') || '';
+
+  // ============================================================
+  // QUESTIONS — 8 levers across 3 dimensions
+  // Each question scores 0–2; weakest answer first in scoring, but
+  // option ORDER is intentionally shuffled per question so the "best"
+  // answer isn't always C. Pattern: B/C/A/C/A/C/C/C.
+  // ============================================================
+  const DIM = {
+    ADMIN: { key: "admin", label: "Admin-Zeit" },
+    COST:  { key: "cost",  label: "Kosten" },
+    EXP:   { key: "exp",   label: "Erlebnis" }
+  };
+
+  const QUESTIONS = [
+    {
+      hebel: "Event-Setup",
+      module: "KI-Website-Erstellung",
+      dimensions: [DIM.ADMIN],
+      question: "Wie lange brauchst Du, um eine neue Event-Seite live zu haben?",
+      cost: "Jeder Tag, an dem Deine Event-Seite hängt, ist ein Tag, an dem Du Anmeldungen, Sichtbarkeit und Vorlauf verlierst &mdash; und Dein Team beschäftigt ist statt produktiv.",
+      options: [
+        { score: 1, text: "Ein paar Stunden, wenn ich ungestört bin." },
+        { score: 2, text: "Unter 30 Minuten &mdash; quasi auf Knopfdruck." },
+        { score: 0, text: "Mehrere Tage. Agentur, IT oder Templates müssen ran." }
+      ]
+    },
+    {
+      hebel: "Registrierung",
+      module: "Teilnehmerregistrierung",
+      dimensions: [DIM.ADMIN],
+      question: "Wie melden sich Teilnehmer aktuell an?",
+      cost: "Manuelle Anmeldeprozesse fressen Dein Team auf &mdash; und die Hälfte der Daten landet doppelt erfasst in drei Systemen.",
+      options: [
+        { score: 0, text: "Excel-Listen, E-Mail oder PDF-Formulare. Vieles per Hand." },
+        { score: 2, text: "Self-Service-Portal mit automatischer Datenverarbeitung." },
+        { score: 1, text: "Online-Formular, aber die Daten landen in mehreren Systemen." }
+      ]
+    },
+    {
+      hebel: "Kommunikation",
+      module: "Communication Center",
+      dimensions: [DIM.ADMIN],
+      question: "Wie verschickst Du Einladungen, Reminder und Last-Minute-Updates?",
+      cost: "Verteiler-Chaos kostet Dich nicht nur Zeit &mdash; Du verlierst Teilnehmer, weil wichtige Infos in Spam oder gar nicht ankommen.",
+      options: [
+        { score: 2, text: "Aus einem zentralen System mit Segmenten, Templates und Tracking." },
+        { score: 0, text: "Mail-Verteiler oder manuell, oft last-minute zusammengeklickt." },
+        { score: 1, text: "Über ein Tool, aber Texte schreibe ich jedes Mal neu." }
+      ]
+    },
+    {
+      hebel: "Tool-Stack",
+      module: "Reporting + Ticketing",
+      dimensions: [DIM.COST],
+      question: "Wie viele separate Tools nutzt Du pro Event?",
+      cost: "Jedes Tool kostet Lizenz, Lernkurve und Daten-Brüche. 6+ Tools heißt: 6+ Stellen, an denen etwas schiefgehen kann &mdash; und Du jedes Mal die Daten zusammenkopieren musst.",
+      options: [
+        { score: 1, text: "3-5 Tools, teilweise integriert." },
+        { score: 2, text: "1-2 zentrale Tools, alles miteinander verbunden." },
+        { score: 0, text: "6+ Tools (Excel, Mail, Hotel-Portal, Badge-Drucker, Reporting, Survey&hellip;)." }
+      ]
+    },
+    {
+      hebel: "Kontingente",
+      module: "Kontingent-Management",
+      dimensions: [DIM.COST],
+      question: "Wie hältst Du Hotelzimmer, Transport und Sessions live im Blick?",
+      cost: "Manuelle Kontingente führen zu Überbuchungen oder leeren Plätzen &mdash; beide kosten Dich messbar Geld. Realtime ist hier kein Nice-to-have, sondern Margenrettung.",
+      options: [
+        { score: 0, text: "Excel-Listen und manuelle Abgleiche &mdash; oft mit Lücken." },
+        { score: 1, text: "Dashboard vorhanden, aber Updates kommen verzögert." },
+        { score: 2, text: "Realtime-Monitoring, Kontingente passen sich automatisch an." }
+      ]
+    },
+    {
+      hebel: "Teilnehmer-Support",
+      module: "Emily-Chatbot",
+      dimensions: [DIM.EXP],
+      question: "Wer beantwortet Teilnehmerfragen vor und während des Events?",
+      cost: "Wenn Dein Team manuell Mails beantwortet, ist es nicht mit dem Event beschäftigt &mdash; und Teilnehmer warten Stunden auf Antworten, die ein Chatbot sofort liefern kann.",
+      options: [
+        { score: 1, text: "FAQ-Seite, der Rest landet im Inbox-Chaos." },
+        { score: 2, text: "Chatbot oder Self-Service, Team springt nur bei Sonderfällen ein." },
+        { score: 0, text: "Ich oder mein Team &mdash; manuell, oft hektisch." }
+      ]
+    },
+    {
+      hebel: "Check-in &amp; Badges",
+      module: "Badge &amp; Check-in",
+      dimensions: [DIM.EXP],
+      question: "Wie läuft der Vor-Ort-Check-in?",
+      cost: "Eine Schlange am Empfang ist der erste Eindruck, den Dein Teilnehmer mitnimmt. Papierlisten und manueller Badge-Druck zerschießen das.",
+      options: [
+        { score: 2, text: "QR-Scan, Badges automatisch, Live-Anwesenheitsdaten." },
+        { score: 0, text: "Papierlisten, lange Schlangen, gestresstes Team." },
+        { score: 1, text: "Tablet-Listen, aber Badges müssen separat gedruckt werden." }
+      ]
+    },
+    {
+      hebel: "Daten &amp; Entscheidungen",
+      module: "Predictive Forecasting",
+      dimensions: [DIM.COST, DIM.EXP],
+      question: "Wie triffst Du Entscheidungen während und nach dem Event?",
+      cost: "Ohne Live-Daten reagierst Du erst, wenn der Schaden da ist. Mit Live-Daten + Predictive Insights kannst Du noch während des Events nachsteuern.",
+      options: [
+        { score: 2, text: "Live-Daten und Predictive Insights, ich kann sofort eingreifen." },
+        { score: 1, text: "Reports nach dem Event, aber selten handlungsrelevant." },
+        { score: 0, text: "Aus dem Bauch. Daten kommen Wochen später &mdash; wenn überhaupt." }
+      ]
+    }
+  ];
+
+  // ============================================================
+  // MODULE MAPPING — what eBrain does for the weakest 3 levers
+  // ============================================================
+  const SOLUTIONS = {
+    "Event-Setup": {
+      kind: "Setup-Hebel",
+      pain: "Du verlierst Tage, bis eine Event-Seite live ist &mdash; und mit jedem Tag schmelzen Vorlauf, Sichtbarkeit und Anmeldungen.",
+      solution: "Mit der <strong>KI-gestützten Event-Website-Erstellung</strong> baust Du eine vollständige Seite im eigenen Brand-Design per Prompt. Unterseiten, Bilder, Inhalte &mdash; in Minuten statt Tagen.",
+      moduleTag: "Modul: KI-Website-Erstellung"
+    },
+    "Registrierung": {
+      kind: "Daten-Hebel",
+      pain: "Manuelle Anmeldungen produzieren Doppelerfassungen, kaputte Listen und Mehrarbeit für Dein Team.",
+      solution: "Die <strong>Teilnehmerregistrierung</strong> in eBrain bietet anpassbare Self-Service-Formulare, automatische Account-Erstellung, Gruppen-Anmeldung und direkte Hotel-/Ticket-Buchung im Smart Cart.",
+      moduleTag: "Modul: Teilnehmerregistrierung"
+    },
+    "Kommunikation": {
+      kind: "Kommunikations-Hebel",
+      pain: "Verteiler-Chaos, doppelte Mails, nicht erreichbare Teilnehmer. Last-minute-Updates kosten Dich Schlaf.",
+      solution: "Das <strong>zentrale Communication Center</strong> verschickt segmentierte Einladungen, Reminder und Updates &mdash; mit KI-generierten Texten im Brand-Design, direkt aus dem Tool.",
+      moduleTag: "Modul: Communication Center"
+    },
+    "Tool-Stack": {
+      kind: "Kosten-Hebel",
+      pain: "Sechs Tools, sechs Lizenzen, sechs Lernkurven &mdash; und Daten, die niemand zusammenführen will.",
+      solution: "eBrain ersetzt 5-8 Einzeltools mit einer Plattform: <strong>Registrierung, Ticketing, Kommunikation, Badges, Reporting</strong> &mdash; alles verbunden, eine Datenbasis, ein Login.",
+      moduleTag: "Modul: All-in-One Suite"
+    },
+    "Kontingente": {
+      kind: "Margen-Hebel",
+      pain: "Überbuchungen oder leere Hotelzimmer und Transporte kosten Dich messbar. Excel-Abgleiche fangen das nicht ab.",
+      solution: "Das <strong>intelligente Kontingent-Management</strong> überwacht Hotelzimmer, Transport und Sessions in Echtzeit. Stornierungen und Änderungen werden automatisch verarbeitet.",
+      moduleTag: "Modul: Kontingent-Management"
+    },
+    "Teilnehmer-Support": {
+      kind: "Erlebnis-Hebel",
+      pain: "Dein Team beantwortet Standard-Fragen statt Event-Probleme zu lösen. Teilnehmer warten zu lang.",
+      solution: "<strong>Emily, der KI-Agent von eBrain</strong>, beantwortet Teilnehmerfragen rund um die Uhr (\"Wie viele Vegetarier sind angemeldet?\", \"Wo finde ich Saal B?\"). Dein Team kümmert sich um die echten Themen.",
+      moduleTag: "Modul: Emily-Chatbot"
+    },
+    "Check-in &amp; Badges": {
+      kind: "Erster-Eindruck-Hebel",
+      pain: "Schlangen am Empfang, manueller Badge-Druck, gestresstes Team &mdash; und der erste Eindruck ist verbrannt.",
+      solution: "Mit <strong>automatisierter Badge-Erstellung und QR-Check-in</strong> scannt sich der Teilnehmer in Sekunden ein. Badge im Brand-Design, Live-Anwesenheitsdaten direkt im Dashboard.",
+      moduleTag: "Modul: Badge &amp; Check-in"
+    },
+    "Daten &amp; Entscheidungen": {
+      kind: "Steuerungs-Hebel",
+      pain: "Wenn Daten erst Wochen nach dem Event kommen, kannst Du nicht mehr eingreifen &mdash; und das nächste Event wiederholt dieselben Fehler.",
+      solution: "<strong>Echtzeit-Datenanalyse und Predictive Forecasting</strong> liefern Dir Live-KPIs und KI-Empfehlungen während des Events. Anpassen statt reagieren.",
+      moduleTag: "Modul: Predictive Forecasting"
+    }
+  };
+
+  // ============================================================
+  // STATE
+  // ============================================================
+  const state = {
+    currentIndex: 0,
+    answers: new Array(QUESTIONS.length).fill(null),
+    lead: {
+      firstname: prefillFirstname,
+      company: prefillCompany,
+      email: "",
+      role: ""
+    }
+  };
+
+  let advanceTimeout = null;
+  function clearAdvance() {
+    if (advanceTimeout) {
+      clearTimeout(advanceTimeout);
+      advanceTimeout = null;
+    }
+  }
+
+  const $ = (id) => document.getElementById(id);
+  function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(el => el.classList.add('hidden'));
+    $(id).classList.remove('hidden');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ============================================================
+  // QUIZ FLOW
+  // ============================================================
+  function renderProgress(activeIdx, completedCount, wrapId) {
+    const wrap = $(wrapId || 'progress');
+    if (!wrap) return;
+    wrap.innerHTML = '';
+    const total = QUESTIONS.length + 1; // +1 for gate
+    for (let i = 0; i < total; i++) {
+      const seg = document.createElement('div');
+      seg.className = 'progress-segment';
+      if (i < completedCount) seg.classList.add('completed');
+      else if (i === activeIdx) seg.classList.add('active');
+      wrap.appendChild(seg);
+    }
+  }
+
+  function renderQuestion() {
+    const q = QUESTIONS[state.currentIndex];
+    $('q-current').textContent = state.currentIndex + 1;
+    $('q-total').textContent = QUESTIONS.length;
+    $('q-hebel').innerHTML = q.hebel;
+
+    const dimLabels = q.dimensions.map(d => d.label).join(' + ');
+    $('q-dimension').textContent = dimLabels;
+
+    $('q-question').innerHTML = q.question;
+    $('q-cost').innerHTML = q.cost;
+
+    const optsWrap = $('q-options');
+    optsWrap.innerHTML = '';
+    const letters = ['A', 'B', 'C'];
+    q.options.forEach((opt, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'option';
+      btn.type = 'button';
+      if (state.answers[state.currentIndex] === opt.score) {
+        btn.classList.add('selected');
+      }
+      btn.innerHTML = `
+        <div class="option-marker">${letters[i]}</div>
+        <div class="option-text">${opt.text}</div>
+      `;
+      btn.onclick = () => selectOption(opt.score);
+      optsWrap.appendChild(btn);
+    });
+
+    $('btn-back').style.visibility = state.currentIndex === 0 ? 'hidden' : 'visible';
+    $('btn-next').disabled = state.answers[state.currentIndex] === null;
+    $('btn-next').textContent = state.currentIndex === QUESTIONS.length - 1 ? 'Zum Report →' : 'Weiter →';
+
+    renderProgress(state.currentIndex, state.currentIndex);
+
+    const wrap = $('q-wrap');
+    wrap.classList.remove('animate-in');
+    void wrap.offsetWidth;
+    wrap.classList.add('animate-in');
+  }
+
+  function selectOption(score) {
+    state.answers[state.currentIndex] = score;
+    const optsWrap = $('q-options');
+    const opts = QUESTIONS[state.currentIndex].options;
+    Array.from(optsWrap.children).forEach((btn, i) => {
+      btn.classList.toggle('selected', opts[i].score === score);
+    });
+    $('btn-next').disabled = false;
+
+    clearAdvance();
+    advanceTimeout = setTimeout(() => {
+      advanceTimeout = null;
+      goNext();
+    }, 380);
+  }
+
+  function goNext() {
+    clearAdvance();
+    if (state.answers[state.currentIndex] === null) return;
+    if (state.currentIndex === QUESTIONS.length - 1) {
+      showGate();
+    } else {
+      state.currentIndex++;
+      renderQuestion();
+    }
+  }
+
+  function goBack() {
+    clearAdvance();
+    if (state.currentIndex === 0) return;
+    state.currentIndex--;
+    renderQuestion();
+  }
+
+  function startQuiz() {
+    state.currentIndex = 0;
+    state.answers = new Array(QUESTIONS.length).fill(null);
+    showScreen('screen-quiz');
+    renderQuestion();
+  }
+
+  function restart() {
+    state.currentIndex = 0;
+    state.answers = new Array(QUESTIONS.length).fill(null);
+    state.lead = { firstname: prefillFirstname, company: prefillCompany, email: "", role: "" };
+    showScreen('screen-intro');
+  }
+
+  // ============================================================
+  // EMAIL GATE
+  // ============================================================
+  function showGate() {
+    if (prefillFirstname) $('firstname').value = prefillFirstname;
+    if (prefillCompany) $('company').value = prefillCompany;
+    renderProgress(QUESTIONS.length, QUESTIONS.length, 'progress-gate');
+    showScreen('screen-gate');
+  }
+
+  function validateGate() {
+    let ok = true;
+    const fn = $('firstname').value.trim();
+    const co = $('company').value.trim();
+    const em = $('email').value.trim();
+    const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    $('field-firstname').classList.toggle('invalid', fn.length === 0);
+    $('field-company').classList.toggle('invalid', co.length === 0);
+    $('field-email').classList.toggle('invalid', !emailRe.test(em));
+
+    if (fn.length === 0 || co.length === 0 || !emailRe.test(em)) ok = false;
+    return ok;
+  }
+
+  function submitGate(e) {
+    e.preventDefault();
+    if (!validateGate()) return;
+    state.lead.firstname = $('firstname').value.trim();
+    state.lead.company   = $('company').value.trim();
+    state.lead.email     = $('email').value.trim();
+    state.lead.role      = $('role').value;
+    submitAndShow();
+  }
+
+  // ============================================================
+  // SCORING
+  // ============================================================
+  // Returns sub-scores (0-100) for admin, cost, exp + overall (0-100)
+  function computeScores() {
+    const buckets = {
+      admin: { sum: 0, max: 0 },
+      cost:  { sum: 0, max: 0 },
+      exp:   { sum: 0, max: 0 }
+    };
+    QUESTIONS.forEach((q, i) => {
+      const score = state.answers[i] ?? 0;
+      q.dimensions.forEach(dim => {
+        buckets[dim.key].sum += score;
+        buckets[dim.key].max += 2;
+      });
+    });
+    const pct = (b) => b.max === 0 ? 0 : Math.round((b.sum / b.max) * 100);
+    const admin = pct(buckets.admin);
+    const cost  = pct(buckets.cost);
+    const exp   = pct(buckets.exp);
+    const overall = Math.round((admin + cost + exp) / 3);
+    return { admin, cost, exp, overall };
+  }
+
+  function subscoreTier(pct) {
+    if (pct <= 33) return 'tier-high';
+    if (pct <= 66) return 'tier-mid';
+    return 'tier-low';
+  }
+
+  function getTier(overall) {
+    if (overall <= 30) return {
+      cls: 'high',
+      name: 'Manueller Modus',
+      impact: 'Du verbrennst aktuell den größten Teil Deiner Event-Vorbereitung in Admin-Aufgaben. Größter Hebel: Zentralisierung. Eine Plattform statt sechs &mdash; und Du gewinnst sofort Stunden pro Event zurück.'
+    };
+    if (overall <= 60) return {
+      cls: 'mid',
+      name: 'Halb-digital',
+      impact: 'Solider Stand, aber Tool-Brüche zwischen Registrierung, Kommunikation und Check-in kosten Dich am meisten. Die nächsten 1-2 Hebel entscheiden, ob Du wirklich Zeit zurückgewinnst oder weiter Daten kopierst.'
+    };
+    return {
+      cls: 'low',
+      name: 'Digital reif',
+      impact: 'Stark. Du bist weit vorne. Jetzt geht es um Predictive Insights, Skalierung über mehrere Events und Margenoptimierung &mdash; nicht mehr um Basics.'
+    };
+  }
+
+  function buildDiagnosis(scores) {
+    const { admin, cost, exp } = scores;
+    const weakest = [
+      { key: 'admin', val: admin, label: 'Admin-Zeit' },
+      { key: 'cost',  val: cost,  label: 'Kosten' },
+      { key: 'exp',   val: exp,   label: 'Teilnehmer-Erlebnis' }
+    ].sort((a, b) => a.val - b.val);
+
+    const w1 = weakest[0];
+    const strongest = weakest[2];
+
+    if (w1.val >= 70) {
+      return `Stark auf allen drei Achsen. Dein größtes verbleibendes Potenzial liegt bei <strong>${w1.label}</strong> &mdash; aber wir reden hier über Feintuning, nicht über Grundbaustellen.`;
+    }
+    if (w1.val <= 30) {
+      return `Du verlierst aktuell am meisten bei <strong>${w1.label}</strong>. Während Du bei ${strongest.label} bereits ${strongest.val}/100 erreichst, ist die ${w1.label}-Achse Dein größter Hebel &mdash; und gleichzeitig der schnellste Win.`;
+    }
+    return `Du bist beim Thema <strong>${strongest.label}</strong> stark (${strongest.val}/100), aber Deine <strong>${w1.label}</strong> hängt bei ${w1.val}/100. Genau dort liegt Dein größter ROI.`;
+  }
+
+  function submitAndShow() {
+    const scores = computeScores();
+    const payload = {
+      source: SOURCE_TAG,
+      lead: state.lead,
+      scores: scores,
+      answers: state.answers,
+      hebel: QUESTIONS.map((q, i) => ({
+        name: q.hebel,
+        module: q.module,
+        dimensions: q.dimensions.map(d => d.key),
+        score: state.answers[i]
+      })),
+      url_params: { company: prefillCompany, firstname: prefillFirstname },
+      timestamp: new Date().toISOString()
+    };
+
+    if (LEAD_WEBHOOK_URL) {
+      fetch(LEAD_WEBHOOK_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      }).catch(e => console.error('Webhook failed:', e));
+    } else {
+      console.info('[eBrain Check] No webhook configured. Payload would be:', payload);
+    }
+
+    showResult(scores);
+  }
+
+  // ============================================================
+  // RESULT RENDER
+  // ============================================================
+  function showResult(scores) {
+    const tier = getTier(scores.overall);
+
+    // Greeting
+    const safeName = state.lead.firstname.replace(/[<>]/g, '');
+    if (safeName) {
+      $('result-greeting').innerHTML = `Danke, <strong>${safeName}</strong>.`;
+    } else {
+      $('result-greeting').textContent = '';
+    }
+
+    // Tier
+    $('tier-badge').textContent = tier.name;
+    $('tier-badge').className = 'tier-badge ' + tier.cls;
+    $('tier-impact').innerHTML = tier.impact;
+
+    // Animated main score
+    const numEl = $('result-number');
+    let current = 0;
+    const target = scores.overall;
+    const step = Math.max(1, Math.ceil(target / 28));
+    const interval = setInterval(() => {
+      current = Math.min(current + step, target);
+      numEl.textContent = current;
+      if (current >= target) clearInterval(interval);
+    }, 32);
+
+    // Sub-scores
+    const subsWrap = $('subscores');
+    subsWrap.innerHTML = '';
+    const subData = [
+      { key: 'admin', label: 'Admin-Zeit',           value: scores.admin, note: 'Wie viel Zeit Du in Routine verlierst.' },
+      { key: 'cost',  label: 'Kosten',                value: scores.cost,  note: 'Wie viel Geld in Tools, Margen und Verschwendung versickert.' },
+      { key: 'exp',   label: 'Teilnehmer-Erlebnis',   value: scores.exp,   note: 'Wie reibungslos Deine Teilnehmer Dein Event erleben.' }
+    ];
+    subData.forEach(s => {
+      const cls = subscoreTier(s.value);
+      const card = document.createElement('div');
+      card.className = 'subscore ' + cls;
+      card.innerHTML = `
+        <div class="label">${s.label}</div>
+        <div><span class="value">${s.value}</span><span class="max"> / 100</span></div>
+        <div class="meter"><div class="meter-fill" style="width: 0%"></div></div>
+        <div class="note">${s.note}</div>
+      `;
+      subsWrap.appendChild(card);
+      requestAnimationFrame(() => {
+        card.querySelector('.meter-fill').style.width = s.value + '%';
+      });
+    });
+
+    // Core diagnosis
+    $('diagnosis-text').innerHTML = buildDiagnosis(scores);
+
+    // Top 3 weakest levers → modules
+    const sortedIdx = state.answers
+      .map((s, i) => ({ score: s ?? 0, idx: i }))
+      .sort((a, b) => a.score - b.score)
+      .slice(0, 3)
+      .map(o => o.idx);
+
+    const modulesList = $('modules-list');
+    modulesList.innerHTML = '';
+    sortedIdx.forEach((idx, position) => {
+      const hebelName = QUESTIONS[idx].hebel;
+      const sol = SOLUTIONS[hebelName];
+      if (!sol) return;
+      const card = document.createElement('div');
+      card.className = 'module-card' + (position === 0 ? ' highlighted' : '');
+      card.innerHTML = `
+        <div class="rank">0${position + 1}</div>
+        <div class="content">
+          <div class="kind">${sol.kind}</div>
+          <div class="title">${hebelName}</div>
+          <div class="pain">${sol.pain}</div>
+          <div class="solution">${sol.solution}</div>
+          <span class="module-tag">${sol.moduleTag}</span>
+        </div>
+      `;
+      modulesList.appendChild(card);
+    });
+
+    // Full breakdown
+    const list = $('breakdown-list');
+    list.innerHTML = '';
+    QUESTIONS.forEach((q, idx) => {
+      const score = state.answers[idx] ?? 0;
+      const row = document.createElement('div');
+      row.className = 'breakdown-row';
+      const bars = [0, 1, 2].map(i =>
+        `<div class="bar${i < score ? ' filled' : ''}"></div>`
+      ).join('');
+      row.innerHTML = `
+        <div class="breakdown-label">${q.hebel}</div>
+        <div class="breakdown-bars">${bars}</div>
+        <div class="breakdown-score mono">${score}/2</div>
+      `;
+      list.appendChild(row);
+    });
+
+    // Wire CTAs with UTM-style attribution
+    const utm = `?utm_source=ebrain-check&utm_medium=diagnostic&utm_campaign=automation-score`
+              + `&firstname=${encodeURIComponent(state.lead.firstname)}`
+              + `&company=${encodeURIComponent(state.lead.company)}`
+              + `&email=${encodeURIComponent(state.lead.email)}`;
+    $('cta-trial').href = TRIAL_URL + utm;
+    $('cta-demo').href  = DEMO_URL  + (DEMO_URL.includes('?') ? '&' : '?')
+                          + `name=${encodeURIComponent(state.lead.firstname)}`
+                          + `&email=${encodeURIComponent(state.lead.email)}`;
+
+    showScreen('screen-result');
+  }
+
+  // ============================================================
+  // INIT
+  // ============================================================
+  renderProgress(0, 0);
+</script>
+
+</body>
+</html>
