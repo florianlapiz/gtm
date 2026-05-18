@@ -1154,14 +1154,6 @@
     <div class="header-meta">Event-Automatisierungs-Check <span class="dot"></span> 3 Min</div>
   </div>
 </header>
-<!-- Header bleed wave — violet flows down into white via organic curve -->
-<div class="header-wave" id="header-wave">
-  <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-    <rect width="1440" height="80" fill="#FFFFFF"/>
-    <path d="M0,0 L0,50 C260,15 540,32 720,38 C900,42 1180,68 1440,45 L1440,0 Z" fill="#712EE5"/>
-  </svg>
-</div>
-
 <!-- INTRO HERO — full violet -->
 <div class="screen" id="screen-intro">
   <section class="section bg-violet">
@@ -1214,12 +1206,6 @@
       </div>
     </div>
   </section>
-  <div class="wave-divider">
-    <svg viewBox="0 0 1440 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-      <rect width="1440" height="100" fill="#FFFFFF"/>
-      <path d="M0,0 L0,55 C260,15 540,35 720,42 C900,48 1180,78 1440,52 L1440,0 Z" fill="#712EE5"/>
-    </svg>
-  </div>
 </div>
 
 <!-- QUIZ — white BG -->
@@ -1320,13 +1306,6 @@
       <p class="tier-impact" id="tier-impact"></p>
     </div>
   </section>
-  <div class="wave-divider">
-    <svg viewBox="0 0 1440 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-      <rect width="1440" height="100" fill="#FFFFFF"/>
-      <path d="M0,0 L0,55 C260,15 540,35 720,42 C900,48 1180,78 1440,52 L1440,0 Z" fill="#712EE5"/>
-    </svg>
-  </div>
-
   <!-- Sub-scores -->
   <section class="subscores-section">
     <div class="section-inner">
@@ -1359,14 +1338,6 @@
       </div>
     </div>
   </section>
-
-  <!-- Wave transition from white modules into violet CTA -->
-  <div class="wave-divider">
-    <svg viewBox="0 0 1440 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-      <rect width="1440" height="100" fill="#FFFFFF"/>
-      <path d="M0,55 C260,15 540,35 720,42 C900,48 1180,78 1440,52 L1440,100 L0,100 Z" fill="#712EE5"/>
-    </svg>
-  </div>
 
   <!-- CTA section — violet -->
   <section class="cta-section">
@@ -1618,19 +1589,8 @@
   function showScreen(id) {
     document.querySelectorAll('.screen').forEach(el => el.classList.add('hidden'));
     $(id).classList.remove('hidden');
-    // Header wave only between violet header and a white section below
-    const headerWave = $('header-wave');
-    if (headerWave) {
-      const showWave = (id === 'screen-quiz' || id === 'screen-gate');
-      headerWave.style.display = showWave ? 'block' : 'none';
-    }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
-  // Initial state — intro is violet, hide header wave
-  document.addEventListener('DOMContentLoaded', () => {
-    const headerWave = $('header-wave');
-    if (headerWave) headerWave.style.display = 'none';
-  });
 
   // ============================================================
   // QUIZ FLOW
