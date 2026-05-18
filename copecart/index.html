@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>High-Ticket Vendor Audit | CopeCart Diagnostic</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="description" content="60-second revenue gap diagnostic for digital product vendors. Find out how much you're leaving on the table on payments, BNPL, and tax compliance.">
 <meta name="robots" content="noindex,nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -891,21 +891,316 @@
   }
   .footer a:hover { text-decoration: underline; }
 
-  /* RESPONSIVE */
+  /* RESPONSIVE — TABLET & MOBILE */
+  @media (max-width: 768px) {
+    .stage-inner { max-width: 100%; }
+  }
+
   @media (max-width: 640px) {
-    .topbar { padding: 14px 20px; }
-    .stage { padding: 36px 20px 60px; }
-    .step-title { font-size: 34px; }
-    .step-sub { font-size: 16px; margin-bottom: 32px; }
-    .slider-card { padding: 26px 22px; }
-    .slider-value { font-size: 56px; }
-    .result-wrap { padding: 44px 24px 36px; border-radius: 24px; }
-    .result-number { font-size: 72px; }
-    .result-breakdown { grid-template-columns: 1fr; }
-    .gate-grid { grid-template-columns: 1fr; }
-    .btn-large { padding: 18px 32px; }
-    .footer { padding: 24px 20px; flex-direction: column; gap: 8px; }
-    .methodology { margin: 32px 20px 0; }
+    /* TOPBAR */
+    .topbar {
+      padding: 12px 16px;
+      padding-top: max(12px, env(safe-area-inset-top));
+    }
+    .brand { font-size: 18px; gap: 8px; }
+    .brand-mark { width: 24px; height: 24px; border-radius: 6px; }
+    .topbar-meta {
+      padding: 6px 10px;
+      font-size: 10px;
+      letter-spacing: 0.06em;
+    }
+
+    /* STAGE */
+    .stage {
+      padding: 28px 18px 56px;
+      padding-left: max(18px, env(safe-area-inset-left));
+      padding-right: max(18px, env(safe-area-inset-right));
+    }
+
+    /* STEP HEAD */
+    .step-head {
+      gap: 8px;
+      margin-bottom: 22px;
+      flex-wrap: wrap;
+    }
+
+    /* HEADLINES */
+    .step-title {
+      font-size: 32px;
+      line-height: 1.05;
+      letter-spacing: -0.022em;
+      margin-bottom: 14px;
+    }
+    .step-sub {
+      font-size: 15px;
+      line-height: 1.5;
+      margin-bottom: 26px;
+    }
+
+    /* INTRO META */
+    .intro-meta {
+      gap: 8px;
+      margin-bottom: 30px;
+    }
+    .intro-meta-pill {
+      padding: 8px 12px;
+      font-size: 12px;
+    }
+
+    /* SLIDER */
+    .slider-card {
+      padding: 24px 20px;
+      border-radius: 20px;
+    }
+    .slider-value {
+      font-size: 52px;
+      margin-bottom: 22px;
+      line-height: 0.95;
+    }
+    .slider-value .currency {
+      font-size: 0.55em;
+    }
+    .slider-value .unit {
+      font-size: 13px;
+      margin-left: 8px;
+      letter-spacing: 0.04em;
+      display: block;
+      padding-bottom: 0;
+      padding-top: 8px;
+      margin-left: 0;
+    }
+    .ticket-badge {
+      font-size: 11px;
+      padding: 4px 10px;
+      margin-left: 8px;
+    }
+    input[type="range"] {
+      height: 8px;
+      margin: 16px 0 8px;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      width: 32px;
+      height: 32px;
+      border-width: 3px;
+    }
+    input[type="range"]::-moz-range-thumb {
+      width: 32px;
+      height: 32px;
+      border-width: 3px;
+    }
+    .slider-marks {
+      font-size: 10px;
+      margin-top: 12px;
+    }
+
+    /* OPTIONS */
+    .options { gap: 10px; }
+    .option {
+      padding: 16px 18px;
+      gap: 14px;
+      border-radius: 14px;
+    }
+    .option-title {
+      font-size: 15px;
+      margin-bottom: 3px;
+    }
+    .option-desc {
+      font-size: 13px;
+      line-height: 1.4;
+    }
+    .option-tag {
+      font-size: 10px;
+      padding: 3px 9px;
+      margin-top: 6px;
+    }
+    .option input {
+      width: 20px;
+      height: 20px;
+    }
+    .option:hover {
+      transform: none;
+    }
+    .option.selected {
+      box-shadow: 0 4px 14px rgba(61, 123, 255, 0.18);
+    }
+
+    /* NAV */
+    .nav {
+      margin-top: 28px;
+      gap: 8px;
+    }
+    .btn {
+      padding: 15px 20px;
+      font-size: 13px;
+      letter-spacing: 0;
+    }
+    .btn-large {
+      padding: 17px 26px;
+      font-size: 14px;
+    }
+    .btn-ghost {
+      padding: 12px 16px;
+      font-size: 12px;
+    }
+    .btn:hover {
+      transform: none;
+    }
+
+    /* RESULT */
+    .result-wrap {
+      padding: 36px 22px 32px;
+      border-radius: 24px;
+    }
+    .result-tag {
+      padding: 6px 12px;
+      font-size: 11px;
+      margin-bottom: 22px;
+    }
+    .result-headline {
+      font-size: 22px;
+      line-height: 1.2;
+      margin-bottom: 4px;
+    }
+    .result-number {
+      font-size: 68px;
+      margin: 18px 0 8px;
+      letter-spacing: -0.04em;
+    }
+    .result-number .currency {
+      font-size: 0.45em;
+    }
+    .result-label {
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      margin-bottom: 32px;
+    }
+    .result-breakdown {
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+    .breakdown-item {
+      padding: 18px 20px;
+      border-radius: 14px;
+    }
+    .breakdown-label {
+      font-size: 10px;
+      letter-spacing: 0.12em;
+    }
+    .breakdown-value {
+      font-size: 28px;
+    }
+    .breakdown-desc {
+      font-size: 12px;
+    }
+    .result-diagnosis {
+      font-size: 15px;
+      line-height: 1.5;
+      margin-bottom: 32px;
+    }
+    .result-cta-section {
+      padding-top: 28px;
+    }
+    .result-cta-pre {
+      font-size: 10px;
+      margin-bottom: 10px;
+    }
+    .result-cta-h {
+      font-size: 22px;
+      line-height: 1.2;
+      margin-bottom: 22px;
+    }
+
+    /* LEAD GATE */
+    .gate-grid {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    .gate-field {
+      margin-bottom: 14px;
+    }
+    .gate-field label {
+      font-size: 10px;
+      margin-bottom: 8px;
+    }
+    .gate-field input,
+    .gate-field select {
+      padding: 14px 16px;
+      font-size: 16px; /* prevents iOS zoom on focus */
+      border-radius: 12px;
+    }
+
+    /* THANK YOU */
+    .thank-you {
+      padding: 24px 0 8px;
+    }
+    .thank-you-h {
+      font-size: 30px;
+    }
+    .thank-you-p {
+      font-size: 14px;
+    }
+
+    /* METHODOLOGY */
+    .methodology {
+      margin: 32px 18px 0;
+      padding: 22px 22px;
+      border-radius: 18px;
+    }
+    .methodology summary {
+      font-size: 10px;
+    }
+    .methodology-body {
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    /* FOOTER */
+    .footer {
+      padding: 20px 18px;
+      padding-bottom: max(20px, env(safe-area-inset-bottom));
+      flex-direction: column;
+      gap: 8px;
+      text-align: center;
+      font-size: 10px;
+    }
+  }
+
+  /* SMALL PHONES (iPhone SE / 320–380px) */
+  @media (max-width: 380px) {
+    .topbar { padding: 10px 14px; }
+    .brand { font-size: 17px; }
+    .topbar-meta { display: none; }
+
+    .stage { padding: 24px 14px 48px; }
+
+    .step-title { font-size: 28px; }
+    .step-sub { font-size: 14px; }
+
+    .slider-card { padding: 22px 18px; }
+    .slider-value { font-size: 44px; }
+    .slider-value .currency { font-size: 0.5em; }
+    .slider-value .unit { font-size: 12px; }
+
+    .option { padding: 14px 16px; gap: 12px; }
+    .option-title { font-size: 14px; }
+    .option-desc { font-size: 12px; }
+
+    .btn { padding: 14px 18px; font-size: 12px; }
+    .btn-large { padding: 16px 22px; font-size: 13px; }
+
+    .result-wrap { padding: 32px 18px 28px; }
+    .result-number { font-size: 60px; }
+    .result-headline { font-size: 20px; }
+    .result-cta-h { font-size: 20px; }
+    .breakdown-value { font-size: 26px; }
+  }
+
+  /* TOUCH DEVICE TWEAKS — disable hover artifacts on touch */
+  @media (hover: none) {
+    .option:hover { transform: none; border-color: var(--border); }
+    .option:hover { box-shadow: var(--shadow-sm); }
+    .btn:hover { transform: none; }
   }
 
   @keyframes fadeUp {
