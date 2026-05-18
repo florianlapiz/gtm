@@ -10,27 +10,28 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #FFFFFF;
-    --bg-soft: #F7F7FA;
-    --bg-card: #FFFFFF;
-    --bg-dark: #0E0B1F;
-    --surface: #F7F7FA;
-    --surface-2: #EFEFF5;
+    --violet: #712EE5;
+    --violet-bright: #8849FF;
+    --violet-deep: #5418C7;
+    --violet-darker: #3D0FA3;
+    --violet-soft: rgba(113, 46, 229, 0.10);
+    --violet-line: rgba(113, 46, 229, 0.25);
+
+    --lemon: #DCE43E;
+    --lemon-bright: #E8F050;
+    --lemon-deep: #B8C228;
+    --lemon-soft: rgba(220, 228, 62, 0.20);
+
+    --black: #0E0B1F;
+    --white: #FFFFFF;
+    --off-white: #FAFAFC;
+    --soft: #F4F4F8;
     --border: #E5E5EC;
     --border-strong: #D4D4DE;
     --text: #0E0B1F;
     --text-muted: #5A5668;
     --text-dim: #8A8696;
-    --violet: #712EE5;
-    --violet-bright: #8849FF;
-    --violet-deep: #5418C7;
-    --violet-soft: rgba(113, 46, 229, 0.08);
-    --violet-line: rgba(113, 46, 229, 0.25);
-    --violet-glow: rgba(113, 46, 229, 0.35);
-    --lemon: #DCE43E;
-    --lemon-bright: #E8F050;
-    --lemon-deep: #B8C228;
-    --lemon-soft: rgba(220, 228, 62, 0.20);
+
     --green-ok: #16A34A;
     --amber: #D97706;
     --red: #DC2626;
@@ -40,7 +41,7 @@
 
   html, body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    background: var(--bg);
+    background: var(--white);
     color: var(--text);
     font-size: 17px;
     line-height: 1.55;
@@ -49,62 +50,94 @@
     overflow-x: hidden;
   }
 
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background:
-      radial-gradient(ellipse 60% 50% at 100% 0%, rgba(113, 46, 229, 0.07) 0%, transparent 60%),
-      radial-gradient(ellipse 50% 40% at 0% 100%, rgba(220, 228, 62, 0.10) 0%, transparent 55%);
-    pointer-events: none;
-    z-index: 0;
-  }
-
   .mono { font-family: 'JetBrains Mono', monospace; letter-spacing: 0.02em; }
   .display {
     font-family: 'Space Grotesk', 'Inter', sans-serif;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.025em;
     font-weight: 700;
   }
 
-  .container {
+  /* ============================================================
+     SECTION BACKGROUNDS — full-bleed eBrain brand
+     ============================================================ */
+  .bg-violet {
+    background: linear-gradient(180deg, var(--violet) 0%, var(--violet-deep) 100%);
+    color: var(--white);
     position: relative;
-    z-index: 1;
-    max-width: 880px;
+  }
+  .bg-violet .text-muted { color: rgba(255, 255, 255, 0.78); }
+  .bg-white { background: var(--white); color: var(--text); }
+  .bg-soft  { background: var(--soft);  color: var(--text); }
+
+  .section {
+    position: relative;
+    padding: 56px 24px 80px;
+  }
+  .section-inner {
+    max-width: 920px;
     margin: 0 auto;
-    padding: 32px 24px 80px;
+    position: relative;
+    z-index: 2;
   }
 
-  /* HEADER */
+  /* Wave dividers — organic curves like the eBrain site */
+  .wave-divider {
+    position: relative;
+    width: 100%;
+    height: 100px;
+    margin-top: -1px;
+    margin-bottom: -1px;
+    pointer-events: none;
+    display: block;
+    overflow: hidden;
+  }
+  .wave-divider svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  .wave-divider.compact { height: 70px; }
+  .wave-divider.tall    { height: 130px; }
+
+  /* Header carries its own lemon wave to flow into white sections below */
+  .header-wave {
+    position: relative;
+    width: 100%;
+    height: 80px;
+    margin-top: -1px;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .header-wave svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* ============================================================
+     HEADER
+     ============================================================ */
   .header {
+    background: var(--violet);
+    padding: 18px 24px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .header-inner {
+    max-width: 920px;
+    margin: 0 auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 16px 24px;
-    margin-bottom: 56px;
-    border-radius: 14px;
-    background: rgba(255, 255, 255, 0.85);
-    border: 1px solid var(--border);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-  }
-  .brand-lockup { display: flex; align-items: center; gap: 12px; }
-  .brand-logo-wrap {
-    display: inline-flex;
-    align-items: center;
-    background: var(--violet);
-    padding: 8px 14px;
-    border-radius: 8px;
-    box-shadow: 0 4px 14px rgba(113, 46, 229, 0.22);
+    gap: 16px;
   }
   .brand-logo-img {
-    height: 22px;
+    height: 28px;
     width: auto;
     display: block;
   }
   .header-meta {
     font-size: 11px;
-    color: var(--text-dim);
+    color: rgba(255, 255, 255, 0.78);
     text-transform: uppercase;
     letter-spacing: 0.22em;
     font-weight: 600;
@@ -114,12 +147,15 @@
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: var(--violet);
+    background: var(--lemon);
     margin: 0 8px;
     vertical-align: middle;
+    box-shadow: 0 0 10px var(--lemon);
   }
 
-  /* SCREEN MANAGEMENT */
+  /* ============================================================
+     SCREEN MANAGEMENT
+     ============================================================ */
   .screen { animation: fadeIn 0.4s ease-out; }
   .screen.hidden { display: none; }
 
@@ -143,15 +179,17 @@
   .q-wrap.animate-in .options .option:nth-child(2) { animation: slideUpFade 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.27s backwards; }
   .q-wrap.animate-in .options .option:nth-child(3) { animation: slideUpFade 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.34s backwards; }
 
-  /* INTRO */
+  /* ============================================================
+     INTRO HERO — violet full-bleed
+     ============================================================ */
   .intro-eyebrow {
     font-size: 12px;
     font-weight: 700;
-    color: var(--violet);
+    color: var(--lemon);
     text-transform: uppercase;
     letter-spacing: 0.28em;
     margin-bottom: 28px;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: 12px;
   }
@@ -167,51 +205,74 @@
 
   h1.display-hero {
     font-family: 'Space Grotesk', sans-serif;
-    font-size: clamp(44px, 7.5vw, 78px);
-    line-height: 0.98;
-    letter-spacing: -0.035em;
+    font-size: clamp(48px, 8.5vw, 96px);
+    line-height: 0.96;
+    letter-spacing: -0.04em;
     margin-bottom: 28px;
-    color: var(--text);
+    color: var(--white);
     font-weight: 700;
   }
-  h1.display-hero .accent {
-    color: var(--violet);
-    display: block;
-  }
   h1.display-hero .accent-lemon {
-    background: linear-gradient(135deg, var(--violet) 0%, var(--violet) 60%, var(--lemon-deep) 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+    color: var(--lemon);
     display: block;
   }
+
   .lede {
     font-size: 19px;
-    color: var(--text-muted);
+    color: rgba(255, 255, 255, 0.88);
     max-width: 640px;
     line-height: 1.55;
-    margin-bottom: 44px;
+    margin-bottom: 40px;
   }
-  .lede strong { color: var(--text); font-weight: 600; }
+  .lede strong { color: var(--white); font-weight: 700; }
+
+  /* Trust strip — frosted-card on violet */
+  .trust-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin: 36px 0 28px;
+  }
+  .trust-cell {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 18px;
+    padding: 22px 20px;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+  .trust-cell .num {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 44px;
+    line-height: 1;
+    color: var(--lemon);
+    margin-bottom: 8px;
+    letter-spacing: -0.03em;
+  }
+  .trust-cell .desc {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.82);
+    line-height: 1.4;
+    font-weight: 500;
+  }
 
   .intro-stats {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 0;
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    overflow: hidden;
+    gap: 14px;
     margin-bottom: 40px;
-    background: var(--bg-soft);
   }
   .stat-cell {
-    padding: 22px 22px;
-    border-right: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 18px;
+    padding: 18px;
+    text-align: left;
   }
-  .stat-cell:last-child { border-right: none; }
   .stat-cell .label {
     font-size: 10.5px;
-    color: var(--text-dim);
+    color: rgba(255, 255, 255, 0.65);
     text-transform: uppercase;
     letter-spacing: 0.18em;
     margin-bottom: 10px;
@@ -220,117 +281,103 @@
   .stat-cell .value {
     font-family: 'Space Grotesk', sans-serif;
     font-weight: 700;
-    font-size: 32px;
+    font-size: 28px;
     letter-spacing: -0.02em;
-    color: var(--text);
+    color: var(--white);
     line-height: 1;
   }
-  .stat-cell .value .num {
-    color: var(--violet);
-  }
+  .stat-cell .value .num { color: var(--lemon); }
 
-  /* TRUST STRIP — pulls in eBrain stats */
-  .trust-strip {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-    margin-bottom: 36px;
-  }
-  .trust-cell {
-    background: var(--bg-soft);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 22px 20px;
-    text-align: left;
-  }
-  .trust-cell .num {
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 700;
-    font-size: 42px;
-    line-height: 1;
-    color: var(--violet);
-    margin-bottom: 8px;
-    letter-spacing: -0.02em;
-  }
-  .trust-cell .desc {
-    font-size: 13px;
-    color: var(--text-muted);
-    line-height: 1.4;
-    font-weight: 500;
-  }
-
-  /* BUTTONS */
+  /* ============================================================
+     BUTTONS — eBrain pill style
+     ============================================================ */
   .btn {
     display: inline-flex;
     align-items: center;
-    gap: 12px;
-    background: var(--violet);
-    color: #FFFFFF;
-    padding: 18px 32px;
-    border-radius: 10px;
+    gap: 10px;
+    background: var(--lemon);
+    color: var(--text);
+    padding: 16px 28px;
+    border-radius: 50px;
     text-decoration: none;
     font-weight: 700;
-    font-size: 14px;
-    text-transform: uppercase;
-    letter-spacing: 0.14em;
-    border: 1px solid var(--violet);
+    font-size: 15px;
+    border: 2px solid var(--lemon);
     cursor: pointer;
     font-family: 'Inter', sans-serif;
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 10px 28px rgba(113, 46, 229, 0.30);
     position: relative;
     overflow: hidden;
+    white-space: nowrap;
   }
-  .btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.18), transparent);
-    transition: left 0.6s;
+  .btn::after {
+    content: '›';
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 0.8;
+    margin-left: 2px;
   }
   .btn:hover {
-    background: var(--violet-bright);
-    border-color: var(--violet-bright);
+    background: var(--lemon-bright);
+    border-color: var(--lemon-bright);
     transform: translateY(-1px);
-    box-shadow: 0 14px 36px rgba(113, 46, 229, 0.45);
+    box-shadow: 0 12px 30px rgba(220, 228, 62, 0.40);
   }
-  .btn:hover::before { left: 100%; }
   .btn:disabled {
-    opacity: 0.35;
+    opacity: 0.4;
     cursor: not-allowed;
     transform: none;
     box-shadow: none;
   }
-  .btn-lemon {
-    background: var(--lemon);
-    color: var(--text);
-    border-color: var(--lemon);
-    box-shadow: 0 10px 28px rgba(220, 228, 62, 0.40);
+
+  /* White button (secondary on violet) */
+  .btn-white {
+    background: var(--white);
+    color: var(--violet);
+    border-color: var(--white);
   }
-  .btn-lemon:hover {
-    background: var(--lemon-bright);
-    border-color: var(--lemon-bright);
-    box-shadow: 0 14px 36px rgba(220, 228, 62, 0.55);
+  .btn-white:hover {
+    background: var(--off-white);
+    border-color: var(--off-white);
+    box-shadow: 0 12px 30px rgba(255, 255, 255, 0.25);
   }
-  .btn-secondary {
+
+  /* Violet button (primary on white bg) */
+  .btn-violet {
+    background: var(--violet);
+    color: var(--white);
+    border-color: var(--violet);
+  }
+  .btn-violet:hover {
+    background: var(--violet-bright);
+    border-color: var(--violet-bright);
+    box-shadow: 0 12px 30px rgba(113, 46, 229, 0.35);
+  }
+
+  /* Outline button (secondary on white bg) */
+  .btn-outline {
     background: transparent;
-    color: var(--text-muted);
-    border: 1px solid var(--border-strong);
-    box-shadow: none;
-  }
-  .btn-secondary:hover {
-    background: var(--surface);
     color: var(--text);
+    border-color: var(--border-strong);
+  }
+  .btn-outline:hover {
+    background: var(--soft);
     border-color: var(--text-dim);
     box-shadow: none;
     transform: none;
   }
-  .btn-secondary::before { display: none; }
+  .btn-outline::after { color: var(--violet); }
 
-  /* QUIZ */
+  .btn-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  /* ============================================================
+     QUIZ — clean white for readability
+     ============================================================ */
+  .quiz-section { background: var(--white); }
   .progress-bar-wrap {
     display: flex;
     gap: 4px;
@@ -338,11 +385,11 @@
   }
   .progress-segment {
     flex: 1;
-    height: 4px;
-    background: var(--border);
+    height: 5px;
+    background: var(--soft);
     overflow: hidden;
     position: relative;
-    border-radius: 2px;
+    border-radius: 3px;
   }
   .progress-segment.completed { background: var(--violet); }
   .progress-segment.active::after {
@@ -350,7 +397,7 @@
     position: absolute;
     inset: 0;
     background: var(--violet);
-    box-shadow: 0 0 8px var(--violet-glow);
+    box-shadow: 0 0 8px rgba(113, 46, 229, 0.35);
     animation: progressGrow 0.4s ease-out forwards;
   }
   @keyframes progressGrow {
@@ -361,8 +408,8 @@
   .quiz-meta {
     display: flex;
     align-items: center;
-    gap: 18px;
-    margin-bottom: 18px;
+    gap: 14px;
+    margin-bottom: 20px;
     flex-wrap: wrap;
   }
   .quiz-counter {
@@ -372,31 +419,33 @@
     letter-spacing: 0.1em;
     text-transform: uppercase;
   }
-  .quiz-counter .current { color: var(--violet); font-weight: 600; }
+  .quiz-counter .current { color: var(--violet); font-weight: 700; }
   .quiz-hebel-name {
     font-size: 11.5px;
     font-weight: 700;
     color: var(--violet);
     text-transform: uppercase;
     letter-spacing: 0.22em;
+    padding: 5px 12px;
+    background: var(--violet-soft);
+    border-radius: 50px;
   }
   .quiz-dimension {
     font-size: 10.5px;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.18em;
-    padding: 4px 10px;
-    border-radius: 4px;
-    background: var(--lemon-soft);
+    letter-spacing: 0.16em;
+    padding: 5px 12px;
+    border-radius: 50px;
+    background: var(--lemon);
     color: var(--text);
-    border: 1px solid rgba(220, 228, 62, 0.50);
   }
 
   .quiz-question {
     font-family: 'Space Grotesk', sans-serif;
-    font-size: clamp(28px, 4.6vw, 44px);
+    font-size: clamp(30px, 5vw, 48px);
     font-weight: 700;
-    letter-spacing: -0.025em;
+    letter-spacing: -0.03em;
     line-height: 1.05;
     margin-bottom: 16px;
     color: var(--text);
@@ -418,9 +467,9 @@
     margin-bottom: 40px;
   }
   .option {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
+    background: var(--white);
+    border: 1.5px solid var(--border);
+    border-radius: 16px;
     padding: 18px 22px;
     cursor: pointer;
     display: flex;
@@ -435,22 +484,22 @@
     width: 100%;
   }
   .option:hover {
-    background: var(--surface);
+    background: var(--soft);
     border-color: var(--violet-line);
     transform: translateX(2px);
   }
   .option.selected {
     background: var(--violet-soft);
     border-color: var(--violet);
-    box-shadow: 0 0 0 1px var(--violet), 0 4px 16px var(--violet-glow);
+    box-shadow: 0 0 0 1px var(--violet), 0 6px 18px rgba(113, 46, 229, 0.18);
   }
   .option-marker {
     flex-shrink: 0;
-    width: 28px;
-    height: 28px;
-    border-radius: 6px;
-    background: var(--surface);
-    border: 1px solid var(--border-strong);
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--soft);
+    border: 1.5px solid var(--border-strong);
     color: var(--text-dim);
     font-family: 'JetBrains Mono', monospace;
     font-size: 13px;
@@ -463,12 +512,9 @@
   .option.selected .option-marker {
     background: var(--violet);
     border-color: var(--violet);
-    color: #FFFFFF;
+    color: var(--white);
   }
-  .option-text {
-    flex: 1;
-    padding-top: 3px;
-  }
+  .option-text { flex: 1; padding-top: 4px; }
 
   .nav {
     display: flex;
@@ -485,10 +531,9 @@
   }
   #btn-next { display: none; }
 
-  /* EMAIL GATE */
-  .gate-hero {
-    padding: 24px 0 8px;
-  }
+  /* ============================================================
+     GATE — white with violet accent
+     ============================================================ */
   .gate-eyebrow {
     font-size: 11.5px;
     font-weight: 700;
@@ -503,21 +548,19 @@
   .gate-eyebrow::before {
     content: '';
     width: 32px;
-    height: 1px;
+    height: 1.5px;
     background: var(--violet);
   }
   h2.gate-title {
     font-family: 'Space Grotesk', sans-serif;
-    font-size: clamp(36px, 5.5vw, 56px);
+    font-size: clamp(34px, 5.4vw, 56px);
     font-weight: 700;
-    letter-spacing: -0.03em;
+    letter-spacing: -0.035em;
     line-height: 1.02;
     margin-bottom: 18px;
     color: var(--text);
   }
-  h2.gate-title .accent {
-    color: var(--violet);
-  }
+  h2.gate-title .accent { color: var(--violet); }
   .gate-lede {
     font-size: 17px;
     color: var(--text-muted);
@@ -525,12 +568,11 @@
     line-height: 1.55;
     max-width: 620px;
   }
-  .gate-lede strong { color: var(--text); font-weight: 600; }
+  .gate-lede strong { color: var(--text); font-weight: 700; }
 
   .gate-form {
-    background: var(--bg-soft);
-    border: 1px solid var(--border);
-    border-radius: 16px;
+    background: var(--soft);
+    border-radius: 24px;
     padding: 32px;
   }
   .form-row {
@@ -539,11 +581,7 @@
     gap: 14px;
     margin-bottom: 14px;
   }
-  .form-field {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
+  .form-field { display: flex; flex-direction: column; gap: 6px; }
   .form-field.full { grid-column: 1 / -1; }
   .form-field label {
     font-size: 11.5px;
@@ -554,9 +592,9 @@
   }
   .form-field label .req { color: var(--violet); }
   .form-field input, .form-field select {
-    background: #FFFFFF;
-    border: 1px solid var(--border-strong);
-    border-radius: 10px;
+    background: var(--white);
+    border: 1.5px solid var(--border-strong);
+    border-radius: 14px;
     padding: 14px 16px;
     font-size: 16px;
     color: var(--text);
@@ -575,77 +613,77 @@
     display: none;
   }
   .form-field.invalid .error { display: block; }
-  .form-field.invalid input, .form-field.invalid select {
-    border-color: var(--red);
+  .form-field.invalid input, .form-field.invalid select { border-color: var(--red); }
+  .form-submit {
+    width: 100%;
+    justify-content: center;
+    margin-top: 12px;
   }
   .gate-trust {
     margin-top: 18px;
-    font-size: 12px;
+    font-size: 12.5px;
     color: var(--text-dim);
     text-align: center;
     line-height: 1.5;
   }
   .gate-trust strong { color: var(--text-muted); font-weight: 700; }
 
-  /* RESULT */
-  .result-hero {
-    padding: 16px 0 24px;
-  }
+  /* ============================================================
+     RESULT
+     ============================================================ */
   .result-eyebrow {
     font-size: 11.5px;
     font-weight: 700;
-    color: var(--violet);
+    color: var(--lemon);
     text-transform: uppercase;
     letter-spacing: 0.28em;
     margin-bottom: 24px;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: 12px;
   }
   .result-eyebrow::before {
     content: '';
     width: 32px;
-    height: 1px;
-    background: var(--violet);
+    height: 1.5px;
+    background: var(--lemon);
   }
   .result-greeting {
-    font-size: 15px;
-    color: var(--text-muted);
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.75);
     margin-bottom: 12px;
     text-transform: uppercase;
-    letter-spacing: 0.14em;
-    font-weight: 600;
+    letter-spacing: 0.18em;
+    font-weight: 700;
   }
-  .result-greeting strong { color: var(--text); font-weight: 700; }
+  .result-greeting strong { color: var(--white); font-weight: 700; }
   .result-score-block {
     display: flex;
     align-items: baseline;
-    gap: 16px;
+    gap: 12px;
     margin-bottom: 24px;
     flex-wrap: wrap;
   }
   .result-score-block .number {
     font-family: 'Space Grotesk', sans-serif;
-    font-size: clamp(120px, 18vw, 180px);
+    font-size: clamp(130px, 22vw, 220px);
     font-weight: 700;
-    background: linear-gradient(135deg, var(--violet) 0%, var(--violet-bright) 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    line-height: 0.9;
-    letter-spacing: -0.04em;
+    color: var(--lemon);
+    line-height: 0.85;
+    letter-spacing: -0.05em;
   }
   .result-score-block .max {
     font-family: 'Space Grotesk', sans-serif;
-    font-size: clamp(40px, 6vw, 60px);
-    color: var(--text-dim);
+    font-size: clamp(44px, 7vw, 72px);
+    color: rgba(255, 255, 255, 0.55);
     font-weight: 700;
+    letter-spacing: -0.04em;
   }
 
   .tier-badge {
     display: inline-block;
-    padding: 8px 16px;
-    border-radius: 6px;
+    padding: 9px 18px;
+    border-radius: 50px;
     font-size: 11.5px;
     font-weight: 700;
     letter-spacing: 0.22em;
@@ -653,55 +691,68 @@
     margin-bottom: 18px;
   }
   .tier-badge.high {
-    background: rgba(220, 38, 38, 0.10);
+    background: var(--white);
     color: var(--red);
-    border: 1px solid rgba(220, 38, 38, 0.30);
   }
   .tier-badge.mid {
-    background: rgba(217, 119, 6, 0.10);
+    background: var(--white);
     color: var(--amber);
-    border: 1px solid rgba(217, 119, 6, 0.30);
   }
   .tier-badge.low {
-    background: rgba(22, 163, 74, 0.10);
-    color: var(--green-ok);
-    border: 1px solid rgba(22, 163, 74, 0.30);
+    background: var(--lemon);
+    color: var(--text);
   }
   .tier-impact {
     font-size: 19px;
-    color: var(--text-muted);
+    color: rgba(255, 255, 255, 0.90);
     max-width: 640px;
     line-height: 1.5;
   }
 
-  /* SUB-SCORES */
+  /* Sub-Scores — on white BG below violet hero */
+  .subscores-section {
+    background: var(--white);
+    padding: 64px 24px 32px;
+  }
+  .subscores-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(26px, 3.5vw, 36px);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+    margin-bottom: 28px;
+    color: var(--text);
+  }
+  .subscores-title .accent { color: var(--violet); }
   .subscores {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 14px;
-    margin: 48px 0;
+    gap: 16px;
+    margin-bottom: 48px;
   }
   .subscore {
-    background: var(--bg-soft);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 24px;
+    background: var(--soft);
+    border-radius: 24px;
+    padding: 28px 24px;
   }
+  .subscore.tier-high { background: rgba(220, 38, 38, 0.06); }
+  .subscore.tier-mid  { background: rgba(217, 119, 6, 0.08); }
+  .subscore.tier-low  { background: var(--lemon-soft); }
   .subscore .label {
     font-size: 11px;
     font-weight: 700;
     color: var(--text-muted);
     text-transform: uppercase;
     letter-spacing: 0.18em;
-    margin-bottom: 12px;
+    margin-bottom: 14px;
   }
   .subscore .value {
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 48px;
+    font-size: 56px;
     font-weight: 700;
     line-height: 1;
     margin-bottom: 4px;
-    letter-spacing: -0.03em;
+    letter-spacing: -0.04em;
     color: var(--violet);
   }
   .subscore .max {
@@ -711,48 +762,48 @@
   }
   .subscore .meter {
     height: 6px;
-    background: var(--surface-2);
+    background: rgba(0, 0, 0, 0.06);
     border-radius: 3px;
     overflow: hidden;
-    margin-top: 14px;
+    margin-top: 16px;
   }
   .subscore .meter-fill {
     height: 100%;
-    background: linear-gradient(90deg, var(--violet) 0%, var(--violet-bright) 100%);
+    background: var(--violet);
     border-radius: 3px;
     transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
   }
   .subscore.tier-high .value { color: var(--red); }
-  .subscore.tier-high .meter-fill { background: linear-gradient(90deg, var(--red) 0%, #F87171 100%); }
+  .subscore.tier-high .meter-fill { background: var(--red); }
   .subscore.tier-mid .value { color: var(--amber); }
-  .subscore.tier-mid .meter-fill { background: linear-gradient(90deg, var(--amber) 0%, #FBBF24 100%); }
-  .subscore.tier-low .value { color: var(--green-ok); }
-  .subscore.tier-low .meter-fill { background: linear-gradient(90deg, var(--green-ok) 0%, #4ADE80 100%); }
+  .subscore.tier-mid .meter-fill { background: var(--amber); }
+  .subscore.tier-low .value { color: var(--violet); }
+  .subscore.tier-low .meter-fill { background: var(--violet); }
   .subscore .note {
-    font-size: 12.5px;
-    color: var(--text-dim);
-    margin-top: 12px;
-    line-height: 1.45;
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 14px;
+    line-height: 1.5;
   }
 
-  /* DIAGNOSIS */
+  /* DIAGNOSIS — black card with lemon accents */
   .diagnosis {
-    margin: 48px 0;
-    background: linear-gradient(135deg, var(--bg-dark) 0%, #1A1538 100%);
-    border-radius: 18px;
-    padding: 40px;
-    color: #FFFFFF;
+    margin: 0 0 48px;
+    background: var(--black);
+    border-radius: 28px;
+    padding: 44px 40px;
+    color: var(--white);
     position: relative;
     overflow: hidden;
   }
   .diagnosis::before {
     content: '';
     position: absolute;
-    top: -100px;
-    right: -100px;
-    width: 320px;
-    height: 320px;
-    background: radial-gradient(circle, rgba(220, 228, 62, 0.20) 0%, transparent 60%);
+    top: -120px;
+    right: -120px;
+    width: 360px;
+    height: 360px;
+    background: radial-gradient(circle, rgba(220, 228, 62, 0.22) 0%, transparent 60%);
     pointer-events: none;
   }
   .diagnosis-eyebrow {
@@ -761,25 +812,25 @@
     color: var(--lemon);
     text-transform: uppercase;
     letter-spacing: 0.28em;
-    margin-bottom: 16px;
+    margin-bottom: 18px;
     position: relative;
   }
   .diagnosis-text {
     font-family: 'Space Grotesk', sans-serif;
-    font-size: clamp(22px, 3vw, 28px);
+    font-size: clamp(22px, 3vw, 30px);
     font-weight: 600;
     line-height: 1.3;
     letter-spacing: -0.02em;
     position: relative;
-    max-width: 700px;
+    max-width: 720px;
   }
-  .diagnosis-text strong {
-    color: var(--lemon);
-    font-weight: 700;
-  }
+  .diagnosis-text strong { color: var(--lemon); font-weight: 700; }
 
-  /* MODULE MAPPING */
-  .modules { margin: 56px 0; }
+  /* MODULES — 3 stacked cards in lemon / violet / black palette */
+  .modules-section {
+    background: var(--white);
+    padding: 24px 24px 48px;
+  }
   .modules-header {
     font-size: 11.5px;
     font-weight: 700;
@@ -799,9 +850,9 @@
   }
   .modules-title {
     font-family: 'Space Grotesk', sans-serif;
-    font-size: clamp(28px, 4vw, 38px);
+    font-size: clamp(30px, 4.4vw, 44px);
     font-weight: 700;
-    letter-spacing: -0.025em;
+    letter-spacing: -0.03em;
     line-height: 1.05;
     margin-bottom: 12px;
     color: var(--text);
@@ -810,98 +861,107 @@
   .modules-sub {
     font-size: 15.5px;
     color: var(--text-muted);
-    margin-bottom: 28px;
+    margin-bottom: 32px;
     line-height: 1.55;
-    max-width: 620px;
+    max-width: 640px;
   }
   .module-card {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 24px;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 24px;
+    border-radius: 28px;
+    padding: 32px;
     margin-bottom: 14px;
-    transition: all 0.22s;
     position: relative;
+    transition: all 0.22s;
   }
-  .module-card:hover {
-    border-color: var(--violet-line);
-    transform: translateY(-1px);
-    box-shadow: 0 8px 24px rgba(113, 46, 229, 0.08);
-  }
-  .module-card.highlighted {
-    border-color: var(--violet);
-    background: linear-gradient(135deg, var(--violet-soft) 0%, var(--bg-card) 60%);
+  .module-card:hover { transform: translateY(-2px); }
+  /* Tone variants — match the eBrain "Mehr Intelligenz für jede Rolle" cards */
+  .module-card.tone-lemon  { background: var(--lemon); color: var(--text); }
+  .module-card.tone-violet { background: var(--violet); color: var(--white); }
+  .module-card.tone-black  { background: var(--black); color: var(--white); }
+
+  .module-card.tone-violet .kind,
+  .module-card.tone-black .kind { color: var(--lemon); }
+  .module-card.tone-lemon .kind { color: var(--violet); }
+
+  .module-card .top-row {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 14px;
   }
   .module-card .rank {
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 56px;
+    font-size: 48px;
     font-weight: 700;
-    color: var(--violet);
     line-height: 0.9;
     letter-spacing: -0.04em;
-    opacity: 0.9;
-    min-width: 60px;
+    opacity: 0.65;
   }
-  .module-card .content { min-width: 0; }
   .module-card .kind {
     font-size: 10.5px;
-    color: var(--violet);
     text-transform: uppercase;
     letter-spacing: 0.22em;
     font-weight: 700;
-    margin-bottom: 6px;
   }
   .module-card .title {
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 22px;
+    font-size: clamp(24px, 3vw, 30px);
     font-weight: 700;
-    letter-spacing: -0.02em;
-    line-height: 1.15;
-    color: var(--text);
-    margin-bottom: 8px;
+    letter-spacing: -0.025em;
+    line-height: 1.1;
+    margin-bottom: 14px;
   }
   .module-card .pain {
-    font-size: 14.5px;
-    color: var(--text-muted);
-    line-height: 1.5;
-    margin-bottom: 12px;
+    font-size: 15.5px;
+    line-height: 1.55;
+    margin-bottom: 16px;
+    opacity: 0.88;
   }
+  .module-card.tone-lemon .pain { opacity: 0.78; }
   .module-card .solution {
-    font-size: 14.5px;
-    color: var(--text);
-    line-height: 1.5;
-    padding-top: 12px;
-    border-top: 1px solid var(--border);
+    font-size: 15.5px;
+    line-height: 1.55;
+    padding-top: 16px;
+    border-top: 1px solid currentColor;
+    opacity: 0.92;
   }
+  .module-card.tone-lemon .solution { border-top-color: rgba(14, 11, 31, 0.20); }
+  .module-card.tone-violet .solution,
+  .module-card.tone-black .solution { border-top-color: rgba(255, 255, 255, 0.20); }
   .module-card .solution strong {
-    color: var(--violet);
     font-weight: 700;
   }
+  .module-card.tone-violet .solution strong,
+  .module-card.tone-black .solution strong { color: var(--lemon); }
+  .module-card.tone-lemon .solution strong { color: var(--violet); }
   .module-card .module-tag {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    margin-top: 12px;
-    padding: 5px 10px;
-    background: var(--lemon-soft);
-    border: 1px solid rgba(220, 228, 62, 0.50);
-    border-radius: 4px;
+    margin-top: 16px;
+    padding: 7px 14px;
+    border-radius: 50px;
     font-size: 11px;
     font-weight: 700;
-    color: var(--text);
     text-transform: uppercase;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.14em;
+  }
+  .module-card.tone-lemon .module-tag {
+    background: var(--violet);
+    color: var(--white);
+  }
+  .module-card.tone-violet .module-tag {
+    background: var(--lemon);
+    color: var(--text);
+  }
+  .module-card.tone-black .module-tag {
+    background: var(--lemon);
+    color: var(--text);
   }
 
   /* BREAKDOWN */
   .breakdown {
-    margin: 48px 0;
-    background: var(--bg-soft);
-    border: 1px solid var(--border);
-    border-radius: 14px;
+    margin: 32px 0;
+    background: var(--soft);
+    border-radius: 24px;
     padding: 28px;
   }
   .breakdown-title {
@@ -939,31 +999,34 @@
   .bar {
     width: 28px;
     height: 8px;
-    background: var(--surface-2);
+    background: rgba(0, 0, 0, 0.06);
     border-radius: 2px;
   }
-  .bar.filled {
-    background: var(--violet);
-  }
+  .bar.filled { background: var(--violet); }
   .breakdown-score {
     font-family: 'JetBrains Mono', monospace;
     font-size: 13px;
-    font-weight: 600;
+    font-weight: 700;
     color: var(--text-muted);
     width: 36px;
     text-align: right;
   }
 
-  /* CTA BLOCK — Trial + Demo */
+  /* CTA STACK — violet section with lemon + white cards */
+  .cta-section {
+    background: var(--violet);
+    color: var(--white);
+    padding: 64px 24px;
+    position: relative;
+  }
   .cta-stack {
-    margin-top: 48px;
     display: grid;
     grid-template-columns: 1.4fr 1fr;
-    gap: 16px;
+    gap: 18px;
   }
   .cta-card {
-    border-radius: 18px;
-    padding: 32px;
+    border-radius: 28px;
+    padding: 36px;
     position: relative;
     overflow: hidden;
     display: flex;
@@ -972,22 +1035,11 @@
     min-height: 280px;
   }
   .cta-card.primary {
-    background: linear-gradient(135deg, var(--violet) 0%, var(--violet-deep) 100%);
-    color: #FFFFFF;
-  }
-  .cta-card.primary::before {
-    content: '';
-    position: absolute;
-    bottom: -100px;
-    right: -100px;
-    width: 280px;
-    height: 280px;
-    background: radial-gradient(circle, rgba(220, 228, 62, 0.30) 0%, transparent 60%);
-    pointer-events: none;
+    background: var(--lemon);
+    color: var(--text);
   }
   .cta-card.secondary {
-    background: var(--bg-soft);
-    border: 1px solid var(--border);
+    background: var(--white);
     color: var(--text);
   }
   .cta-eyebrow {
@@ -996,184 +1048,208 @@
     text-transform: uppercase;
     letter-spacing: 0.28em;
     margin-bottom: 16px;
-    position: relative;
+    color: var(--violet);
   }
-  .cta-card.primary .cta-eyebrow { color: var(--lemon); }
-  .cta-card.secondary .cta-eyebrow { color: var(--violet); }
   .cta-card h3 {
     font-family: 'Space Grotesk', sans-serif;
-    font-size: clamp(24px, 3vw, 32px);
+    font-size: clamp(26px, 3.3vw, 34px);
     font-weight: 700;
-    letter-spacing: -0.025em;
+    letter-spacing: -0.03em;
     line-height: 1.05;
     margin-bottom: 14px;
-    position: relative;
   }
   .cta-text {
     font-size: 14.5px;
     line-height: 1.55;
     margin-bottom: 24px;
-    position: relative;
-    opacity: 0.92;
+    color: var(--text-muted);
   }
-  .cta-card.primary .cta-text { color: rgba(255, 255, 255, 0.85); }
-  .cta-card.secondary .cta-text { color: var(--text-muted); }
-  .cta-card .btn-row {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    align-items: flex-start;
-  }
-  .cta-mini {
+  .cta-card .btn-mini {
     font-size: 12px;
-    margin-top: 8px;
-    opacity: 0.75;
+    margin-top: 10px;
+    color: var(--text-dim);
     font-family: 'JetBrains Mono', monospace;
     letter-spacing: 0.08em;
   }
 
   .restart {
     text-align: center;
-    margin-top: 40px;
+    padding: 40px 24px 0;
+    background: var(--violet);
   }
   .restart a {
-    color: var(--text-dim);
+    color: rgba(255, 255, 255, 0.65);
     text-decoration: none;
     font-size: 11.5px;
     text-transform: uppercase;
     letter-spacing: 0.18em;
     font-weight: 600;
-    border-bottom: 1px dotted var(--text-dim);
+    border-bottom: 1px dotted rgba(255, 255, 255, 0.5);
     padding-bottom: 2px;
   }
-  .restart a:hover { color: var(--text-muted); border-color: var(--text-muted); }
+  .restart a:hover { color: var(--white); }
 
   /* FOOTER */
   .footer {
-    margin-top: 64px;
-    padding-top: 24px;
-    border-top: 1px solid var(--border);
+    background: var(--violet-deep);
+    color: rgba(255, 255, 255, 0.65);
+    padding: 40px 24px 32px;
+    margin-top: 0;
+  }
+  .footer-inner {
+    max-width: 920px;
+    margin: 0 auto;
     display: flex;
     justify-content: space-between;
     font-size: 11px;
-    color: var(--text-dim);
     text-transform: uppercase;
     letter-spacing: 0.18em;
     font-weight: 600;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .footer-inner a {
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
   }
 
   @media (max-width: 720px) {
-    .container { padding: 20px 16px 60px; }
-    .header { padding: 12px 16px; margin-bottom: 36px; }
-    h1.display-hero { font-size: 40px; }
+    .section { padding: 40px 18px 56px; }
+    .header { padding: 14px 18px; }
+    h1.display-hero { font-size: 42px; }
     .lede { font-size: 16.5px; }
-    .stat-cell { padding: 14px; }
-    .stat-cell .value { font-size: 22px; }
-    .trust-strip { grid-template-columns: 1fr; gap: 10px; }
+    .trust-strip, .intro-stats, .subscores, .cta-stack {
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
     .trust-cell .num { font-size: 36px; }
-    .subscores { grid-template-columns: 1fr; }
-    .module-card { grid-template-columns: 1fr; gap: 12px; padding: 20px; }
-    .module-card .rank { font-size: 36px; }
-    .cta-stack { grid-template-columns: 1fr; }
-    .cta-card { min-height: auto; padding: 24px; }
+    .subscore .value { font-size: 46px; }
+    .cta-card { min-height: auto; padding: 28px; }
     .form-row { grid-template-columns: 1fr; }
     .nav { flex-direction: column-reverse; align-items: stretch; }
     .nav-hint { text-align: center; }
-    .footer { flex-direction: column; gap: 8px; text-align: center; }
-    .diagnosis { padding: 28px 24px; }
-    .quiz-meta { gap: 10px; }
+    .footer-inner { flex-direction: column; gap: 8px; }
+    .module-card { padding: 24px; }
+    .module-card .rank { font-size: 36px; }
+    .diagnosis { padding: 32px 26px; border-radius: 22px; }
+    .header-meta { display: none; }
+    .gate-form { padding: 24px; }
+    .modules-section, .subscores-section { padding-left: 18px; padding-right: 18px; }
+    .cta-section { padding: 40px 18px; }
+    .wave-divider { height: 60px; }
+    .wave-divider.tall { height: 80px; }
+    .header-wave { height: 50px; }
   }
 </style>
 </head>
 <body>
 
-<div class="container">
-
-  <header class="header">
+<!-- HEADER -->
+<header class="header">
+  <div class="header-inner">
     <div class="brand-lockup">
-      <span class="brand-logo-wrap">
-        <img src="assets/logo.png" alt="eBrain" class="brand-logo-img">
-      </span>
+      <img src="assets/logo.png" alt="eBrain" class="brand-logo-img">
     </div>
     <div class="header-meta">Event-Automatisierungs-Check <span class="dot"></span> 3 Min</div>
-  </header>
-
-  <!-- INTRO -->
-  <div class="screen" id="screen-intro">
-    <div class="intro-eyebrow">Für Eventmanager &amp; Agenturen &mdash; 3 Min</div>
-
-    <h1 class="display-hero">
-      Wie viel<br>
-      Admin-Zeit<br>
-      <span class="accent-lemon">verbrennst Du?</span>
-    </h1>
-
-    <p class="lede">
-      8 Fragen entscheiden, ob Dein Eventmanagement Dich mitzieht oder Dir Zeit zurückgibt.
-      Am Ende: <strong>Dein Automatisierungs-Score auf drei Achsen</strong> &mdash; Admin-Zeit,
-      Kosten, Teilnehmer-Erlebnis &mdash; plus konkrete Hebel, wo eBrain Dich entlastet.
-    </p>
-
-    <div class="intro-stats">
-      <div class="stat-cell">
-        <div class="label">Fragen</div>
-        <div class="value"><span class="num">8</span></div>
-      </div>
-      <div class="stat-cell">
-        <div class="label">Minuten</div>
-        <div class="value"><span class="num">3</span></div>
-      </div>
-      <div class="stat-cell">
-        <div class="label">Trial</div>
-        <div class="value"><span class="num">14</span> Tage</div>
-      </div>
-    </div>
-
-    <div class="trust-strip">
-      <div class="trust-cell">
-        <div class="num">70%</div>
-        <div class="desc">weniger Administration bei eBrain-Kunden</div>
-      </div>
-      <div class="trust-cell">
-        <div class="num">50%</div>
-        <div class="desc">Einsparung auf Eventkosten</div>
-      </div>
-      <div class="trust-cell">
-        <div class="num">60%</div>
-        <div class="desc">höhere Teilnehmerzufriedenheit</div>
-      </div>
-    </div>
-
-    <button class="btn" onclick="startQuiz()">
-      Check starten <span>&rarr;</span>
-    </button>
   </div>
+</header>
+<!-- Header bleed wave — flows violet→lemon, decorative band before any white screen -->
+<div class="header-wave" id="header-wave">
+  <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <rect width="1440" height="80" fill="#712EE5"/>
+    <path d="M0,50 Q280,90 580,55 T1140,55 Q1290,55 1440,68 L1440,80 L0,80 Z" fill="#DCE43E"/>
+  </svg>
+</div>
 
-  <!-- QUIZ -->
-  <div class="screen hidden" id="screen-quiz">
-    <div class="progress-bar-wrap" id="progress"></div>
-    <div class="q-wrap" id="q-wrap">
-      <div class="quiz-meta">
-        <span class="quiz-counter mono">Frage <span class="current" id="q-current">1</span> / <span id="q-total">8</span></span>
-        <span class="quiz-hebel-name" id="q-hebel"></span>
-        <span class="quiz-dimension" id="q-dimension"></span>
+<!-- INTRO HERO — full violet -->
+<div class="screen" id="screen-intro">
+  <section class="section bg-violet">
+    <div class="section-inner">
+      <div class="intro-eyebrow">Für Eventmanager &amp; Agenturen &mdash; 3 Min</div>
+
+      <h1 class="display-hero">
+        Wie viel Admin-Zeit<br>
+        <span class="accent-lemon">verbrennst Du?</span>
+      </h1>
+
+      <p class="lede">
+        8 Fragen entscheiden, ob Dein Eventmanagement Dich mitzieht oder Dir Zeit zurückgibt.
+        Am Ende: <strong>Dein Automatisierungs-Score auf drei Achsen</strong> &mdash; Admin-Zeit,
+        Kosten, Teilnehmer-Erlebnis &mdash; plus konkrete Hebel, wo eBrain Dich entlastet.
+      </p>
+
+      <div class="trust-strip">
+        <div class="trust-cell">
+          <div class="num">70%</div>
+          <div class="desc">weniger Administration</div>
+        </div>
+        <div class="trust-cell">
+          <div class="num">50%</div>
+          <div class="desc">Einsparung auf Eventkosten</div>
+        </div>
+        <div class="trust-cell">
+          <div class="num">60%</div>
+          <div class="desc">höhere Teilnehmerzufriedenheit</div>
+        </div>
       </div>
-      <h2 class="quiz-question" id="q-question"></h2>
-      <p class="quiz-cost" id="q-cost"></p>
-      <div class="options" id="q-options"></div>
-    </div>
-    <div class="nav">
-      <button class="btn btn-secondary" id="btn-back" onclick="goBack()">&larr; Zurück</button>
-      <span class="nav-hint">Antwort klicken &mdash; auto-weiter</span>
-      <button class="btn" id="btn-next" onclick="goNext()" disabled>Weiter &rarr;</button>
-    </div>
-  </div>
 
-  <!-- EMAIL GATE -->
-  <div class="screen hidden" id="screen-gate">
-    <div class="progress-bar-wrap" id="progress-gate"></div>
-    <div class="gate-hero">
+      <div class="intro-stats">
+        <div class="stat-cell">
+          <div class="label">Fragen</div>
+          <div class="value"><span class="num">8</span></div>
+        </div>
+        <div class="stat-cell">
+          <div class="label">Minuten</div>
+          <div class="value"><span class="num">3</span></div>
+        </div>
+        <div class="stat-cell">
+          <div class="label">Trial</div>
+          <div class="value"><span class="num">14</span> Tage</div>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn" onclick="startQuiz()">Check starten</button>
+      </div>
+    </div>
+  </section>
+  <div class="wave-divider tall">
+    <svg viewBox="0 0 1440 130" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="1440" height="60" fill="#712EE5"/>
+      <path d="M0,60 Q300,110 620,70 T1180,72 Q1320,75 1440,62 L1440,130 L0,130 Z" fill="#DCE43E"/>
+    </svg>
+  </div>
+</div>
+
+<!-- QUIZ — white BG -->
+<div class="screen hidden" id="screen-quiz">
+  <section class="section bg-white">
+    <div class="section-inner">
+      <div class="progress-bar-wrap" id="progress"></div>
+      <div class="q-wrap" id="q-wrap">
+        <div class="quiz-meta">
+          <span class="quiz-counter mono">Frage <span class="current" id="q-current">1</span> / <span id="q-total">8</span></span>
+          <span class="quiz-hebel-name" id="q-hebel"></span>
+          <span class="quiz-dimension" id="q-dimension"></span>
+        </div>
+        <h2 class="quiz-question" id="q-question"></h2>
+        <p class="quiz-cost" id="q-cost"></p>
+        <div class="options" id="q-options"></div>
+      </div>
+      <div class="nav">
+        <button class="btn btn-outline" id="btn-back" onclick="goBack()">Zurück</button>
+        <span class="nav-hint">Antwort klicken &mdash; auto-weiter</span>
+        <button class="btn btn-violet" id="btn-next" onclick="goNext()" disabled>Weiter</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- EMAIL GATE — white BG -->
+<div class="screen hidden" id="screen-gate">
+  <section class="section bg-white">
+    <div class="section-inner">
+      <div class="progress-bar-wrap" id="progress-gate"></div>
       <div class="gate-eyebrow">Fast geschafft</div>
       <h2 class="gate-title">
         Dein persönlicher <span class="accent">Automatisierungs-Report</span> &mdash; wohin schicken wir den?
@@ -1182,55 +1258,57 @@
         Du bekommst Deinen Score auf drei Achsen, die <strong>3 größten Hebel</strong> für Dein
         Eventmanagement und eine Übersicht, welche eBrain-Module Dich konkret entlasten.
       </p>
+
+      <form class="gate-form" id="gate-form" onsubmit="submitGate(event)">
+        <div class="form-row">
+          <div class="form-field" id="field-firstname">
+            <label for="firstname">Vorname <span class="req">*</span></label>
+            <input type="text" id="firstname" name="firstname" autocomplete="given-name" required>
+            <span class="error">Bitte ausfüllen.</span>
+          </div>
+          <div class="form-field" id="field-company">
+            <label for="company">Firma <span class="req">*</span></label>
+            <input type="text" id="company" name="company" autocomplete="organization" required>
+            <span class="error">Bitte ausfüllen.</span>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-field full" id="field-email">
+            <label for="email">Geschäftliche E-Mail <span class="req">*</span></label>
+            <input type="email" id="email" name="email" autocomplete="email" required>
+            <span class="error">Bitte eine gültige E-Mail-Adresse.</span>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-field full">
+            <label for="role">Deine Rolle (optional)</label>
+            <select id="role" name="role">
+              <option value="">Bitte wählen &hellip;</option>
+              <option value="agency-owner">Agentur-Owner / Geschäftsführung</option>
+              <option value="event-manager">Eventmanager / Projektleitung</option>
+              <option value="marketing">Marketing / Brand</option>
+              <option value="inhouse-corporate">Inhouse Corporate Events</option>
+              <option value="service-provider">Event-Dienstleister</option>
+              <option value="other">Andere</option>
+            </select>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-violet form-submit">Auswerten &amp; Report anzeigen</button>
+        <div class="gate-trust">
+          <strong>Keine Newsletter-Spamflut.</strong> Du bekommst den Report und ein optionales Follow-up,
+          wenn Du eBrain ausprobieren willst. Jederzeit abbestellbar.
+        </div>
+      </form>
     </div>
+  </section>
+</div>
 
-    <form class="gate-form" id="gate-form" onsubmit="submitGate(event)">
-      <div class="form-row">
-        <div class="form-field" id="field-firstname">
-          <label for="firstname">Vorname <span class="req">*</span></label>
-          <input type="text" id="firstname" name="firstname" autocomplete="given-name" required>
-          <span class="error">Bitte ausfüllen.</span>
-        </div>
-        <div class="form-field" id="field-company">
-          <label for="company">Firma <span class="req">*</span></label>
-          <input type="text" id="company" name="company" autocomplete="organization" required>
-          <span class="error">Bitte ausfüllen.</span>
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-field full" id="field-email">
-          <label for="email">Geschäftliche E-Mail <span class="req">*</span></label>
-          <input type="email" id="email" name="email" autocomplete="email" required>
-          <span class="error">Bitte eine gültige E-Mail-Adresse.</span>
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-field full">
-          <label for="role">Deine Rolle (optional)</label>
-          <select id="role" name="role">
-            <option value="">Bitte wählen &hellip;</option>
-            <option value="agency-owner">Agentur-Owner / Geschäftsführung</option>
-            <option value="event-manager">Eventmanager / Projektleitung</option>
-            <option value="marketing">Marketing / Brand</option>
-            <option value="inhouse-corporate">Inhouse Corporate Events</option>
-            <option value="service-provider">Event-Dienstleister</option>
-            <option value="other">Andere</option>
-          </select>
-        </div>
-      </div>
-      <button type="submit" class="btn" style="width: 100%; justify-content: center; margin-top: 8px;">
-        Auswerten &amp; Report anzeigen <span>&rarr;</span>
-      </button>
-      <div class="gate-trust">
-        <strong>Keine Newsletter-Spamflut.</strong> Du bekommst den Report und ein optionales Follow-up,
-        wenn Du eBrain ausprobieren willst. Jederzeit abbestellbar.
-      </div>
-    </form>
-  </div>
+<!-- RESULT -->
+<div class="screen hidden" id="screen-result">
 
-  <!-- RESULT -->
-  <div class="screen hidden" id="screen-result">
-    <div class="result-hero">
+  <!-- Result hero — full violet -->
+  <section class="section bg-violet">
+    <div class="section-inner">
       <div class="result-eyebrow">Dein Automatisierungs-Score</div>
       <p class="result-greeting" id="result-greeting"></p>
       <div class="result-score-block">
@@ -1240,15 +1318,31 @@
       <div class="tier-badge" id="tier-badge"></div>
       <p class="tier-impact" id="tier-impact"></p>
     </div>
+  </section>
+  <div class="wave-divider tall">
+    <svg viewBox="0 0 1440 130" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="1440" height="60" fill="#712EE5"/>
+      <path d="M0,55 Q280,95 600,65 T1180,70 Q1320,75 1440,58 L1440,90 L0,90 Z" fill="#DCE43E"/>
+      <path d="M0,85 Q280,115 600,92 T1180,92 Q1320,95 1440,85 L1440,130 L0,130 Z" fill="#FFFFFF"/>
+    </svg>
+  </div>
 
-    <div class="subscores" id="subscores"></div>
+  <!-- Sub-scores -->
+  <section class="subscores-section">
+    <div class="section-inner">
+      <h3 class="subscores-title">Deine drei <span class="accent">Achsen</span>.</h3>
+      <div class="subscores" id="subscores"></div>
 
-    <div class="diagnosis">
-      <div class="diagnosis-eyebrow">Kerndiagnose</div>
-      <div class="diagnosis-text" id="diagnosis-text"></div>
+      <div class="diagnosis">
+        <div class="diagnosis-eyebrow">Kerndiagnose</div>
+        <div class="diagnosis-text" id="diagnosis-text"></div>
+      </div>
     </div>
+  </section>
 
-    <div class="modules">
+  <!-- Module mapping -->
+  <section class="modules-section">
+    <div class="section-inner">
       <div class="modules-header">Deine 3 größten Hebel</div>
       <h3 class="modules-title">
         Hier löst <span class="accent">eBrain</span> Dein Problem.
@@ -1258,79 +1352,96 @@
         und das eBrain-Modul, das dort konkret ansetzt.
       </p>
       <div id="modules-list"></div>
-    </div>
 
-    <div class="breakdown">
-      <div class="breakdown-title">Komplett-Übersicht aller 8 Hebel</div>
-      <div id="breakdown-list"></div>
-    </div>
-
-    <div class="cta-stack">
-      <div class="cta-card primary">
-        <div>
-          <div class="cta-eyebrow">14 Tage kostenlos</div>
-          <h3>Statt weiterlesen &mdash; ausprobieren.</h3>
-          <p class="cta-text">
-            Setze Deine nächste Event-Seite in unter 30 Minuten mit eBrain auf. Keine Kreditkarte,
-            keine Verpflichtung. Du siehst sofort, wo die 70% Admin-Zeit hingehen.
-          </p>
-        </div>
-        <div class="btn-row">
-          <a href="https://ebrain.events/trial" class="btn btn-lemon" id="cta-trial" target="_blank" rel="noopener">
-            14 Tage kostenlos testen <span>&rarr;</span>
-          </a>
-          <div class="cta-mini">Kein Vertrag &middot; Keine Kreditkarte</div>
-        </div>
-      </div>
-
-      <div class="cta-card secondary">
-        <div>
-          <div class="cta-eyebrow">Lieber sprechen</div>
-          <h3>30 Min Demo mit dem Team.</h3>
-          <p class="cta-text">
-            Du zeigst uns Dein nächstes Event, wir zeigen Dir, was eBrain konkret automatisiert.
-            Ohne Sales-Pitch.
-          </p>
-        </div>
-        <div class="btn-row">
-          <a href="https://calendly.com/ebrain-demo/30min" class="btn btn-secondary" id="cta-demo" target="_blank" rel="noopener">
-            Demo buchen <span>&rarr;</span>
-          </a>
-        </div>
+      <div class="breakdown">
+        <div class="breakdown-title">Komplett-Übersicht aller 8 Hebel</div>
+        <div id="breakdown-list"></div>
       </div>
     </div>
+  </section>
 
-    <div class="restart">
-      <a href="#" onclick="restart(); return false;">Check neu starten</a>
-    </div>
+  <!-- Wave transition from white modules into violet CTA -->
+  <div class="wave-divider tall">
+    <svg viewBox="0 0 1440 130" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="1440" height="55" fill="#FFFFFF"/>
+      <path d="M0,55 Q300,15 620,50 T1180,48 Q1320,45 1440,55 L1440,90 L0,90 Z" fill="#DCE43E"/>
+      <path d="M0,85 Q300,55 620,82 T1180,82 Q1320,80 1440,88 L1440,130 L0,130 Z" fill="#712EE5"/>
+    </svg>
   </div>
 
-  <footer class="footer">
+  <!-- CTA section — violet -->
+  <section class="cta-section">
+    <div class="section-inner">
+      <div class="cta-stack">
+        <div class="cta-card primary">
+          <div>
+            <div class="cta-eyebrow">14 Tage kostenlos</div>
+            <h3>Statt weiterlesen &mdash; ausprobieren.</h3>
+            <p class="cta-text">
+              Setze Deine nächste Event-Seite in unter 30 Minuten mit eBrain auf. Keine Kreditkarte,
+              keine Verpflichtung. Du siehst sofort, wo die 70% Admin-Zeit hingehen.
+            </p>
+          </div>
+          <div>
+            <a href="https://ebrain.events/trial" class="btn btn-violet" id="cta-trial" target="_blank" rel="noopener">14 Tage kostenlos testen</a>
+            <div class="btn-mini">Kein Vertrag &middot; Keine Kreditkarte</div>
+          </div>
+        </div>
+
+        <div class="cta-card secondary">
+          <div>
+            <div class="cta-eyebrow">Lieber sprechen</div>
+            <h3>30 Min Demo mit dem Team.</h3>
+            <p class="cta-text">
+              Du zeigst uns Dein nächstes Event, wir zeigen Dir, was eBrain konkret automatisiert.
+              Ohne Sales-Pitch.
+            </p>
+          </div>
+          <div>
+            <a href="https://calendly.com/ebrain-demo/30min" class="btn btn-outline" id="cta-demo" target="_blank" rel="noopener">Demo buchen</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="restart">
+    <a href="#" onclick="restart(); return false;">Check neu starten</a>
+  </div>
+</div>
+
+<!-- Decorative wave above footer — both violet, with thin lemon accent line -->
+<div class="wave-divider compact">
+  <svg viewBox="0 0 1440 70" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <rect width="1440" height="70" fill="#712EE5"/>
+    <path d="M0,30 Q280,55 600,32 T1180,32 Q1320,32 1440,38 L1440,42 Q1320,36 1180,36 T600,36 Q280,59 0,34 Z" fill="#DCE43E" opacity="0.85"/>
+    <path d="M0,50 Q360,70 720,52 T1440,52 L1440,70 L0,70 Z" fill="#5418C7"/>
+  </svg>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
     <div>eBrain &mdash; Event-Management, das mitdenkt.</div>
     <div>DSGVO &middot; EU-AI-Act &middot; IONOS EU-Server</div>
-  </footer>
-
-</div>
+  </div>
+</footer>
 
 <script>
   // ============================================================
-  // CONFIG — easy to swap by Florian / E-Brain team
+  // CONFIG — easy to swap by Florian / eBrain team
   // ============================================================
   const LEAD_WEBHOOK_URL = ""; // TODO: Make.com webhook für Lead-Tracking eintragen
   const TRIAL_URL = "https://ebrain.events/trial"; // TODO: echter Trial-Link
   const DEMO_URL = "https://calendly.com/ebrain-demo/30min"; // TODO: echter Calendly-Slot
   const SOURCE_TAG = "ebrain-automation-check";
 
-  // URL params for personalization: ?company=X&firstname=Y
   const urlParams = new URLSearchParams(window.location.search);
   const prefillCompany = urlParams.get('company') || urlParams.get('utm_company') || '';
   const prefillFirstname = urlParams.get('firstname') || urlParams.get('utm_firstname') || '';
 
   // ============================================================
   // QUESTIONS — 8 levers across 3 dimensions
-  // Each question scores 0–2; weakest answer first in scoring, but
-  // option ORDER is intentionally shuffled per question so the "best"
-  // answer isn't always C. Pattern: B/C/A/C/A/C/C/C.
   // ============================================================
   const DIM = {
     ADMIN: { key: "admin", label: "Admin-Zeit" },
@@ -1438,7 +1549,7 @@
   ];
 
   // ============================================================
-  // MODULE MAPPING — what eBrain does for the weakest 3 levers
+  // MODULE MAPPING
   // ============================================================
   const SOLUTIONS = {
     "Event-Setup": {
@@ -1491,6 +1602,9 @@
     }
   };
 
+  // Tone rotation for module cards: lemon → violet → black
+  const MODULE_TONES = ['tone-lemon', 'tone-violet', 'tone-black'];
+
   // ============================================================
   // STATE
   // ============================================================
@@ -1507,18 +1621,26 @@
 
   let advanceTimeout = null;
   function clearAdvance() {
-    if (advanceTimeout) {
-      clearTimeout(advanceTimeout);
-      advanceTimeout = null;
-    }
+    if (advanceTimeout) { clearTimeout(advanceTimeout); advanceTimeout = null; }
   }
 
   const $ = (id) => document.getElementById(id);
   function showScreen(id) {
     document.querySelectorAll('.screen').forEach(el => el.classList.add('hidden'));
     $(id).classList.remove('hidden');
+    // Header wave only between violet header and a white section below
+    const headerWave = $('header-wave');
+    if (headerWave) {
+      const showWave = (id === 'screen-quiz' || id === 'screen-gate');
+      headerWave.style.display = showWave ? 'block' : 'none';
+    }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
+  // Initial state — intro is violet, hide header wave
+  document.addEventListener('DOMContentLoaded', () => {
+    const headerWave = $('header-wave');
+    if (headerWave) headerWave.style.display = 'none';
+  });
 
   // ============================================================
   // QUIZ FLOW
@@ -1527,7 +1649,7 @@
     const wrap = $(wrapId || 'progress');
     if (!wrap) return;
     wrap.innerHTML = '';
-    const total = QUESTIONS.length + 1; // +1 for gate
+    const total = QUESTIONS.length + 1;
     for (let i = 0; i < total; i++) {
       const seg = document.createElement('div');
       seg.className = 'progress-segment';
@@ -1556,20 +1678,15 @@
       const btn = document.createElement('button');
       btn.className = 'option';
       btn.type = 'button';
-      if (state.answers[state.currentIndex] === opt.score) {
-        btn.classList.add('selected');
-      }
-      btn.innerHTML = `
-        <div class="option-marker">${letters[i]}</div>
-        <div class="option-text">${opt.text}</div>
-      `;
+      if (state.answers[state.currentIndex] === opt.score) btn.classList.add('selected');
+      btn.innerHTML = `<div class="option-marker">${letters[i]}</div><div class="option-text">${opt.text}</div>`;
       btn.onclick = () => selectOption(opt.score);
       optsWrap.appendChild(btn);
     });
 
     $('btn-back').style.visibility = state.currentIndex === 0 ? 'hidden' : 'visible';
     $('btn-next').disabled = state.answers[state.currentIndex] === null;
-    $('btn-next').textContent = state.currentIndex === QUESTIONS.length - 1 ? 'Zum Report →' : 'Weiter →';
+    $('btn-next').textContent = state.currentIndex === QUESTIONS.length - 1 ? 'Zum Report' : 'Weiter';
 
     renderProgress(state.currentIndex, state.currentIndex);
 
@@ -1589,10 +1706,7 @@
     $('btn-next').disabled = false;
 
     clearAdvance();
-    advanceTimeout = setTimeout(() => {
-      advanceTimeout = null;
-      goNext();
-    }, 380);
+    advanceTimeout = setTimeout(() => { advanceTimeout = null; goNext(); }, 380);
   }
 
   function goNext() {
@@ -1643,11 +1757,9 @@
     const co = $('company').value.trim();
     const em = $('email').value.trim();
     const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
     $('field-firstname').classList.toggle('invalid', fn.length === 0);
     $('field-company').classList.toggle('invalid', co.length === 0);
     $('field-email').classList.toggle('invalid', !emailRe.test(em));
-
     if (fn.length === 0 || co.length === 0 || !emailRe.test(em)) ok = false;
     return ok;
   }
@@ -1665,7 +1777,6 @@
   // ============================================================
   // SCORING
   // ============================================================
-  // Returns sub-scores (0-100) for admin, cost, exp + overall (0-100)
   function computeScores() {
     const buckets = {
       admin: { sum: 0, max: 0 },
@@ -1767,7 +1878,6 @@
   function showResult(scores) {
     const tier = getTier(scores.overall);
 
-    // Greeting
     const safeName = state.lead.firstname.replace(/[<>]/g, '');
     if (safeName) {
       $('result-greeting').innerHTML = `Danke, <strong>${safeName}</strong>.`;
@@ -1775,12 +1885,10 @@
       $('result-greeting').textContent = '';
     }
 
-    // Tier
     $('tier-badge').textContent = tier.name;
     $('tier-badge').className = 'tier-badge ' + tier.cls;
     $('tier-impact').innerHTML = tier.impact;
 
-    // Animated main score
     const numEl = $('result-number');
     let current = 0;
     const target = scores.overall;
@@ -1791,13 +1899,12 @@
       if (current >= target) clearInterval(interval);
     }, 32);
 
-    // Sub-scores
     const subsWrap = $('subscores');
     subsWrap.innerHTML = '';
     const subData = [
-      { key: 'admin', label: 'Admin-Zeit',           value: scores.admin, note: 'Wie viel Zeit Du in Routine verlierst.' },
-      { key: 'cost',  label: 'Kosten',                value: scores.cost,  note: 'Wie viel Geld in Tools, Margen und Verschwendung versickert.' },
-      { key: 'exp',   label: 'Teilnehmer-Erlebnis',   value: scores.exp,   note: 'Wie reibungslos Deine Teilnehmer Dein Event erleben.' }
+      { key: 'admin', label: 'Admin-Zeit',         value: scores.admin, note: 'Wie viel Zeit Du in Routine verlierst.' },
+      { key: 'cost',  label: 'Kosten',             value: scores.cost,  note: 'Wie viel Geld in Tools, Margen und Verschwendung versickert.' },
+      { key: 'exp',   label: 'Teilnehmer-Erlebnis', value: scores.exp,   note: 'Wie reibungslos Deine Teilnehmer Dein Event erleben.' }
     ];
     subData.forEach(s => {
       const cls = subscoreTier(s.value);
@@ -1815,10 +1922,9 @@
       });
     });
 
-    // Core diagnosis
     $('diagnosis-text').innerHTML = buildDiagnosis(scores);
 
-    // Top 3 weakest levers → modules
+    // Top 3 weakest levers → modules with rotating tone
     const sortedIdx = state.answers
       .map((s, i) => ({ score: s ?? 0, idx: i }))
       .sort((a, b) => a.score - b.score)
@@ -1831,22 +1937,22 @@
       const hebelName = QUESTIONS[idx].hebel;
       const sol = SOLUTIONS[hebelName];
       if (!sol) return;
+      const tone = MODULE_TONES[position % MODULE_TONES.length];
       const card = document.createElement('div');
-      card.className = 'module-card' + (position === 0 ? ' highlighted' : '');
+      card.className = 'module-card ' + tone;
       card.innerHTML = `
-        <div class="rank">0${position + 1}</div>
-        <div class="content">
+        <div class="top-row">
+          <div class="rank">0${position + 1}</div>
           <div class="kind">${sol.kind}</div>
-          <div class="title">${hebelName}</div>
-          <div class="pain">${sol.pain}</div>
-          <div class="solution">${sol.solution}</div>
-          <span class="module-tag">${sol.moduleTag}</span>
         </div>
+        <div class="title">${hebelName}</div>
+        <div class="pain">${sol.pain}</div>
+        <div class="solution">${sol.solution}</div>
+        <span class="module-tag">${sol.moduleTag}</span>
       `;
       modulesList.appendChild(card);
     });
 
-    // Full breakdown
     const list = $('breakdown-list');
     list.innerHTML = '';
     QUESTIONS.forEach((q, idx) => {
@@ -1864,7 +1970,6 @@
       list.appendChild(row);
     });
 
-    // Wire CTAs with UTM-style attribution
     const utm = `?utm_source=ebrain-check&utm_medium=diagnostic&utm_campaign=automation-score`
               + `&firstname=${encodeURIComponent(state.lead.firstname)}`
               + `&company=${encodeURIComponent(state.lead.company)}`
@@ -1877,9 +1982,6 @@
     showScreen('screen-result');
   }
 
-  // ============================================================
-  // INIT
-  // ============================================================
   renderProgress(0, 0);
 </script>
 
