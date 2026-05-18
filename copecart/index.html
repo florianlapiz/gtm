@@ -1,0 +1,1586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>High-Ticket Vendor Audit | CopeCart Diagnostic</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="60-second revenue gap diagnostic for digital product vendors. Find out how much you're leaving on the table on payments, BNPL, and tax compliance.">
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F4F6FB;
+    --bg-soft: #EEF1F8;
+    --surface: #FFFFFF;
+    --surface-tint: #F7F9FD;
+    --surface-blue: #EFF3FE;
+    --border: #E2E7F2;
+    --border-mid: #C7D0E5;
+    --border-strong: #0F1535;
+    --text: #0F1535;
+    --text-muted: #4A5170;
+    --text-dim: #8089A8;
+    --accent: #3D7BFF;
+    --accent-bright: #5990FF;
+    --accent-deep: #2B5FE0;
+    --accent-soft: rgba(61, 123, 255, 0.08);
+    --accent-glow: rgba(61, 123, 255, 0.18);
+    --ink: #0F1535;
+    --paper: #FFFFFF;
+    --gradient-blue: linear-gradient(135deg, #5990FF 0%, #3D7BFF 50%, #2B5FE0 100%);
+    --gradient-bg: linear-gradient(180deg, #E8EBF7 0%, #DDE3F4 40%, #E5E9F4 100%);
+    --shadow-sm: 0 2px 8px rgba(15, 21, 53, 0.04);
+    --shadow-md: 0 8px 24px rgba(15, 21, 53, 0.06);
+    --shadow-lg: 0 16px 48px rgba(15, 21, 53, 0.08);
+    --shadow-blue: 0 12px 32px rgba(61, 123, 255, 0.18);
+    --ease: cubic-bezier(0.65, 0, 0.35, 1);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 17px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% -10%, rgba(89, 144, 255, 0.18) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 100% 110%, rgba(157, 137, 255, 0.12) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 40% at 0% 80%, rgba(89, 144, 255, 0.08) 0%, transparent 55%),
+      var(--gradient-bg);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .mono {
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.02em;
+  }
+
+  /* APP SHELL */
+  .app {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 36px;
+    position: sticky;
+    top: 0;
+    background: rgba(244, 246, 251, 0.7);
+    backdrop-filter: blur(20px) saturate(150%);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+    z-index: 10;
+    border-bottom: 1px solid rgba(226, 231, 242, 0.6);
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Inter', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+  }
+  .brand-mark {
+    width: 28px;
+    height: 28px;
+    background: var(--gradient-blue);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  .brand-mark::before {
+    content: '';
+    width: 60%;
+    height: 60%;
+    background:
+      linear-gradient(90deg, white 0%, white 20%, transparent 20%, transparent 40%, white 40%, white 60%, transparent 60%, transparent 80%, white 80%, white 100%);
+    mask: linear-gradient(to top, black 0%, black 35%, transparent 35%, transparent 50%, black 50%, black 70%, transparent 70%, transparent 80%, black 80%);
+    -webkit-mask: linear-gradient(to top, black 0%, black 35%, transparent 35%, transparent 50%, black 50%, black 70%, transparent 70%, transparent 80%, black 80%);
+  }
+  .topbar-meta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    box-shadow: var(--shadow-sm);
+  }
+  .topbar-meta-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    box-shadow: 0 0 0 3px var(--accent-soft);
+  }
+
+  /* PROGRESS LINE */
+  .progress-track {
+    position: relative;
+    height: 3px;
+    background: rgba(199, 208, 229, 0.4);
+    overflow: hidden;
+  }
+  .progress-fill {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 0;
+    background: var(--gradient-blue);
+    transition: width 0.6s var(--ease-out);
+  }
+
+  /* STAGE */
+  .stage {
+    flex: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 56px 36px 80px;
+    overflow: hidden;
+  }
+  .stage-inner {
+    width: 100%;
+    max-width: 760px;
+    position: relative;
+  }
+
+  /* STEPS */
+  .step {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transform: translateX(40px);
+    transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
+    pointer-events: none;
+    visibility: hidden;
+  }
+  .step.active {
+    position: relative;
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
+    visibility: visible;
+  }
+  .step.prev {
+    opacity: 0;
+    transform: translateX(-40px);
+    visibility: hidden;
+  }
+
+  /* PILL BADGES */
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    letter-spacing: 0.02em;
+    box-shadow: var(--shadow-sm);
+  }
+  .pill-accent {
+    background: var(--surface-blue);
+    border-color: rgba(61, 123, 255, 0.2);
+    color: var(--accent-deep);
+  }
+  .pill-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+  }
+
+  /* STEP HEADER */
+  .step-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+  }
+  .step-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    color: var(--text-dim);
+  }
+  .step-num strong {
+    color: var(--text);
+    font-weight: 700;
+  }
+
+  .step-title {
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
+    font-size: clamp(38px, 6vw, 60px);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    color: var(--ink);
+    margin-bottom: 18px;
+  }
+  .step-title .gradient {
+    background: var(--gradient-blue);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .step-sub {
+    font-size: 18px;
+    line-height: 1.55;
+    color: var(--text-muted);
+    max-width: 600px;
+    margin-bottom: 44px;
+  }
+
+  /* INTRO META */
+  .intro-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 40px;
+  }
+  .intro-meta-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+    box-shadow: var(--shadow-sm);
+  }
+  .intro-meta-pill::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+  }
+
+  /* CARDS */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 36px 32px;
+    box-shadow: var(--shadow-md);
+  }
+
+  /* SLIDER */
+  .slider-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 36px 32px;
+    box-shadow: var(--shadow-md);
+    position: relative;
+    overflow: hidden;
+  }
+  .slider-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(89, 144, 255, 0.06) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .slider-content { position: relative; z-index: 1; }
+  .slider-value {
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
+    font-size: clamp(60px, 10vw, 96px);
+    line-height: 1;
+    color: var(--ink);
+    margin-bottom: 28px;
+    letter-spacing: -0.04em;
+  }
+  .slider-value .currency {
+    color: var(--text-dim);
+    font-size: 0.55em;
+    vertical-align: top;
+    margin-right: 6px;
+    line-height: 1.4;
+    font-weight: 600;
+  }
+  .slider-value .unit {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+    margin-left: 16px;
+    text-transform: uppercase;
+    display: inline-block;
+    vertical-align: middle;
+    padding-bottom: 8px;
+  }
+  .ticket-badge {
+    display: inline-block;
+    margin-left: 12px;
+    padding: 5px 12px;
+    background: var(--accent-soft);
+    color: var(--accent-deep);
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 600;
+    vertical-align: middle;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 6px;
+    background: linear-gradient(to right, var(--accent) 0%, var(--accent) var(--fill, 0%), rgba(199, 208, 229, 0.6) var(--fill, 0%), rgba(199, 208, 229, 0.6) 100%);
+    outline: none;
+    cursor: pointer;
+    border-radius: 100px;
+    margin: 12px 0 8px;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 28px;
+    height: 28px;
+    background: var(--paper);
+    border: 2px solid var(--accent);
+    box-shadow: var(--shadow-blue);
+    cursor: grab;
+    border-radius: 50%;
+    transition: transform 0.15s var(--ease);
+  }
+  input[type="range"]::-webkit-slider-thumb:active {
+    cursor: grabbing;
+    transform: scale(1.15);
+  }
+  input[type="range"]::-moz-range-thumb {
+    width: 28px;
+    height: 28px;
+    background: var(--paper);
+    border: 2px solid var(--accent);
+    box-shadow: var(--shadow-blue);
+    cursor: grab;
+    border-radius: 50%;
+  }
+  .slider-marks {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 0.04em;
+  }
+
+  /* OPTIONS */
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .option {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    padding: 20px 24px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    cursor: pointer;
+    transition: all 0.25s var(--ease);
+    line-height: 1.4;
+    border-radius: 16px;
+    box-shadow: var(--shadow-sm);
+  }
+  .option:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+  .option input {
+    appearance: none;
+    width: 22px;
+    height: 22px;
+    border: 1.5px solid var(--border-mid);
+    background: var(--paper);
+    cursor: pointer;
+    flex-shrink: 0;
+    position: relative;
+    border-radius: 50%;
+    margin-top: 2px;
+    transition: all 0.15s var(--ease);
+  }
+  .option input:checked {
+    background: var(--accent);
+    border-color: var(--accent);
+    box-shadow: inset 0 0 0 4px var(--paper), 0 0 0 4px var(--accent-glow);
+  }
+  .option.selected {
+    border-color: var(--accent);
+    background: var(--surface-blue);
+    box-shadow: var(--shadow-blue);
+  }
+  .option-content {
+    flex: 1;
+  }
+  .option-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+    letter-spacing: -0.005em;
+  }
+  .option-desc {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.45;
+  }
+  .option-tag {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 3px 10px;
+    background: var(--accent-soft);
+    color: var(--accent-deep);
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+
+  /* NAV */
+  .nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 36px;
+    gap: 16px;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 18px 32px;
+    background: var(--ink);
+    color: var(--paper);
+    border: 1px solid var(--ink);
+    border-radius: 100px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    cursor: pointer;
+    transition: all 0.25s var(--ease);
+    text-decoration: none;
+    box-shadow: var(--shadow-md);
+  }
+  .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+  }
+  .btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    pointer-events: none;
+    box-shadow: none;
+  }
+  .btn-primary {
+    background: var(--gradient-blue);
+    border-color: transparent;
+    color: var(--paper);
+  }
+  .btn-primary:hover {
+    box-shadow: var(--shadow-blue);
+  }
+  .btn-ghost {
+    background: transparent;
+    color: var(--text-muted);
+    border: 1px solid var(--border-mid);
+    box-shadow: none;
+    padding: 14px 22px;
+    font-size: 13px;
+  }
+  .btn-ghost:hover {
+    border-color: var(--ink);
+    background: var(--surface);
+    color: var(--ink);
+    box-shadow: var(--shadow-sm);
+  }
+  .btn-large {
+    padding: 22px 44px;
+    font-size: 15px;
+  }
+  .nav-spacer { flex: 1; }
+
+  /* RESULT */
+  .result-wrap {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 64px 48px 56px;
+    border-radius: 32px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+  }
+  .result-wrap::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 70% 50% at 0% 0%, rgba(89, 144, 255, 0.35) 0%, transparent 55%),
+      radial-gradient(ellipse 60% 40% at 100% 100%, rgba(157, 137, 255, 0.18) 0%, transparent 55%),
+      radial-gradient(ellipse 50% 40% at 50% 50%, rgba(89, 144, 255, 0.08) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .result-content {
+    position: relative;
+    z-index: 1;
+  }
+  .result-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 100px;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: rgba(255,255,255,0.75);
+    margin-bottom: 28px;
+  }
+  .result-tag-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--accent-bright);
+    border-radius: 50%;
+    box-shadow: 0 0 12px var(--accent-bright);
+  }
+  .result-headline {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: clamp(26px, 4vw, 36px);
+    line-height: 1.15;
+    color: var(--paper);
+    margin-bottom: 8px;
+    letter-spacing: -0.015em;
+  }
+  .result-headline .muted {
+    color: rgba(255,255,255,0.55);
+    font-weight: 600;
+  }
+  .result-number {
+    font-family: 'Inter', sans-serif;
+    font-weight: 900;
+    font-size: clamp(72px, 14vw, 152px);
+    line-height: 0.95;
+    color: var(--paper);
+    margin: 24px 0 12px;
+    letter-spacing: -0.045em;
+    font-variant-numeric: tabular-nums;
+    background: linear-gradient(180deg, #FFFFFF 0%, #B8C9FF 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .result-number .currency {
+    font-size: 0.4em;
+    vertical-align: top;
+    line-height: 2.2;
+    margin-right: 8px;
+    font-weight: 700;
+  }
+  .result-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 40px;
+  }
+  .result-breakdown {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 36px;
+  }
+  .breakdown-item {
+    padding: 20px 22px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 16px;
+  }
+  .breakdown-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 8px;
+  }
+  .breakdown-value {
+    font-family: 'Inter', sans-serif;
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--paper);
+    letter-spacing: -0.02em;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .breakdown-value .currency {
+    color: rgba(255,255,255,0.5);
+    font-size: 0.7em;
+    margin-right: 3px;
+  }
+  .breakdown-desc {
+    font-size: 12px;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.4;
+  }
+  .result-diagnosis {
+    font-size: 17px;
+    line-height: 1.55;
+    color: rgba(255,255,255,0.85);
+    max-width: 600px;
+    margin-bottom: 44px;
+  }
+  .result-diagnosis strong {
+    color: var(--paper);
+    font-weight: 600;
+  }
+  .result-cta-section {
+    border-top: 1px solid rgba(255,255,255,0.12);
+    padding-top: 36px;
+    margin-top: 8px;
+  }
+  .result-cta-pre {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 14px;
+  }
+  .result-cta-h {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: clamp(22px, 3.5vw, 30px);
+    line-height: 1.2;
+    margin-bottom: 28px;
+    letter-spacing: -0.015em;
+  }
+  .result-cta-h .muted {
+    color: rgba(255,255,255,0.6);
+    font-weight: 500;
+  }
+  .btn-inverted {
+    background: var(--paper);
+    color: var(--ink);
+    border-color: var(--paper);
+  }
+  .btn-inverted:hover {
+    background: var(--accent-bright);
+    color: var(--paper);
+    border-color: var(--accent-bright);
+  }
+
+  /* LEAD GATE */
+  .gate {
+    display: none;
+    margin-top: 8px;
+  }
+  .gate.visible {
+    display: block;
+    animation: gateIn 0.5s var(--ease-out);
+  }
+  @keyframes gateIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .gate-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 8px;
+  }
+  .gate-field {
+    margin-bottom: 16px;
+  }
+  .gate-field.full {
+    grid-column: 1 / -1;
+  }
+  .gate-field label {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+  .gate-field input,
+  .gate-field select {
+    width: 100%;
+    padding: 16px 18px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.18);
+    color: var(--paper);
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    outline: none;
+    transition: all 0.2s var(--ease);
+    border-radius: 12px;
+  }
+  .gate-field input:focus,
+  .gate-field select:focus {
+    border-color: var(--accent-bright);
+    background: rgba(255,255,255,0.08);
+  }
+  .gate-field input::placeholder {
+    color: rgba(255,255,255,0.3);
+  }
+  .gate-field select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='white' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 18px center;
+    padding-right: 44px;
+  }
+  .gate-field select option {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .gate-submit {
+    margin-top: 12px;
+    width: 100%;
+  }
+
+  /* THANK YOU */
+  .thank-you {
+    display: none;
+    padding: 32px 0 8px;
+  }
+  .thank-you.visible {
+    display: block;
+    animation: gateIn 0.5s var(--ease-out);
+  }
+  .thank-you-h {
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
+    font-size: clamp(32px, 5vw, 42px);
+    line-height: 1;
+    margin-bottom: 20px;
+    color: var(--paper);
+    letter-spacing: -0.025em;
+  }
+  .thank-you-p {
+    color: rgba(255,255,255,0.75);
+    margin-bottom: 32px;
+    font-size: 16px;
+    line-height: 1.55;
+    max-width: 480px;
+  }
+
+  /* METHODOLOGY */
+  .methodology {
+    max-width: 760px;
+    margin: 48px auto 0;
+    padding: 28px 32px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    box-shadow: var(--shadow-sm);
+  }
+  .methodology summary {
+    cursor: pointer;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text);
+    font-weight: 600;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .methodology summary::-webkit-details-marker { display: none; }
+  .methodology summary::after {
+    content: '+';
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 16px;
+    transition: transform 0.2s var(--ease);
+  }
+  .methodology[open] summary::after { content: '−'; }
+  .methodology-body {
+    margin-top: 18px;
+    padding-top: 18px;
+    border-top: 1px solid var(--border);
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--text-muted);
+  }
+  .methodology-body p { margin-bottom: 12px; }
+  .methodology-body strong {
+    color: var(--text);
+    font-weight: 700;
+  }
+
+  /* FOOTER */
+  .footer {
+    padding: 32px 36px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: var(--text-dim);
+    margin-top: 64px;
+    background: rgba(244, 246, 251, 0.4);
+  }
+  .footer a {
+    color: var(--text);
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .footer a:hover { text-decoration: underline; }
+
+  /* RESPONSIVE */
+  @media (max-width: 640px) {
+    .topbar { padding: 14px 20px; }
+    .stage { padding: 36px 20px 60px; }
+    .step-title { font-size: 34px; }
+    .step-sub { font-size: 16px; margin-bottom: 32px; }
+    .slider-card { padding: 26px 22px; }
+    .slider-value { font-size: 56px; }
+    .result-wrap { padding: 44px 24px 36px; border-radius: 24px; }
+    .result-number { font-size: 72px; }
+    .result-breakdown { grid-template-columns: 1fr; }
+    .gate-grid { grid-template-columns: 1fr; }
+    .btn-large { padding: 18px 32px; }
+    .footer { padding: 24px 20px; flex-direction: column; gap: 8px; }
+    .methodology { margin: 32px 20px 0; }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .fade-up { animation: fadeUp 0.6s var(--ease-out) both; }
+  .delay-1 { animation-delay: 0.08s; }
+  .delay-2 { animation-delay: 0.16s; }
+  .delay-3 { animation-delay: 0.24s; }
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark"></div>
+      <span>copecart</span>
+    </div>
+    <div class="topbar-meta">
+      <span class="topbar-meta-dot"></span>
+      <span id="topbarLabel">Vendor Audit · 60 sec</span>
+    </div>
+  </header>
+
+  <div class="progress-track">
+    <div class="progress-fill" id="progressFill"></div>
+  </div>
+
+  <main class="stage">
+    <div class="stage-inner">
+
+      <!-- INTRO -->
+      <section class="step active" data-step="intro">
+        <div class="step-head fade-up">
+          <span class="pill pill-accent">
+            <span class="pill-dot"></span>
+            For High-Ticket Digital Vendors
+          </span>
+        </div>
+        <h1 class="step-title fade-up delay-1">
+          How much is your<br>
+          <span class="gradient">checkout & compliance</span><br>
+          actually costing you?
+        </h1>
+        <p class="step-sub fade-up delay-2">
+          Most digital businesses scaling past €10k/month bleed money in two places: payment friction at checkout
+          and the tax-compliance overhead nobody talks about. Four questions, one number, no fluff.
+        </p>
+        <div class="intro-meta fade-up delay-3">
+          <span class="intro-meta-pill">No signup to see the number</span>
+          <span class="intro-meta-pill">60 seconds</span>
+          <span class="intro-meta-pill">Built on benchmarks across 500k+ vendors</span>
+        </div>
+        <div class="nav fade-up delay-3">
+          <div class="nav-spacer"></div>
+          <button class="btn btn-primary btn-large" data-action="next">
+            Start Audit · 01 / 04 →
+          </button>
+        </div>
+      </section>
+
+      <!-- Q1: REVENUE -->
+      <section class="step" data-step="q1">
+        <div class="step-head">
+          <span class="step-num"><strong>01</strong> / 04</span>
+          <span class="pill">Revenue</span>
+        </div>
+        <h2 class="step-title">
+          What's your monthly<br>
+          <span class="gradient">digital revenue</span>?
+        </h2>
+        <p class="step-sub">
+          Gross monthly revenue from digital products, courses, coaching, software, or services.
+          Be honest — the calculation only works with real numbers.
+        </p>
+        <div class="slider-card">
+          <div class="slider-content">
+            <div class="slider-value">
+              <span class="currency">€</span><span id="revenueDisplay">25</span><span class="unit">k / month</span>
+            </div>
+            <input type="range" id="revenue" min="1" max="500" value="25" step="1">
+            <div class="slider-marks">
+              <span>€1k</span>
+              <span>€500k+</span>
+            </div>
+          </div>
+        </div>
+        <div class="nav">
+          <button class="btn btn-ghost" data-action="back">← Back</button>
+          <div class="nav-spacer"></div>
+          <button class="btn btn-primary" data-action="next">Continue →</button>
+        </div>
+      </section>
+
+      <!-- Q2: AOV -->
+      <section class="step" data-step="q2">
+        <div class="step-head">
+          <span class="step-num"><strong>02</strong> / 04</span>
+          <span class="pill">Order Value</span>
+        </div>
+        <h2 class="step-title">
+          What's your average<br>
+          <span class="gradient">order value</span>?
+        </h2>
+        <p class="step-sub">
+          Average ticket per transaction. The higher your AOV, the more BNPL and payment-method variety move the
+          needle — high-ticket buyers need payment flexibility, period.
+        </p>
+        <div class="slider-card">
+          <div class="slider-content">
+            <div class="slider-value">
+              <span class="currency">€</span><span id="aovDisplay">300</span><span class="ticket-badge" id="ticketBadge">Mid-ticket</span>
+            </div>
+            <input type="range" id="aov" min="50" max="5000" value="300" step="10">
+            <div class="slider-marks">
+              <span>€50</span>
+              <span>€5.000+</span>
+            </div>
+          </div>
+        </div>
+        <div class="nav">
+          <button class="btn btn-ghost" data-action="back">← Back</button>
+          <div class="nav-spacer"></div>
+          <button class="btn btn-primary" data-action="next">Continue →</button>
+        </div>
+      </section>
+
+      <!-- Q3: PAYMENT METHODS -->
+      <section class="step" data-step="q3">
+        <div class="step-head">
+          <span class="step-num"><strong>03</strong> / 04</span>
+          <span class="pill">Checkout</span>
+        </div>
+        <h2 class="step-title">
+          Which payment methods<br>
+          do you offer at <span class="gradient">checkout</span>?
+        </h2>
+        <p class="step-sub">
+          Cart abandonment from missing payment options is the most underestimated leak in digital commerce.
+          Especially BNPL: 97 % approval, 30 %+ uplift on high-ticket orders.
+        </p>
+        <div class="options" data-group="payment">
+          <label class="option">
+            <input type="radio" name="payment" value="standard">
+            <div class="option-content">
+              <div class="option-title">Standard only</div>
+              <div class="option-desc">Credit card + PayPal. That's it.</div>
+              <span class="option-tag">~20 % abandonment</span>
+            </div>
+          </label>
+          <label class="option">
+            <input type="radio" name="payment" value="extended">
+            <div class="option-content">
+              <div class="option-title">Standard + wallets</div>
+              <div class="option-desc">Credit card, PayPal, SEPA, Apple Pay, Google Pay.</div>
+              <span class="option-tag">~10 % abandonment</span>
+            </div>
+          </label>
+          <label class="option">
+            <input type="radio" name="payment" value="bnpl">
+            <div class="option-content">
+              <div class="option-title">Plus BNPL / installments</div>
+              <div class="option-desc">All of the above + Klarna / installment plans for high-ticket access.</div>
+              <span class="option-tag">~4 % abandonment</span>
+            </div>
+          </label>
+          <label class="option">
+            <input type="radio" name="payment" value="full">
+            <div class="option-content">
+              <div class="option-title">Full stack incl. crypto</div>
+              <div class="option-desc">9+ methods including crypto. Premium checkout setup.</div>
+              <span class="option-tag">~2 % abandonment</span>
+            </div>
+          </label>
+        </div>
+        <div class="nav">
+          <button class="btn btn-ghost" data-action="back">← Back</button>
+          <div class="nav-spacer"></div>
+          <button class="btn btn-primary" data-action="next" disabled>Continue →</button>
+        </div>
+      </section>
+
+      <!-- Q4: TAX COMPLIANCE -->
+      <section class="step" data-step="q4">
+        <div class="step-head">
+          <span class="step-num"><strong>04</strong> / 04</span>
+          <span class="pill">Compliance</span>
+        </div>
+        <h2 class="step-title">
+          How do you handle<br>
+          <span class="gradient">tax & VAT compliance</span>?
+        </h2>
+        <p class="step-sub">
+          Cross-border VAT, OSS reporting, invoicing, reverse-charge — every hour you spend on this is an hour
+          you don't spend selling. Most vendors massively underestimate the real cost.
+        </p>
+        <div class="options" data-group="tax">
+          <label class="option">
+            <input type="radio" name="tax" value="diy">
+            <div class="option-content">
+              <div class="option-title">DIY with tax advisor</div>
+              <div class="option-desc">You + your Steuerberater handle everything. Hours per month on VAT, invoicing, OSS.</div>
+              <span class="option-tag">~€18k / year cost</span>
+            </div>
+          </label>
+          <label class="option">
+            <input type="radio" name="tax" value="outsourced">
+            <div class="option-content">
+              <div class="option-title">Fully outsourced to advisor</div>
+              <div class="option-desc">Steuerberater handles all of it. Less of your time, but high external fees.</div>
+              <span class="option-tag">~€6k / year cost</span>
+            </div>
+          </label>
+          <label class="option">
+            <input type="radio" name="tax" value="vor">
+            <div class="option-content">
+              <div class="option-title">Platform handles it (Vendor of Record)</div>
+              <div class="option-desc">You sell, platform deals with VAT, invoicing, refunds, OSS reporting.</div>
+              <span class="option-tag">~€0 overhead</span>
+            </div>
+          </label>
+          <label class="option">
+            <input type="radio" name="tax" value="de_only">
+            <div class="option-content">
+              <div class="option-title">Germany only, no cross-border</div>
+              <div class="option-desc">Selling in DE only. No OSS, no VAT-ID complications.</div>
+              <span class="option-tag">~€600 / year</span>
+            </div>
+          </label>
+        </div>
+        <div class="nav">
+          <button class="btn btn-ghost" data-action="back">← Back</button>
+          <div class="nav-spacer"></div>
+          <button class="btn btn-primary" data-action="next" disabled>Reveal The Gap →</button>
+        </div>
+      </section>
+
+      <!-- RESULT -->
+      <section class="step" data-step="result">
+        <div class="result-wrap">
+          <div class="result-content">
+            <span class="result-tag">
+              <span class="result-tag-dot"></span>
+              Your Annual Revenue Gap
+            </span>
+            <h2 class="result-headline">
+              At your current setup,<br>
+              <span class="muted">you're leaving on the table:</span>
+            </h2>
+            <div class="result-number">
+              <span class="currency">€</span><span id="totalNumber">0</span>
+            </div>
+            <div class="result-label">per year · unrealized revenue</div>
+
+            <div class="result-breakdown">
+              <div class="breakdown-item">
+                <div class="breakdown-label">Checkout & Payment Gap</div>
+                <div class="breakdown-value"><span class="currency">€</span><span id="paymentLoss">0</span></div>
+                <div class="breakdown-desc">Lost to cart abandonment from missing payment options.</div>
+              </div>
+              <div class="breakdown-item">
+                <div class="breakdown-label">Compliance Drag</div>
+                <div class="breakdown-value"><span class="currency">€</span><span id="taxLoss">0</span></div>
+                <div class="breakdown-desc">Tax-handling cost + opportunity cost on your time.</div>
+              </div>
+            </div>
+
+            <p class="result-diagnosis" id="diagnosis"></p>
+
+            <div class="result-cta-section" id="ctaBlock">
+              <div class="result-cta-pre">Next Step</div>
+              <h3 class="result-cta-h">
+                Get the full breakdown<br>
+                <span class="muted">+ 30 min strategy call</span>
+              </h3>
+              <button class="btn btn-inverted btn-large" id="openGateBtn">
+                Show Me The Plan →
+              </button>
+            </div>
+
+            <form id="gateForm" class="gate">
+              <div class="gate-grid">
+                <div class="gate-field">
+                  <label for="g-name">Your Name</label>
+                  <input type="text" id="g-name" name="name" required autocomplete="name">
+                </div>
+                <div class="gate-field">
+                  <label for="g-email">Work Email</label>
+                  <input type="email" id="g-email" name="email" required autocomplete="email">
+                </div>
+                <div class="gate-field full">
+                  <label for="g-company">Company / Brand</label>
+                  <input type="text" id="g-company" name="company" required autocomplete="organization">
+                </div>
+                <div class="gate-field">
+                  <label for="g-platform">Current Platform</label>
+                  <select id="g-platform" name="platform" required>
+                    <option value="">Select…</option>
+                    <option>Digistore24</option>
+                    <option>elopage</option>
+                    <option>Hotmart</option>
+                    <option>Stripe Checkout (direct)</option>
+                    <option>ThriveCart</option>
+                    <option>CopeCart (already)</option>
+                    <option>Custom / Own checkout</option>
+                    <option>Other</option>
+                  </select>
+                </div>
+                <div class="gate-field">
+                  <label for="g-stage">Business Stage</label>
+                  <select id="g-stage" name="stage" required>
+                    <option value="">Select…</option>
+                    <option>Under €10k / month</option>
+                    <option>€10k – €50k / month</option>
+                    <option>€50k – €250k / month</option>
+                    <option>€250k+ / month</option>
+                  </select>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-inverted btn-large gate-submit">Send Me The Plan →</button>
+            </form>
+
+            <div id="thankYou" class="thank-you">
+              <div class="thank-you-h">Got it.</div>
+              <p class="thank-you-p">
+                Your breakdown is on the way within 24 hours.<br>
+                If you want to skip the wait, book a slot directly:
+              </p>
+              <a id="calendlyLink" href="https://calendly.com/stefan-wurl/strategy" target="_blank" rel="noopener" class="btn btn-inverted btn-large">
+                Book 30 Min →
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <details class="methodology">
+    <summary>How is this calculated?</summary>
+    <div class="methodology-body">
+      <p>
+        <strong>Short version:</strong> we estimate two real costs that most digital businesses carry without
+        seeing them on a P&L — checkout friction (cart abandonment from missing payment methods) and
+        compliance overhead (your or your advisor's time spent on VAT, invoicing, OSS reporting).
+      </p>
+      <p>
+        <strong>Checkout & Payment Gap:</strong> based on Baymard Institute, Klarna, and PayPal benchmark data
+        for cart abandonment by payment-method coverage. High-ticket orders (>€500 AOV) are 2–3× more sensitive
+        to BNPL availability than low-ticket. We multiply your annual revenue by a payment-gap percentage,
+        weighted by AOV.
+      </p>
+      <p>
+        <strong>Compliance Drag:</strong> based on average German Steuerberater rates (€80–€200/h) plus
+        founder-opportunity-cost on time spent reconciling OSS, invoices, cross-border VAT. A Vendor-of-Record
+        platform absorbs this entirely; DIY setups absorb the most.
+      </p>
+      <p>
+        <strong>What this isn't:</strong> a precise audit. It's a directional estimate from public benchmarks
+        and 500k+ vendor data. Real numbers depend on category, region, and margin — but the gaps are real,
+        and most operators are off by an order of magnitude when guessing.
+      </p>
+    </div>
+  </details>
+
+  <footer class="footer">
+    <span>copecart · all-in-one infrastructure for high-ticket digital businesses</span>
+    <a href="https://copecart.com" target="_blank" rel="noopener">copecart.com →</a>
+  </footer>
+
+</div>
+
+<script>
+  // === CONFIG ===
+  const WEBHOOK = 'https://hook.eu1.make.com/1npebtm7jcj283enhqvmulnfxcnkhm47';
+  const CALENDLY = 'https://calendly.com/stefan-wurl/strategy'; // TODO: replace with real Stefan slot
+  const SOURCE_TAG = 'copecart-vendor-audit';
+
+  // === STATE ===
+  const STEPS = ['intro', 'q1', 'q2', 'q3', 'q4', 'result'];
+  const state = {
+    current: 0,
+    revenue: 25,
+    aov: 300,
+    payment: null,
+    tax: null,
+  };
+
+  // === ELEMENTS ===
+  const stepEls = document.querySelectorAll('.step');
+  const progressFill = document.getElementById('progressFill');
+  const topbarLabel = document.getElementById('topbarLabel');
+  const revenueInput = document.getElementById('revenue');
+  const revenueDisplay = document.getElementById('revenueDisplay');
+  const aovInput = document.getElementById('aov');
+  const aovDisplay = document.getElementById('aovDisplay');
+  const ticketBadge = document.getElementById('ticketBadge');
+  const totalNumber = document.getElementById('totalNumber');
+  const paymentLoss = document.getElementById('paymentLoss');
+  const taxLoss = document.getElementById('taxLoss');
+  const diagnosis = document.getElementById('diagnosis');
+  const openGateBtn = document.getElementById('openGateBtn');
+  const ctaBlock = document.getElementById('ctaBlock');
+  const gateForm = document.getElementById('gateForm');
+  const thankYou = document.getElementById('thankYou');
+  const calendlyLink = document.getElementById('calendlyLink');
+  calendlyLink.href = CALENDLY;
+
+  // === NAVIGATION ===
+  function showStep(index) {
+    stepEls.forEach((el, i) => {
+      el.classList.remove('active', 'prev');
+      if (i === index) el.classList.add('active');
+      else if (i < index) el.classList.add('prev');
+    });
+    state.current = index;
+    updateProgress();
+    updateTopbar();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function updateProgress() {
+    const stepName = STEPS[state.current];
+    const pctMap = { intro: 0, q1: 20, q2: 40, q3: 60, q4: 80, result: 100 };
+    progressFill.style.width = pctMap[stepName] + '%';
+  }
+
+  function updateTopbar() {
+    const stepName = STEPS[state.current];
+    if (stepName === 'intro') topbarLabel.textContent = 'Vendor Audit · 60 sec';
+    else if (stepName === 'result') topbarLabel.textContent = 'Result';
+    else {
+      const num = STEPS.indexOf(stepName);
+      topbarLabel.textContent = `Question ${num} of 4`;
+    }
+  }
+
+  function canAdvance() {
+    const stepName = STEPS[state.current];
+    if (stepName === 'q1' || stepName === 'q2') return true;
+    if (stepName === 'q3') return state.payment !== null;
+    if (stepName === 'q4') return state.tax !== null;
+    return true;
+  }
+
+  function next() {
+    if (!canAdvance()) return;
+    const stepName = STEPS[state.current];
+    if (stepName === 'q4') { reveal(); return; }
+    if (state.current < STEPS.length - 1) showStep(state.current + 1);
+  }
+
+  function back() {
+    if (state.current > 0) showStep(state.current - 1);
+  }
+
+  document.querySelectorAll('[data-action="next"]').forEach(b => b.addEventListener('click', next));
+  document.querySelectorAll('[data-action="back"]').forEach(b => b.addEventListener('click', back));
+
+  // === SLIDERS ===
+  function updateSliderFill(input) {
+    const min = parseFloat(input.min);
+    const max = parseFloat(input.max);
+    const val = parseFloat(input.value);
+    const pct = ((val - min) / (max - min)) * 100;
+    input.style.setProperty('--fill', pct + '%');
+  }
+  updateSliderFill(revenueInput);
+  updateSliderFill(aovInput);
+
+  revenueInput.addEventListener('input', (e) => {
+    state.revenue = parseInt(e.target.value, 10);
+    revenueDisplay.textContent = state.revenue;
+    updateSliderFill(e.target);
+  });
+
+  aovInput.addEventListener('input', (e) => {
+    state.aov = parseInt(e.target.value, 10);
+    aovDisplay.textContent = state.aov.toLocaleString('de-DE');
+    updateSliderFill(e.target);
+    // Update ticket badge
+    if (state.aov < 200) ticketBadge.textContent = 'Low-ticket';
+    else if (state.aov < 1000) ticketBadge.textContent = 'Mid-ticket';
+    else if (state.aov < 2500) ticketBadge.textContent = 'High-ticket';
+    else ticketBadge.textContent = 'Premium';
+  });
+
+  // === RADIO HANDLERS ===
+  function setupRadios(groupName, stateKey, autoStep) {
+    document.querySelectorAll(`input[name="${groupName}"]`).forEach(el => {
+      el.addEventListener('change', (e) => {
+        state[stateKey] = e.target.value;
+        const group = e.target.closest('.options');
+        group.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+        e.target.closest('.option').classList.add('selected');
+        const step = e.target.closest('.step');
+        const nextBtn = step.querySelector('[data-action="next"]');
+        if (nextBtn) nextBtn.disabled = false;
+        setTimeout(() => {
+          if (STEPS[state.current] === autoStep) next();
+        }, 450);
+      });
+    });
+  }
+  setupRadios('payment', 'payment', 'q3');
+  setupRadios('tax', 'tax', 'q4');
+
+  // === CALCULATION ===
+  function calculate() {
+    const annualRevenue = state.revenue * 1000 * 12;
+
+    // AOV impact factor: high-ticket = BNPL critical
+    let aovFactor;
+    if (state.aov < 100) aovFactor = 0.5;
+    else if (state.aov < 500) aovFactor = 1.0;
+    else if (state.aov < 1500) aovFactor = 1.5;
+    else aovFactor = 2.0;
+
+    // Payment gap percentage (revenue lost to cart abandonment)
+    const paymentGapPct = { standard: 0.20, extended: 0.10, bnpl: 0.04, full: 0.02 }[state.payment];
+
+    let paymentGapAnnual = annualRevenue * paymentGapPct * aovFactor;
+    // Sanity cap
+    paymentGapAnnual = Math.min(paymentGapAnnual, annualRevenue * 1.2);
+
+    // Tax / compliance annual cost
+    const taxAnnual = { diy: 18000, outsourced: 6000, vor: 0, de_only: 600 }[state.tax];
+
+    let total = paymentGapAnnual + taxAnnual;
+    // Sanity caps
+    total = Math.max(total, annualRevenue * 0.04);
+    total = Math.min(total, annualRevenue * 1.5);
+
+    // Round to nearest 1k for clean display
+    paymentGapAnnual = Math.round(paymentGapAnnual / 1000) * 1000;
+    const taxAnnualRounded = Math.round(taxAnnual / 100) * 100;
+    total = Math.round(total / 1000) * 1000;
+
+    return { paymentGap: paymentGapAnnual, taxCost: taxAnnualRounded, total };
+  }
+
+  function formatCurrencyShort(num) {
+    if (num >= 1_000_000) {
+      return (num / 1_000_000).toFixed(num >= 10_000_000 ? 0 : 1) + 'M';
+    }
+    if (num >= 10_000) return Math.round(num / 1_000) + 'k';
+    if (num >= 1_000) return (num / 1_000).toFixed(1).replace(/\.0$/, '') + 'k';
+    return num.toLocaleString('de-DE');
+  }
+
+  function animateNumber(from, to, duration, el) {
+    const start = performance.now();
+    function tick(now) {
+      const t = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - t, 3);
+      const current = Math.round(from + (to - from) * eased);
+      el.textContent = formatCurrencyShort(current);
+      if (t < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+
+  function buildDiagnosis(calc) {
+    const p = state.payment;
+    const t = state.tax;
+    let line1, line2;
+
+    if (p === 'standard') {
+      line1 = `Your checkout only offers credit card and PayPal — at your AOV of €${state.aov.toLocaleString('de-DE')}, every other buyer who needs BNPL, SEPA, or a wallet method silently abandons.`;
+    } else if (p === 'extended') {
+      line1 = 'You\'ve got the wallet basics, but no BNPL. That\'s the single biggest leak for high-ticket digital products — Klarna data shows 30 %+ uplift on AOVs above €500.';
+    } else if (p === 'bnpl') {
+      line1 = 'Your payment stack is solid. Most leakage is now in the long-tail (crypto, regional methods) and edge cases — your gap here is real but smaller than most.';
+    } else {
+      line1 = 'You\'re in the top 5 % on payment-method coverage. Your remaining gap is structural (rates, routing) rather than coverage.';
+    }
+
+    if (t === 'diy') {
+      line2 = '<strong>The bigger killer is compliance:</strong> a DIY tax setup costs the average vendor 8–15 hours/month plus advisor fees. That\'s time you\'re not selling.';
+    } else if (t === 'outsourced') {
+      line2 = 'Your tax setup is hands-off, but you\'re paying premium for it — and you still own the cross-border complexity.';
+    } else if (t === 'vor') {
+      line2 = '<strong>Smart play on compliance.</strong> Vendor-of-Record platforms remove the entire VAT and invoicing layer, which is where most of your peers bleed money.';
+    } else {
+      line2 = 'Germany-only keeps compliance simple, but it also caps your TAM. Cross-border is usually a 2–3× revenue unlock if the compliance side is handled.';
+    }
+    return line1 + ' ' + line2;
+  }
+
+  // === REVEAL ===
+  function reveal() {
+    const calc = calculate();
+    diagnosis.innerHTML = buildDiagnosis(calc);
+    showStep(STEPS.indexOf('result'));
+    setTimeout(() => {
+      animateNumber(0, calc.total, 1400, totalNumber);
+      animateNumber(0, calc.paymentGap, 1200, paymentLoss);
+      animateNumber(0, calc.taxCost, 1000, taxLoss);
+    }, 500);
+
+    sendWebhook({
+      stage: 'reveal',
+      revenue_monthly_k: state.revenue,
+      aov_eur: state.aov,
+      payment: state.payment,
+      tax: state.tax,
+      total_gap: calc.total,
+      payment_gap: calc.paymentGap,
+      tax_cost: calc.taxCost,
+    });
+  }
+
+  // === LEAD GATE ===
+  openGateBtn.addEventListener('click', () => {
+    ctaBlock.style.display = 'none';
+    gateForm.classList.add('visible');
+  });
+
+  gateForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const formData = new FormData(gateForm);
+    const calc = calculate();
+    const lead = {
+      stage: 'lead',
+      name: formData.get('name'),
+      email: formData.get('email'),
+      company: formData.get('company'),
+      platform: formData.get('platform'),
+      business_stage: formData.get('stage'),
+      revenue_monthly_k: state.revenue,
+      aov_eur: state.aov,
+      payment: state.payment,
+      tax: state.tax,
+      total_gap: calc.total,
+      payment_gap: calc.paymentGap,
+      tax_cost: calc.taxCost,
+    };
+    sendWebhook(lead);
+    gateForm.classList.remove('visible');
+    thankYou.classList.add('visible');
+  });
+
+  function sendWebhook(payload) {
+    fetch(WEBHOOK, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        source: SOURCE_TAG,
+        timestamp: new Date().toISOString(),
+        ...payload,
+      }),
+      mode: 'no-cors',
+    }).catch(() => {});
+  }
+
+  // === KEYBOARD NAV ===
+  document.addEventListener('keydown', (e) => {
+    const tag = document.activeElement.tagName;
+    if (e.key === 'Enter' && tag !== 'BUTTON' && tag !== 'INPUT' && tag !== 'SELECT' && tag !== 'TEXTAREA') {
+      if (canAdvance()) next();
+    }
+  });
+
+  // === URL PARAM ===
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('name')) document.getElementById('g-name').value = params.get('name');
+  if (params.get('company')) document.getElementById('g-company').value = params.get('company');
+
+  // Init
+  updateProgress();
+  updateTopbar();
+</script>
+
+</body>
+</html>
