@@ -1,0 +1,1310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Pipeline Readiness Check | Inovexus</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="description" content="60-second pipeline diagnostic for Pre-Seed and Seed B2B SaaS founders. Find out which of the five GTM levers you should pull next.">
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-deep: #07111F;
+    --bg: #0B1729;
+    --surface: #142235;
+    --surface-elevated: #1A2A42;
+    --surface-blue: #1E3050;
+    --border: #243A57;
+    --border-mid: #345173;
+    --text: #FFFFFF;
+    --text-muted: rgba(255, 255, 255, 0.72);
+    --text-dim: rgba(255, 255, 255, 0.48);
+    --accent: #4FB8FF;
+    --accent-bright: #6FCBFF;
+    --accent-deep: #2D8FE5;
+    --accent-soft: rgba(79, 184, 255, 0.10);
+    --accent-glow: rgba(79, 184, 255, 0.22);
+    --paper: #FFFFFF;
+    --gradient-blue: linear-gradient(90deg, #6FCBFF 0%, #4FB8FF 45%, #5D78FF 100%);
+    --gradient-button: linear-gradient(135deg, #6FCBFF 0%, #4FB8FF 50%, #5D78FF 100%);
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.25);
+    --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.35);
+    --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.45);
+    --shadow-blue: 0 12px 32px rgba(79, 184, 255, 0.28);
+    --ease: cubic-bezier(0.65, 0, 0.35, 1);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 17px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% -10%, rgba(79, 184, 255, 0.18) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 100% 110%, rgba(93, 120, 255, 0.14) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 40% at 0% 80%, rgba(79, 184, 255, 0.08) 0%, transparent 55%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .mono {
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.02em;
+  }
+
+  .app {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 36px;
+    padding-top: max(18px, env(safe-area-inset-top));
+    position: sticky;
+    top: 0;
+    background: rgba(11, 23, 41, 0.72);
+    backdrop-filter: blur(20px) saturate(150%);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+    z-index: 10;
+    border-bottom: 1px solid rgba(36, 58, 87, 0.5);
+  }
+  .brand { display: flex; align-items: center; }
+  .brand img { height: 22px; width: auto; display: block; }
+
+  .topbar-meta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    box-shadow: var(--shadow-sm);
+  }
+  .topbar-meta-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    box-shadow: 0 0 0 3px var(--accent-soft);
+  }
+
+  .progress-track {
+    position: relative;
+    height: 3px;
+    background: rgba(36, 58, 87, 0.4);
+    overflow: hidden;
+  }
+  .progress-fill {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 0;
+    background: var(--gradient-blue);
+    transition: width 0.6s var(--ease-out);
+  }
+
+  .stage {
+    flex: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 56px 36px 80px;
+    overflow: hidden;
+  }
+  .stage-inner {
+    width: 100%;
+    max-width: 760px;
+    position: relative;
+  }
+
+  .step {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transform: translateX(40px);
+    transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
+    pointer-events: none;
+    visibility: hidden;
+  }
+  .step.active {
+    position: relative;
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
+    visibility: visible;
+  }
+  .step.prev {
+    opacity: 0;
+    transform: translateX(-40px);
+    visibility: hidden;
+  }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    letter-spacing: 0.02em;
+    box-shadow: var(--shadow-sm);
+  }
+  .pill-accent {
+    background: var(--surface-blue);
+    border-color: rgba(79, 184, 255, 0.3);
+    color: var(--accent-bright);
+  }
+  .pill-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+  }
+
+  .step-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+  }
+  .step-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    color: var(--text-dim);
+  }
+  .step-num strong {
+    color: var(--text);
+    font-weight: 700;
+  }
+
+  .step-title {
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
+    font-size: clamp(38px, 6vw, 60px);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    color: var(--text);
+    margin-bottom: 18px;
+  }
+  .step-title .gradient {
+    background: var(--gradient-blue);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .step-sub {
+    font-size: 18px;
+    line-height: 1.55;
+    color: var(--text-muted);
+    max-width: 600px;
+    margin-bottom: 44px;
+  }
+
+  .intro-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 40px;
+  }
+  .intro-meta-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+    box-shadow: var(--shadow-sm);
+  }
+  .intro-meta-pill::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .option {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    padding: 20px 24px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    cursor: pointer;
+    transition: all 0.25s var(--ease);
+    line-height: 1.4;
+    border-radius: 16px;
+    box-shadow: var(--shadow-sm);
+  }
+  .option:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    background: var(--surface-elevated);
+  }
+  .option input {
+    appearance: none;
+    width: 22px;
+    height: 22px;
+    border: 1.5px solid var(--border-mid);
+    background: transparent;
+    cursor: pointer;
+    flex-shrink: 0;
+    position: relative;
+    border-radius: 50%;
+    margin-top: 2px;
+    transition: all 0.15s var(--ease);
+  }
+  .option input:checked {
+    background: var(--accent);
+    border-color: var(--accent);
+    box-shadow: inset 0 0 0 4px var(--bg), 0 0 0 4px var(--accent-glow);
+  }
+  .option.selected {
+    border-color: var(--accent);
+    background: var(--surface-blue);
+    box-shadow: var(--shadow-blue);
+  }
+  .option-content { flex: 1; }
+  .option-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+    letter-spacing: -0.005em;
+  }
+  .option-desc {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.45;
+  }
+  .option-tag {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 3px 10px;
+    background: var(--accent-soft);
+    color: var(--accent-bright);
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+
+  .nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 36px;
+    gap: 16px;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 18px 32px;
+    background: var(--text);
+    color: var(--bg);
+    border: 1px solid var(--text);
+    border-radius: 100px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s var(--ease);
+    text-decoration: none;
+    box-shadow: var(--shadow-md);
+  }
+  .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+  }
+  .btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    pointer-events: none;
+    box-shadow: none;
+  }
+  .btn-primary {
+    background: var(--gradient-button);
+    border-color: transparent;
+    color: var(--bg-deep);
+  }
+  .btn-primary:hover { box-shadow: var(--shadow-blue); }
+  .btn-ghost {
+    background: transparent;
+    color: var(--text-muted);
+    border: 1px solid var(--border-mid);
+    box-shadow: none;
+    padding: 14px 22px;
+    font-size: 13px;
+  }
+  .btn-ghost:hover {
+    border-color: var(--accent);
+    background: var(--surface);
+    color: var(--text);
+    box-shadow: var(--shadow-sm);
+  }
+  .btn-large { padding: 22px 44px; font-size: 15px; }
+  .nav-spacer { flex: 1; }
+
+  .result-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 56px 48px 48px;
+    border-radius: 32px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+  }
+  .result-wrap::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 70% 50% at 0% 0%, rgba(79, 184, 255, 0.18) 0%, transparent 55%),
+      radial-gradient(ellipse 60% 40% at 100% 100%, rgba(93, 120, 255, 0.12) 0%, transparent 55%);
+    pointer-events: none;
+  }
+  .result-content { position: relative; z-index: 1; }
+  .result-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: var(--surface-blue);
+    border: 1px solid rgba(79, 184, 255, 0.3);
+    border-radius: 100px;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--accent-bright);
+    margin-bottom: 28px;
+  }
+  .result-tag-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--accent-bright);
+    border-radius: 50%;
+    box-shadow: 0 0 12px var(--accent-bright);
+  }
+  .result-number {
+    font-family: 'Inter', sans-serif;
+    font-weight: 900;
+    font-size: clamp(80px, 16vw, 168px);
+    line-height: 0.95;
+    margin: 20px 0 12px;
+    letter-spacing: -0.05em;
+    font-variant-numeric: tabular-nums;
+    background: linear-gradient(135deg, #FFFFFF 0%, #B8D9FF 50%, #5D78FF 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .result-number .max {
+    font-size: 0.4em;
+    color: var(--text-dim);
+    font-weight: 700;
+    -webkit-text-fill-color: var(--text-dim);
+  }
+  .result-tier-label {
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(20px, 3vw, 26px);
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+  }
+  .result-tier-desc {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 36px;
+  }
+  .result-diagnosis {
+    font-size: 17px;
+    line-height: 1.55;
+    color: var(--text-muted);
+    max-width: 600px;
+    margin-bottom: 44px;
+  }
+  .result-diagnosis strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  .plays {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 44px;
+  }
+  .play {
+    padding: 22px 26px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 18px;
+    position: relative;
+  }
+  .play.priority {
+    background: var(--surface-blue);
+    border-color: rgba(79, 184, 255, 0.35);
+    box-shadow: 0 8px 24px rgba(79, 184, 255, 0.12);
+  }
+  .play-kind {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent-bright);
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+  .play-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+  }
+  .play-desc {
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+  }
+  .play-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 12px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 100px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 0.04em;
+  }
+  .play.priority .play-pill {
+    background: rgba(79, 184, 255, 0.12);
+    border-color: rgba(79, 184, 255, 0.25);
+    color: var(--accent-bright);
+  }
+
+  .result-cta-section {
+    border-top: 1px solid rgba(255,255,255,0.12);
+    padding-top: 36px;
+    margin-top: 8px;
+  }
+  .result-cta-pre {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 14px;
+  }
+  .result-cta-h {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: clamp(22px, 3.5vw, 30px);
+    line-height: 1.2;
+    margin-bottom: 12px;
+    letter-spacing: -0.015em;
+  }
+  .result-cta-h .muted {
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+  .result-cta-sub {
+    font-size: 15px;
+    color: var(--text-muted);
+    margin-bottom: 28px;
+    line-height: 1.55;
+    max-width: 520px;
+  }
+
+  .methodology {
+    max-width: 760px;
+    margin: 48px auto 0;
+    padding: 28px 32px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    box-shadow: var(--shadow-sm);
+  }
+  .methodology summary {
+    cursor: pointer;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text);
+    font-weight: 600;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .methodology summary::-webkit-details-marker { display: none; }
+  .methodology summary::after {
+    content: '+';
+    color: var(--accent-bright);
+    font-weight: 700;
+    font-size: 16px;
+    transition: transform 0.2s var(--ease);
+  }
+  .methodology[open] summary::after { content: '−'; }
+  .methodology-body {
+    margin-top: 18px;
+    padding-top: 18px;
+    border-top: 1px solid var(--border);
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--text-muted);
+  }
+  .methodology-body p { margin-bottom: 12px; }
+  .methodology-body strong {
+    color: var(--text);
+    font-weight: 700;
+  }
+
+  .footer {
+    padding: 32px 36px;
+    padding-bottom: max(32px, env(safe-area-inset-bottom));
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: var(--text-dim);
+    margin-top: 64px;
+    background: rgba(7, 17, 31, 0.4);
+  }
+  .footer a {
+    color: var(--text);
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .footer a:hover { text-decoration: underline; }
+
+  @media (max-width: 768px) {
+    .stage-inner { max-width: 100%; }
+  }
+
+  @media (max-width: 640px) {
+    .topbar { padding: 12px 16px; padding-top: max(12px, env(safe-area-inset-top)); }
+    .brand img { height: 18px; }
+    .topbar-meta { padding: 6px 10px; font-size: 10px; }
+
+    .stage {
+      padding: 28px 18px 56px;
+      padding-left: max(18px, env(safe-area-inset-left));
+      padding-right: max(18px, env(safe-area-inset-right));
+    }
+
+    .step-head { gap: 8px; margin-bottom: 22px; }
+    .step-title { font-size: 32px; line-height: 1.05; letter-spacing: -0.022em; margin-bottom: 14px; }
+    .step-sub { font-size: 15px; line-height: 1.5; margin-bottom: 26px; }
+
+    .intro-meta { gap: 8px; margin-bottom: 30px; }
+    .intro-meta-pill { padding: 8px 12px; font-size: 12px; }
+
+    .options { gap: 10px; }
+    .option { padding: 16px 18px; gap: 14px; border-radius: 14px; }
+    .option-title { font-size: 15px; margin-bottom: 3px; }
+    .option-desc { font-size: 13px; line-height: 1.4; }
+    .option-tag { font-size: 10px; padding: 3px 9px; margin-top: 6px; }
+    .option input { width: 20px; height: 20px; }
+    .option:hover { transform: none; }
+    .option.selected { box-shadow: 0 4px 14px rgba(79, 184, 255, 0.22); }
+
+    .nav { margin-top: 28px; gap: 8px; }
+    .btn { padding: 15px 20px; font-size: 13px; }
+    .btn-large { padding: 17px 26px; font-size: 14px; }
+    .btn-ghost { padding: 12px 16px; font-size: 12px; }
+    .btn:hover { transform: none; }
+
+    .result-wrap { padding: 36px 22px 32px; border-radius: 24px; }
+    .result-tag { padding: 6px 12px; font-size: 11px; margin-bottom: 22px; }
+    .result-number { font-size: 80px; margin: 16px 0 8px; letter-spacing: -0.04em; }
+    .result-tier-label { font-size: 20px; }
+    .result-tier-desc { font-size: 11px; letter-spacing: 0.12em; margin-bottom: 32px; }
+    .result-diagnosis { font-size: 15px; line-height: 1.5; margin-bottom: 32px; }
+    .play { padding: 18px 20px; border-radius: 14px; }
+    .play-title { font-size: 16px; }
+    .play-desc { font-size: 13px; }
+    .result-cta-section { padding-top: 28px; }
+    .result-cta-pre { font-size: 10px; margin-bottom: 10px; }
+    .result-cta-h { font-size: 22px; line-height: 1.2; margin-bottom: 12px; }
+    .result-cta-sub { font-size: 14px; margin-bottom: 24px; }
+
+    .methodology { margin: 32px 18px 0; padding: 22px 22px; border-radius: 18px; }
+    .methodology summary { font-size: 10px; }
+    .methodology-body { font-size: 13px; line-height: 1.6; }
+
+    .footer { padding: 20px 18px; padding-bottom: max(20px, env(safe-area-inset-bottom)); flex-direction: column; gap: 8px; text-align: center; font-size: 10px; }
+  }
+
+  @media (max-width: 380px) {
+    .topbar { padding: 10px 14px; }
+    .brand img { height: 16px; }
+    .topbar-meta { display: none; }
+    .stage { padding: 24px 14px 48px; }
+    .step-title { font-size: 28px; }
+    .step-sub { font-size: 14px; }
+    .option { padding: 14px 16px; gap: 12px; }
+    .option-title { font-size: 14px; }
+    .option-desc { font-size: 12px; }
+    .btn { padding: 14px 18px; font-size: 12px; }
+    .btn-large { padding: 16px 22px; font-size: 13px; }
+    .result-wrap { padding: 32px 18px 28px; }
+    .result-number { font-size: 68px; }
+    .result-cta-h { font-size: 20px; }
+  }
+
+  @media (hover: none) {
+    .option:hover { transform: none; border-color: var(--border); background: var(--surface); }
+    .btn:hover { transform: none; }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .fade-up { animation: fadeUp 0.6s var(--ease-out) both; }
+  .delay-1 { animation-delay: 0.08s; }
+  .delay-2 { animation-delay: 0.16s; }
+  .delay-3 { animation-delay: 0.24s; }
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <header class="topbar">
+    <div class="brand">
+      <img src="assets/inovexus-logo-white.svg" alt="Inovexus">
+    </div>
+    <div class="topbar-meta">
+      <span class="topbar-meta-dot"></span>
+      <span id="topbarLabel">Pipeline Check · 60 sec</span>
+    </div>
+  </header>
+
+  <div class="progress-track">
+    <div class="progress-fill" id="progressFill"></div>
+  </div>
+
+  <main class="stage">
+    <div class="stage-inner">
+
+      <section class="step active" data-step="intro">
+        <div class="step-head fade-up">
+          <span class="pill pill-accent">
+            <span class="pill-dot"></span>
+            For Pre-Seed & Seed B2B SaaS Founders
+          </span>
+        </div>
+        <h1 class="step-title fade-up delay-1">
+          Which GTM lever<br>
+          should you <span class="gradient">pull next</span>?
+        </h1>
+        <p class="step-sub fade-up delay-2">
+          Five questions. One score. Three concrete operator moves on your weakest levers — the same plays
+          we ran in the Inovexus workshop, now self-serve. Built for the phase between zero and your first
+          repeatable sales motion.
+        </p>
+        <div class="intro-meta fade-up delay-3">
+          <span class="intro-meta-pill">No signup to see your result</span>
+          <span class="intro-meta-pill">60 seconds</span>
+          <span class="intro-meta-pill">Workshop-grade diagnostic</span>
+        </div>
+        <div class="nav fade-up delay-3">
+          <div class="nav-spacer"></div>
+          <button class="btn btn-primary btn-large" data-action="next">
+            Start Check · 01 / 05 →
+          </button>
+        </div>
+      </section>
+
+      <section class="step" data-step="q1">
+        <div class="step-head">
+          <span class="step-num"><strong>01</strong> / 05</span>
+          <span class="pill">ICP Concentration</span>
+        </div>
+        <h2 class="step-title">
+          Look at your last 10<br>
+          serious conversations — <span class="gradient">how similar</span> are they?
+        </h2>
+        <p class="step-sub">
+          ICP-drift is the silent killer at Pre-Seed and Seed. If every conversation looks unique, you don't
+          have a repeatable motion — you have ten custom projects pretending to be a company.
+        </p>
+        <div class="options" data-group="icp">
+          <label class="option">
+            <input type="radio" name="icp" value="2">
+            <div class="option-content">
+              <div class="option-title">7+ of them fit one clear pattern</div>
+              <div class="option-desc">Same use case, similar buyer profile, similar trigger.</div>
+              <span class="option-tag">Repeatability emerging</span>
+            </div>
+          </label>
+          <label class="option">
+            <input type="radio" name="icp" value="1">
+            <div class="option-content">
+              <div class="option-title">There's a pattern, but also a lot of one-offs</div>
+              <div class="option-desc">Some clustering, but we took several deals that don't fit.</div>
+              <span class="option-tag">ICP drifting</span>
+            </div>
+          </label>
+          <label class="option">
+            <input type="radio" name="icp" value="0">
+            <div class="option-content">
+              <div class="option-title">All over the place</div>
+              <div class="option-desc">Each conversation feels custom. No clear pattern yet.</div>
+              <span class="option-tag">No ICP yet</span>
+            </div>
+          </label>
+        </div>
+        <div class="nav">
+          <button class="btn btn-ghost" data-action="back">← Back</button>
+          <div class="nav-spacer"></div>
+          <button class="btn btn-primary" data-action="next" disabled>Continue →</button>
+        </div>
+      </section>
+
+      <section class="step" data-step="q2">
+        <div class="step-head">
+          <span class="step-num"><strong>02</strong> / 05</span>
+          <span class="pill">Signal vs Volume</span>
+        </div>
+        <h2 class="step-title">
+          Are you reaching out<br>
+          on <span class="gradient">timing signals</span> — or volume?
+        </h2>
+        <p class="step-sub">
+          At Pre-Seed, outbound isn't a sales motion — it's a research motion. The founders who win it are
+          the ones who only contact accounts with an active trigger. The ones who lose it run volume.
+        </p>
+        <div class="options" data-group="signal">
+          <label class="option">
+            <input type="radio" name="signal" value="2">
+            <div class="option-content">
+              <div class="option-title">Yes — we track specific triggers and prioritize around them</div>
+              <div class="option-desc">Hiring signals, funding events, tech-stack changes, specific buying behaviors.</div>
+              <span class="option-tag">Signal-stacking active</span>
+            </div>
+          </label>
+          <label class="option">
+            <input type="radio" name="signal" value="1">
+            <div class="option-content">
+              <div class="option-title">We've noticed patterns but don't act on them systematically</div>
+              <div class="option-desc">We see triggers in retrospect, but our outbound list isn't filtered by them.</div>
+              <span class="option-tag">Triggers untracked</span>
+            </div>
+          </label>
+          <label class="option">
+            <input type="radio" name="signal" value="0">
+            <div class="option-content">
+              <div class="option-title">No — we treat every account in our ICP the same</div>
+              <div class="option-desc">List comes in, we contact it. Timing is whoever-replies-replies.</div>
+              <span class="option-tag">Volume motion</span>
+            </div>
+          </label>
+        </div>
+        <div class="nav">
+          <button class="btn btn-ghost" data-action="back">← Back</button>
+          <div class="nav-spacer"></div>
+          <button class="btn btn-primary" data-action="next" disabled>Continue →</button>
+        </div>
+      </section>
+
+      <section class="step" data-step="q3">
+        <div class="step-head">
+          <span class="step-num"><strong>03</strong> / 05</span>
+          <span class="pill">Stack-Phase Fit</span>
+        </div>
+        <h2 class="step-title">
+          Is your GTM stack<br>
+          <span class="gradient">right-sized</span> for your phase?
+        </h2>
+        <p class="step-sub">
+          A €1k/month HubSpot Enterprise setup at Pre-Seed is a slow death. So is a Clay subscription before
+          200 accounts/month. The right stack at the right phase is leverage. The wrong one is friction with a price tag.
+        </p>
+        <div class="options" data-group="stack">
+          <label class="option">
+            <input type="radio" name="stack" value="2">
+            <div class="option-content">
+              <div class="option-title">Lean and composable — under €300/month</div>
+              <div class="option-desc">Attio/Folk, Instantly/Smartlead, Exa, Claude Code, Cal.com. AI-native primitives.</div>
+              <span class="option-tag">Phase-appropriate</span>
+            </div>
+          </label>
+          <label class="option">
+            <input type="radio" name="stack" value="1">
+            <div class="option-content">
+              <div class="option-title">Mixed — some lean tools, some heavy enterprise platforms</div>
+              <div class="option-desc">HubSpot or Salesforce running, but mostly unused. Or Clay below 200 accounts/month.</div>
+              <span class="option-tag">Drag from oversizing</span>
+            </div>
+          </label>
+          <label class="option">
+            <input type="radio" name="stack" value="0">
+            <div class="option-content">
+              <div class="option-title">Heavy enterprise stack from day one</div>
+              <div class="option-desc">HubSpot Enterprise, Salesforce, full Clay seat, multiple agencies. Built for scale we don't have.</div>
+              <span class="option-tag">Premature scaling</span>
+            </div>
+          </label>
+        </div>
+        <div class="nav">
+          <button class="btn btn-ghost" data-action="back">← Back</button>
+          <div class="nav-spacer"></div>
+          <button class="btn btn-primary" data-action="next" disabled>Continue →</button>
+        </div>
+      </section>
+
+      <section class="step" data-step="q4">
+        <div class="step-head">
+          <span class="step-num"><strong>04</strong> / 05</span>
+          <span class="pill">Founder Mode</span>
+        </div>
+        <h2 class="step-title">
+          Could the next deal close<br>
+          <span class="gradient">without you</span> in the room?
+        </h2>
+        <p class="step-sub">
+          At Pre-Seed, you should be in every conversation — that's where learning lives. At early Seed, you
+          should be carving out a path so the first hire can carry standard motion. Most founders confuse the two.
+        </p>
+        <div class="options" data-group="founder">
+          <label class="option">
+            <input type="radio" name="founder" value="2">
+            <div class="option-content">
+              <div class="option-title">Yes — for standard motion. I only join strategic accounts</div>
+              <div class="option-desc">First hire handles discovery and inbound. I'm in for enterprise deals or champions.</div>
+              <span class="option-tag">Independence emerging</span>
+            </div>
+          </label>
+          <label class="option">
+            <input type="radio" name="founder" value="1">
+            <div class="option-content">
+              <div class="option-title">Sometimes — we're in transition, results are inconsistent</div>
+              <div class="option-desc">First hire is ramping. I keep getting pulled back in because the motion isn't documented.</div>
+              <span class="option-tag">Transition friction</span>
+            </div>
+          </label>
+          <label class="option">
+            <input type="radio" name="founder" value="0">
+            <div class="option-content">
+              <div class="option-title">Honestly no — I run every important call</div>
+              <div class="option-desc">Pipeline runs through me. Without me, momentum stops.</div>
+              <span class="option-tag">Founder is the bottleneck</span>
+            </div>
+          </label>
+        </div>
+        <div class="nav">
+          <button class="btn btn-ghost" data-action="back">← Back</button>
+          <div class="nav-spacer"></div>
+          <button class="btn btn-primary" data-action="next" disabled>Continue →</button>
+        </div>
+      </section>
+
+      <section class="step" data-step="q5">
+        <div class="step-head">
+          <span class="step-num"><strong>05</strong> / 05</span>
+          <span class="pill">PMF Reality</span>
+        </div>
+        <h2 class="step-title">
+          If you raised price 30%,<br>
+          who would <span class="gradient">aggressively churn</span>?
+        </h2>
+        <p class="step-sub">
+          The real PMF test isn't NPS or retention curves. It's pricing pain. Customers who don't push back on
+          price either love the product or aren't paying enough attention. You need to know which.
+        </p>
+        <div class="options" data-group="pmf">
+          <label class="option">
+            <input type="radio" name="pmf" value="2">
+            <div class="option-content">
+              <div class="option-title">I can name 3+ customers who'd be furious</div>
+              <div class="option-desc">They depend on the product. We've heard "this is part of how we run" from multiple.</div>
+              <span class="option-tag">PMF signal real</span>
+            </div>
+          </label>
+          <label class="option">
+            <input type="radio" name="pmf" value="1">
+            <div class="option-content">
+              <div class="option-title">Maybe one or two — and I'd have to guess on the rest</div>
+              <div class="option-desc">Some customers love it. Others tolerate it. The line isn't sharp yet.</div>
+              <span class="option-tag">Mixed signal</span>
+            </div>
+          </label>
+          <label class="option">
+            <input type="radio" name="pmf" value="0">
+            <div class="option-content">
+              <div class="option-title">Honestly — I don't know. Maybe none</div>
+              <div class="option-desc">We're still hunting for the customer that aggressively pulls us into their workflow.</div>
+              <span class="option-tag">Pre-PMF</span>
+            </div>
+          </label>
+        </div>
+        <div class="nav">
+          <button class="btn btn-ghost" data-action="back">← Back</button>
+          <div class="nav-spacer"></div>
+          <button class="btn btn-primary" data-action="next" disabled>Reveal The Score →</button>
+        </div>
+      </section>
+
+      <section class="step" data-step="result">
+        <div class="result-wrap">
+          <div class="result-content">
+            <span class="result-tag">
+              <span class="result-tag-dot"></span>
+              Pipeline Readiness Score
+            </span>
+            <div class="result-number">
+              <span id="scoreNumber">0</span><span class="max"> / 10</span>
+            </div>
+            <div class="result-tier-label" id="tierLabel">Foundation Phase</div>
+            <div class="result-tier-desc" id="tierDesc">Pre-PMF · founder-led mode</div>
+            <p class="result-diagnosis" id="diagnosis"></p>
+
+            <div class="plays" id="plays"></div>
+
+            <div class="result-cta-section">
+              <div class="result-cta-pre">Next Step · Cohort Mentor Slot</div>
+              <h3 class="result-cta-h">
+                Want a 30-min 1:1 with<br>
+                <span class="muted">a GTM operator on these specific levers?</span>
+              </h3>
+              <p class="result-cta-sub">
+                Florian Lapiz · GTM mentor for the Inovexus cohort. Same operator who ran the workshop —
+                now available for recurring sparring on whichever lever is bottlenecking your pipeline.
+              </p>
+              <a id="calendlyLink" href="https://calendly.com/florian-lapiz/inovexus-mentor" target="_blank" rel="noopener" class="btn btn-primary btn-large">
+                Book Mentor Slot →
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <details class="methodology">
+    <summary>What this measures — and what it doesn't</summary>
+    <div class="methodology-body">
+      <p>
+        <strong>Five levers, two points each, ten total.</strong> The score isn't a grade — it's a phase
+        diagnostic. Founders at the same ARR can sit in different tiers depending on how systematized
+        their motion is.
+      </p>
+      <p>
+        <strong>0–3 · Foundation Phase</strong> — pre-PMF or unclear ICP. The unlock isn't scaling outbound,
+        it's customer learning. Founder should be in every conversation, treating pipeline as research.
+      </p>
+      <p>
+        <strong>4–7 · Finding Repeatability</strong> — system is emerging but doesn't yet carry the founder.
+        Two or three levers usually decide whether the next 6 months land you at Series A or stall before it.
+      </p>
+      <p>
+        <strong>8–10 · Ready-to-Scale</strong> — repeatable motion, signal-driven outbound, lean stack,
+        first hire delivering. Now the move is vertical expansion and ROI per hour, not adding inputs.
+      </p>
+      <p>
+        <strong>What we don't claim:</strong> this is a substitute for a real GTM audit. It's a calibration —
+        same five levers from the Inovexus workshop, now self-serve. The strategic plays are operator
+        moves from real founder engagements, not templates.
+      </p>
+    </div>
+  </details>
+
+  <footer class="footer">
+    <span>Built for the Inovexus Acceleration Cohort · Pipeline Readiness Check v1</span>
+    <a href="https://inovexus.com" target="_blank" rel="noopener">inovexus.com →</a>
+  </footer>
+
+</div>
+
+<script>
+  const WEBHOOK = 'https://hook.eu1.make.com/1npebtm7jcj283enhqvmulnfxcnkhm47';
+  const CALENDLY = 'https://calendly.com/florian-lapiz/inovexus-mentor';
+  const SOURCE_TAG = 'inovexus-pipeline-readiness';
+
+  const STEPS = ['intro', 'q1', 'q2', 'q3', 'q4', 'q5', 'result'];
+  const state = {
+    current: 0,
+    icp: null, signal: null, stack: null, founder: null, pmf: null,
+  };
+
+  const stepEls = document.querySelectorAll('.step');
+  const progressFill = document.getElementById('progressFill');
+  const topbarLabel = document.getElementById('topbarLabel');
+  const scoreNumber = document.getElementById('scoreNumber');
+  const tierLabel = document.getElementById('tierLabel');
+  const tierDesc = document.getElementById('tierDesc');
+  const diagnosis = document.getElementById('diagnosis');
+  const playsEl = document.getElementById('plays');
+  const calendlyLink = document.getElementById('calendlyLink');
+  calendlyLink.href = CALENDLY;
+
+  const PLAYS = {
+    icp: {
+      kind: 'ICP Move',
+      title: 'Last-10 Audit',
+      desc: 'Print your last 10 serious conversations on one page. Cluster by industry, use case, trigger event, deal size. The biggest cluster is your real ICP. Everything else is noise pretending to be opportunity. Cut accordingly — even if it feels like throwing pipeline away.',
+      pill: '→ 1 day · solo work'
+    },
+    signal: {
+      kind: 'Demand Move',
+      title: '90-Day Trigger Map',
+      desc: 'Re-interview your last 5 customers. Ask one question: "What changed in your business in the 90 days before you reached out?" Their answers are your highest-ROI outbound trigger list. Most founders find it\'s hiring, funding, or a specific tool migration.',
+      pill: '→ This week · 5 calls'
+    },
+    stack: {
+      kind: 'Stack Move',
+      title: 'Stack Right-Sizing',
+      desc: 'Audit every paid tool. Three columns: monthly cost · actual usage hours · what breaks if you cut it. Anything under 2 hours/week of real use at Pre-Seed gets killed. Replace heavy enterprise with AI-native primitives — Attio, Instantly, Exa, Claude Code, Cal.com. Target: under €300/month total GTM stack.',
+      pill: '→ 1 day · audit + cut'
+    },
+    founder: {
+      kind: 'Founder Move',
+      title: 'Founder Mute Test',
+      desc: 'Stay silent in your next 2 customer calls unless asked directly. Watch what breaks. That\'s your real handoff gap. Fix that one thing before you hire the next AE — otherwise you\'ll just hire someone to be in the room while you still close.',
+      pill: '→ This week · 2 calls'
+    },
+    pmf: {
+      kind: 'PMF Move',
+      title: '3-Customer Pain Reset',
+      desc: 'Call your 5 best customers. One question only: "Why did you choose us over the alternative?" Listen for the three words that repeat. Those are your real value props — not what\'s on your homepage. If you can\'t identify three customers who would aggressively churn at +30% price, you don\'t have PMF yet, you have payment.',
+      pill: '→ 5 days · 1h/call'
+    }
+  };
+
+  function showStep(index) {
+    stepEls.forEach((el, i) => {
+      el.classList.remove('active', 'prev');
+      if (i === index) el.classList.add('active');
+      else if (i < index) el.classList.add('prev');
+    });
+    state.current = index;
+    updateProgress();
+    updateTopbar();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function updateProgress() {
+    const pct = (state.current / (STEPS.length - 1)) * 100;
+    progressFill.style.width = pct + '%';
+  }
+
+  function updateTopbar() {
+    const stepName = STEPS[state.current];
+    if (stepName === 'intro') topbarLabel.textContent = 'Pipeline Check · 60 sec';
+    else if (stepName === 'result') topbarLabel.textContent = 'Result';
+    else {
+      const num = STEPS.indexOf(stepName);
+      topbarLabel.textContent = `Question ${num} of 5`;
+    }
+  }
+
+  function canAdvance() {
+    const stepName = STEPS[state.current];
+    if (stepName === 'intro' || stepName === 'result') return true;
+    const map = { q1: 'icp', q2: 'signal', q3: 'stack', q4: 'founder', q5: 'pmf' };
+    if (map[stepName]) return state[map[stepName]] !== null;
+    return true;
+  }
+
+  function next() {
+    if (!canAdvance()) return;
+    const stepName = STEPS[state.current];
+    if (stepName === 'q5') { reveal(); return; }
+    if (state.current < STEPS.length - 1) showStep(state.current + 1);
+  }
+
+  function back() {
+    if (state.current > 0) showStep(state.current - 1);
+  }
+
+  document.querySelectorAll('[data-action="next"]').forEach(b => b.addEventListener('click', next));
+  document.querySelectorAll('[data-action="back"]').forEach(b => b.addEventListener('click', back));
+
+  function setupRadios(groupName, stateKey, autoStep) {
+    document.querySelectorAll(`input[name="${groupName}"]`).forEach(el => {
+      el.addEventListener('change', (e) => {
+        state[stateKey] = parseInt(e.target.value, 10);
+        const group = e.target.closest('.options');
+        group.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+        e.target.closest('.option').classList.add('selected');
+        const step = e.target.closest('.step');
+        const nextBtn = step.querySelector('[data-action="next"]');
+        if (nextBtn) nextBtn.disabled = false;
+        setTimeout(() => {
+          if (STEPS[state.current] === autoStep) next();
+        }, 450);
+      });
+    });
+  }
+  setupRadios('icp', 'icp', 'q1');
+  setupRadios('signal', 'signal', 'q2');
+  setupRadios('stack', 'stack', 'q3');
+  setupRadios('founder', 'founder', 'q4');
+  setupRadios('pmf', 'pmf', 'q5');
+
+  function calculateScore() {
+    return state.icp + state.signal + state.stack + state.founder + state.pmf;
+  }
+
+  function tierFor(score) {
+    if (score <= 3) return { label: 'Foundation Phase', desc: 'Pre-PMF · founder-led mode' };
+    if (score <= 7) return { label: 'Finding Repeatability', desc: 'System emerging · transition phase' };
+    return { label: 'Ready-to-Scale', desc: 'Repeatable motion · vertical expansion next' };
+  }
+
+  function buildDiagnosis(score) {
+    if (score <= 3) {
+      return 'You\'re in the <strong>research phase</strong>, not the scaling phase. The biggest unlock here isn\'t more outbound or better tooling — it\'s sharpening what you\'re selling and to whom. Every customer conversation is a PMF signal. Run the three plays below before you hire, scale spend, or change your stack.';
+    }
+    if (score <= 7) {
+      return 'You\'re in the <strong>tension zone</strong> between Pre-Seed and Series A. The system is starting to carry you in some places but breaks in others. The plays below target your weakest levers — fixing two or three of them is what gets you from "founder is the company" to "company runs without founder in every conversation."';
+    }
+    return 'You\'re <strong>ready to scale</strong>. Your motion is repeatable, your stack is right-sized, and your team carries standard deals. The next 6 months aren\'t about more inputs — they\'re about ROI per hour and vertical expansion. The plays below are sharpening moves for the levers you scored lowest on.';
+  }
+
+  function pickPlays() {
+    const scores = [
+      { key: 'icp', val: state.icp },
+      { key: 'signal', val: state.signal },
+      { key: 'stack', val: state.stack },
+      { key: 'founder', val: state.founder },
+      { key: 'pmf', val: state.pmf }
+    ];
+    scores.sort((a, b) => a.val - b.val);
+    return scores.slice(0, 3).map(s => ({ key: s.key, ...PLAYS[s.key] }));
+  }
+
+  function renderPlays(plays) {
+    playsEl.innerHTML = plays.map((p, i) => `
+      <div class="play ${i === 0 ? 'priority' : ''}">
+        <div class="play-kind">${p.kind}${i === 0 ? ' · Priority' : ''}</div>
+        <div class="play-title">${p.title}</div>
+        <div class="play-desc">${p.desc}</div>
+        <span class="play-pill">${p.pill}</span>
+      </div>
+    `).join('');
+  }
+
+  function animateNumber(from, to, duration, el) {
+    const start = performance.now();
+    function tick(now) {
+      const t = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - t, 3);
+      const current = Math.round(from + (to - from) * eased);
+      el.textContent = current;
+      if (t < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+
+  function reveal() {
+    const score = calculateScore();
+    const tier = tierFor(score);
+    tierLabel.textContent = tier.label;
+    tierDesc.textContent = tier.desc;
+    diagnosis.innerHTML = buildDiagnosis(score);
+    const plays = pickPlays();
+    renderPlays(plays);
+    showStep(STEPS.indexOf('result'));
+    setTimeout(() => animateNumber(0, score, 1200, scoreNumber), 500);
+
+    sendWebhook({
+      stage: 'reveal',
+      score, tier: tier.label,
+      icp: state.icp, signal: state.signal, stack: state.stack,
+      founder: state.founder, pmf: state.pmf,
+      plays: plays.map(p => p.key),
+    });
+  }
+
+  function sendWebhook(payload) {
+    fetch(WEBHOOK, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        source: SOURCE_TAG,
+        timestamp: new Date().toISOString(),
+        ...payload,
+      }),
+      mode: 'no-cors',
+    }).catch(() => {});
+  }
+
+  document.addEventListener('keydown', (e) => {
+    const tag = document.activeElement.tagName;
+    if (e.key === 'Enter' && tag !== 'BUTTON' && tag !== 'INPUT' && tag !== 'SELECT' && tag !== 'TEXTAREA') {
+      if (canAdvance()) next();
+    }
+  });
+
+  updateProgress();
+  updateTopbar();
+</script>
+
+</body>
+</html>
