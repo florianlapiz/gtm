@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>From ICP to Pipeline — Field Manual | Inovexus</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="description" content="Standalone reference manual for the From ICP to Pipeline workshop. Frameworks, plays, examples, Q&A. Built for the Inovexus cohort.">
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Saira+Condensed:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-deep: #000000;
+    --bg: #050505;
+    --surface: #0F0F0F;
+    --surface-elevated: #161616;
+    --surface-warm: #1A0F0D;
+    --border: #1F1F1F;
+    --border-mid: #2F2F2F;
+    --text: #FFFFFF;
+    --text-muted: rgba(255, 255, 255, 0.72);
+    --text-dim: rgba(255, 255, 255, 0.48);
+    --accent-orange: #FF8855;
+    --accent-pink: #FF5577;
+    --accent-magenta: #D946EF;
+    --accent-purple: #A855F7;
+    --accent-glow: rgba(217, 70, 239, 0.24);
+    --gradient-text: linear-gradient(90deg, #FFAA77 0%, #FF6B7A 35%, #D946EF 70%, #A855F7 100%);
+    --gradient-bar: linear-gradient(135deg, #FF8855 0%, #FF5577 40%, #D946EF 80%, #A855F7 100%);
+    --green: #4ADE80;
+    --red: #F87171;
+    --ease: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 17px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 70% 60% at 5% 0%, rgba(255, 136, 85, 0.30) 0%, transparent 55%),
+      radial-gradient(ellipse 60% 55% at 30% 25%, rgba(255, 85, 119, 0.22) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 100% 100%, rgba(168, 85, 247, 0.22) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 45% at 75% 70%, rgba(217, 70, 239, 0.16) 0%, transparent 55%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 24px 32px 80px;
+  }
+
+  /* TOPBAR */
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 64px;
+  }
+  .brand { display: flex; align-items: center; gap: 16px; }
+  .brand img { height: 22px; display: block; }
+  .brand-sep {
+    width: 1px;
+    height: 16px;
+    background: rgba(255, 255, 255, 0.2);
+  }
+  .brand-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+
+  /* HERO */
+  .hero {
+    margin-bottom: 80px;
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(217, 70, 239, 0.35);
+    border-radius: 100px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent-orange);
+    margin-bottom: 28px;
+  }
+  .hero-badge-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent-magenta);
+    box-shadow: 0 0 12px var(--accent-magenta);
+  }
+  .hero-title {
+    font-family: 'Inter', sans-serif;
+    font-weight: 900;
+    font-size: clamp(48px, 8vw, 84px);
+    line-height: 0.98;
+    letter-spacing: -0.035em;
+    margin-bottom: 28px;
+  }
+  .hero-title .gradient {
+    background: var(--gradient-text);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-sub {
+    font-size: 19px;
+    line-height: 1.55;
+    color: var(--text-muted);
+    max-width: 680px;
+    margin-bottom: 40px;
+  }
+  .hero-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    color: var(--text-dim);
+  }
+  .hero-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .hero-meta-item::before {
+    content: '';
+    width: 14px;
+    height: 1px;
+    background: var(--accent-orange);
+  }
+
+  /* TOC */
+  .toc {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 28px 32px;
+    margin-bottom: 72px;
+  }
+  .toc-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 18px;
+  }
+  .toc-list {
+    list-style: none;
+    counter-reset: toc;
+  }
+  .toc-list li {
+    counter-increment: toc;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  .toc-list li:last-child { border-bottom: none; }
+  .toc-list a {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    color: var(--text);
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+    transition: color 0.2s var(--ease);
+  }
+  .toc-list a::before {
+    content: counter(toc, decimal-leading-zero);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--text-dim);
+    min-width: 32px;
+  }
+  .toc-list a:hover { color: var(--accent-orange); }
+
+  /* SECTIONS */
+  section {
+    margin-bottom: 80px;
+    scroll-margin-top: 24px;
+  }
+  .section-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent-orange);
+    margin-bottom: 16px;
+  }
+  h2 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
+    font-size: clamp(34px, 5vw, 48px);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    margin-bottom: 16px;
+  }
+  h2 .gradient {
+    background: var(--gradient-text);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .section-intro {
+    font-size: 18px;
+    color: var(--text-muted);
+    margin-bottom: 40px;
+    max-width: 700px;
+  }
+
+  h3 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 1.25;
+    letter-spacing: -0.015em;
+    margin: 48px 0 16px;
+    color: var(--text);
+  }
+  h3 .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    color: var(--accent-orange);
+    margin-right: 12px;
+    font-weight: 600;
+  }
+  h4 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 17px;
+    color: var(--accent-orange);
+    margin: 28px 0 12px;
+    letter-spacing: -0.005em;
+  }
+
+  p {
+    color: var(--text-muted);
+    margin-bottom: 16px;
+    max-width: 720px;
+  }
+  p strong { color: var(--text); font-weight: 600; }
+
+  ul, ol {
+    color: var(--text-muted);
+    padding-left: 0;
+    list-style: none;
+    margin-bottom: 16px;
+  }
+  ul li, ol li {
+    position: relative;
+    padding-left: 22px;
+    margin-bottom: 10px;
+    max-width: 720px;
+  }
+  ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    width: 8px;
+    height: 1px;
+    background: var(--accent-orange);
+  }
+  ol { counter-reset: list; }
+  ol li::before {
+    content: counter(list) '.';
+    counter-increment: list;
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: var(--accent-orange);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  li strong { color: var(--text); font-weight: 600; }
+
+  /* EXAMPLE BOXES */
+  .example {
+    margin: 20px 0;
+    padding: 22px 26px;
+    border-radius: 14px;
+    border: 1px solid var(--border-mid);
+    background: var(--surface);
+  }
+  .example.weak {
+    border-color: rgba(248, 113, 113, 0.3);
+    background: rgba(248, 113, 113, 0.04);
+  }
+  .example.strong {
+    border-color: rgba(74, 222, 128, 0.3);
+    background: rgba(74, 222, 128, 0.05);
+  }
+  .example-label {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  .example.weak .example-label { color: var(--red); }
+  .example.strong .example-label { color: var(--green); }
+  .example p {
+    color: var(--text);
+    font-size: 15px;
+    margin-bottom: 0;
+    font-style: italic;
+    line-height: 1.6;
+  }
+
+  /* CALLOUT */
+  .callout {
+    margin: 28px 0;
+    padding: 26px 30px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, rgba(255, 136, 85, 0.08) 0%, rgba(217, 70, 239, 0.08) 100%);
+    border: 1px solid rgba(217, 70, 239, 0.25);
+    position: relative;
+  }
+  .callout-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent-magenta);
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+  .callout p:last-child { margin-bottom: 0; }
+  .callout p { color: var(--text); }
+
+  /* CODE-LIKE EMAIL EXAMPLE */
+  .email-frame {
+    margin: 20px 0;
+    padding: 22px 24px;
+    background: #0A0A0A;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13.5px;
+    line-height: 1.65;
+    color: var(--text);
+  }
+  .email-frame .field {
+    color: var(--text-dim);
+    margin-bottom: 4px;
+  }
+  .email-frame .body {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 14.5px;
+    line-height: 1.65;
+    font-style: italic;
+  }
+
+  /* TIMELINE / STEPS */
+  .steps {
+    margin: 28px 0;
+    counter-reset: step;
+  }
+  .step {
+    position: relative;
+    padding: 22px 26px 22px 76px;
+    border-radius: 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    margin-bottom: 14px;
+    counter-increment: step;
+  }
+  .step::before {
+    content: counter(step, decimal-leading-zero);
+    position: absolute;
+    left: 24px;
+    top: 22px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent-orange);
+    background: rgba(255, 136, 85, 0.08);
+    border: 1px solid rgba(255, 136, 85, 0.3);
+    border-radius: 8px;
+    padding: 4px 10px;
+  }
+  .step h5 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 6px;
+    letter-spacing: -0.005em;
+  }
+  .step p {
+    margin-bottom: 0;
+    font-size: 14.5px;
+    color: var(--text-muted);
+  }
+
+  /* TABLE */
+  .table-wrap {
+    overflow-x: auto;
+    margin: 24px 0;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  th, td {
+    text-align: left;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+  th {
+    background: var(--surface);
+    color: var(--accent-orange);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  td { color: var(--text-muted); }
+  td strong { color: var(--text); font-weight: 600; }
+  tr:last-child td { border-bottom: none; }
+
+  /* STACK FLOW */
+  .stack-flow {
+    margin: 24px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  .stack-node {
+    width: 100%;
+    max-width: 420px;
+    padding: 16px 24px;
+    background: var(--surface);
+    border: 1px solid var(--border-mid);
+    border-radius: 12px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+  }
+  .stack-node strong { color: var(--accent-orange); font-weight: 700; }
+  .stack-arrow {
+    color: var(--text-dim);
+    font-size: 14px;
+  }
+
+  /* CARDS (Q&A, takeaways) */
+  .cards {
+    display: grid;
+    gap: 16px;
+    margin: 24px 0;
+  }
+  .cards.two { grid-template-columns: repeat(2, 1fr); }
+  @media (max-width: 700px) { .cards.two { grid-template-columns: 1fr; } }
+  .card-item {
+    padding: 24px 26px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+  }
+  .card-item.priority {
+    background: rgba(217, 70, 239, 0.05);
+    border-color: rgba(217, 70, 239, 0.25);
+  }
+  .card-tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent-orange);
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+  .card-item h5 {
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    letter-spacing: -0.005em;
+    color: var(--text);
+  }
+  .card-item p {
+    font-size: 14px;
+    margin-bottom: 0;
+    line-height: 1.6;
+  }
+
+  /* CTA */
+  .cta-section {
+    margin: 80px 0 40px;
+    padding: 56px 48px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 0% 0%, rgba(255, 136, 85, 0.12) 0%, transparent 55%),
+      radial-gradient(ellipse 60% 50% at 100% 100%, rgba(217, 70, 239, 0.10) 0%, transparent 55%);
+    pointer-events: none;
+  }
+  .cta-content { position: relative; z-index: 1; }
+  .cta-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent-orange);
+    margin-bottom: 16px;
+  }
+  .cta-section h3 {
+    margin-top: 0;
+    font-size: clamp(28px, 4vw, 38px);
+    line-height: 1.15;
+    margin-bottom: 18px;
+  }
+  .cta-section h3 .gradient {
+    background: var(--gradient-text);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .cta-section p {
+    font-size: 16px;
+    max-width: 580px;
+    margin-bottom: 28px;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 20px 40px;
+    background: #FFFFFF;
+    color: #000000;
+    border: 1px solid #FFFFFF;
+    border-radius: 100px;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: -0.005em;
+    cursor: pointer;
+    transition: all 0.2s var(--ease);
+    text-decoration: none;
+  }
+  .btn:hover {
+    transform: translateY(-1px);
+    background: rgba(255, 255, 255, 0.92);
+  }
+
+  /* FOOTER */
+  .footer {
+    margin-top: 80px;
+    padding: 32px 0;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--text-dim);
+  }
+  .footer a {
+    color: var(--text);
+    text-decoration: none;
+  }
+  .footer a:hover { text-decoration: underline; }
+
+  @media (max-width: 700px) {
+    .container { padding: 16px 20px 60px; }
+    .topbar { margin-bottom: 40px; padding: 14px 0; }
+    .hero { margin-bottom: 56px; }
+    .hero-title { font-size: 44px; }
+    .hero-sub { font-size: 16px; }
+    .hero-meta { gap: 14px; font-size: 11px; }
+    .toc { padding: 22px 22px; margin-bottom: 48px; }
+    section { margin-bottom: 56px; }
+    h2 { font-size: 32px; }
+    h3 { font-size: 22px; margin-top: 36px; }
+    .step { padding: 20px 22px 20px 70px; }
+    .cta-section { padding: 36px 24px; margin: 56px 0 24px; border-radius: 18px; }
+    .cta-section h3 { font-size: 26px; }
+    .btn { padding: 18px 32px; font-size: 14px; }
+    th, td { padding: 12px 14px; font-size: 13px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <header class="topbar">
+    <div class="brand">
+      <img src="assets/inovexus-logo-white.svg" alt="Inovexus">
+      <div class="brand-sep"></div>
+      <span class="brand-meta">Field Manual</span>
+    </div>
+    <span class="brand-meta">v1 · Cohort Reference</span>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-badge">
+      <span class="hero-badge-dot"></span>
+      Workshop Reference · Inovexus Cohort
+    </div>
+    <h1 class="hero-title">
+      From ICP<br>
+      to <span class="gradient">Pipeline</span>.
+    </h1>
+    <p class="hero-sub">
+      The full operator manual from the workshop — frameworks, plays, examples, Q&amp;A.
+      Built to be re-readable. Built to be acted on. The same material we ran live,
+      now self-serve whenever a lever is bottlenecking your pipeline.
+    </p>
+    <div class="hero-meta">
+      <span class="hero-meta-item">Read time · 22 min</span>
+      <span class="hero-meta-item">Five frameworks</span>
+      <span class="hero-meta-item">For Pre-Seed &amp; Seed B2B SaaS</span>
+    </div>
+  </section>
+
+  <!-- TOC -->
+  <nav class="toc">
+    <div class="toc-label">Contents</div>
+    <ul class="toc-list">
+      <li><a href="#thesis">The Core Thesis</a></li>
+      <li><a href="#problem-space">Problem Space Before Outbound</a></li>
+      <li><a href="#relevance">Relevance Over Personalization</a></li>
+      <li><a href="#copywriting">Pain-First Copywriting</a></li>
+      <li><a href="#stack">Minimal Viable Outbound Stack</a></li>
+      <li><a href="#live-build">The Live Build Method</a></li>
+      <li><a href="#qa">Operator Q&amp;A</a></li>
+      <li><a href="#takeaways">Five Takeaways</a></li>
+      <li><a href="#matrix">Why This Combination Works</a></li>
+    </ul>
+  </nav>
+
+  <!-- CORE THESIS -->
+  <section id="thesis">
+    <div class="section-tag">Opening</div>
+    <h2>The Core <span class="gradient">Thesis</span></h2>
+    <p class="section-intro">
+      Most outbound campaigns don't fail because of bad tools or poor deliverability. They fail because
+      the sender doesn't truly understand the customer's problem. The fix is sequence, not volume.
+    </p>
+
+    <p>
+      Great outbound results don't come from <strong>more emails</strong> or <strong>better tools</strong>.
+      They come from three things, in this exact order:
+    </p>
+
+    <ol>
+      <li><strong>Deep problem understanding</strong> — the four layers of customer pain, the workaround test, the value proposition that holds up under pressure.</li>
+      <li><strong>Relevant messaging</strong> — emails that could only have been sent to that one person, built on signals the recipient knows are real.</li>
+      <li><strong>Targeted automation</strong> — a lean stack that scales research and personalization, not spam.</li>
+    </ol>
+
+    <p>
+      In that sequence. Skip the first step and the rest is wasted effort. This manual walks each
+      layer with frameworks, examples, and the operator moves you can run this week.
+    </p>
+
+    <div class="callout">
+      <div class="callout-label">The Sequence</div>
+      <p>Problem &rarr; Relevance &rarr; Automation. Reverse the order and you get a tool stack that produces spam at scale. Most founders get this wrong.</p>
+    </div>
+  </section>
+
+  <!-- PROBLEM SPACE -->
+  <section id="problem-space">
+    <div class="section-tag">Part 1 · Block A</div>
+    <h2>Problem Space <span class="gradient">Before</span> Outbound</h2>
+    <p class="section-intro">
+      Before writing a single outbound email, you need to understand your customer's problem across
+      four layers. Most campaigns fail here — not at the tool level.
+    </p>
+
+    <h3><span class="num">1.1</span>The Four Layers of Customer Pain</h3>
+    <p>Adapted from Maja Voje's GTM Strategist framework. Every real B2B pain sits across all four layers — and effective outbound names at least two of them in the first two sentences.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Layer</th><th>What it asks</th><th>Example — HR-Tech SaaS</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Functional</strong></td><td>What's broken, slow, manual?</td><td>"We track applicants in Excel, candidates fall through the cracks."</td></tr>
+          <tr><td><strong>Emotional</strong></td><td>What frustrates or scares them?</td><td>"I'm worried we're losing top talent to faster competitors."</td></tr>
+          <tr><td><strong>Social</strong></td><td>How do they look to boss/board/peers?</td><td>"My CEO asks every week why positions aren't filled."</td></tr>
+          <tr><td><strong>Financial</strong></td><td>Where's money being burned?</td><td>"Each open role costs us €3k/month in lost productivity."</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>An email that only hits the functional layer ("we automate your recruiting") gets ignored. An email that hits emotional + financial ("you're losing €9k/month on 3 open roles, and top candidates go to competitors because your process is too slow") gets replies.</p>
+
+    <h3><span class="num">1.2</span>The Workaround Test</h3>
+    <p>Ask one question: <strong>"What's the worst workaround your target customer uses today?"</strong></p>
+    <p>If the answer is "Excel spreadsheet", "manually by email", "nothing", or "an intern handles it" — you've found a real problem. The worse the current workaround, the higher the willingness to pay. If there's no workaround at all, the problem doesn't exist.</p>
+
+    <h3><span class="num">1.3</span>The Value Proposition Bridge</h3>
+    <p>Before outbound makes sense, this bridge has to hold:</p>
+
+    <div class="cards two">
+      <div class="card-item">
+        <div class="card-tag">Customer Profile</div>
+        <h5>What they live with</h5>
+        <p><strong>Jobs:</strong> What are they trying to accomplish?<br>
+        <strong>Pains:</strong> What makes those jobs hard?<br>
+        <strong>Gains:</strong> What outcome would delight them?</p>
+      </div>
+      <div class="card-item">
+        <div class="card-tag">Your Value Map</div>
+        <h5>What you offer</h5>
+        <p><strong>Products:</strong> What do you sell?<br>
+        <strong>Pain Relievers:</strong> How do you reduce specific pains?<br>
+        <strong>Gain Creators:</strong> How do you create specific gains?</p>
+      </div>
+    </div>
+
+    <p>If you can't name a <strong>specific customer pain</strong> for each pain reliever — you lack clarity. No tool can fix that.</p>
+
+    <h3><span class="num">1.4</span>The Three-Sentence Test</h3>
+    <p>Can you answer each of these in one sentence?</p>
+    <ul>
+      <li><strong>Who</strong> exactly is your customer? (Not "all B2B companies")</li>
+      <li><strong>What problem</strong> do you solve? (In customer language, not feature language)</li>
+      <li><strong>Why you</strong> vs. alternatives? (Including the alternative of doing nothing)</li>
+    </ul>
+    <p>If you can't, research is your next step, not campaigns.</p>
+  </section>
+
+  <!-- RELEVANCE -->
+  <section id="relevance">
+    <div class="section-tag">Part 1 · Block B</div>
+    <h2>Relevance Over <span class="gradient">Personalization</span></h2>
+    <p class="section-intro">
+      Most outbound guides say "personalize your emails." That advice produces emails like
+      "I saw your LinkedIn post." Crawford's counter-thesis: relevance beats personalization.
+      Every time.
+    </p>
+
+    <h3><span class="num">2.1</span>The Difference in Practice</h3>
+
+    <div class="example weak">
+      <div class="example-label">Personalized · weak</div>
+      <p>"Hi Thomas, I noticed you work at Company X and your LinkedIn post about AI was really interesting. We help SaaS companies with lead generation…"</p>
+    </div>
+    <p>The recipient thinks: <em>they Googled my name. So what.</em></p>
+
+    <div class="example strong">
+      <div class="example-label">Relevant · strong</div>
+      <p>"Thomas, you have 3 open SDR roles on your careers page. That means your outbound needs to scale — but new SDRs take 3–6 months to ramp. What if you could get the pipeline output of a 3-person SDR team in 2 weeks, without hiring anyone?"</p>
+    </div>
+    <p>The second email proves you researched the company and understand what's happening right now. You're talking about <em>their</em> problem, not <em>your</em> product.</p>
+
+    <h3><span class="num">2.2</span>Micro-Campaigns — Quality Over Volume</h3>
+    <p>Crawford's rule: <strong>50 deeply researched accounts beat 5,000 generic contacts.</strong></p>
+    <ul>
+      <li>5,000-contact campaigns force generic messaging ("one size fits all")</li>
+      <li>50-contact campaigns allow account-specific research</li>
+      <li>Reply rate for a 50-account micro-campaign: typically 8–15%</li>
+      <li>Reply rate for a 5,000-contact spray-and-pray: 1–2%</li>
+      <li>50 × 12% = 6 real conversations. That's all a seed-stage startup needs.</li>
+    </ul>
+
+    <h3><span class="num">2.3</span>Creative Data Sources</h3>
+    <p>This is where Clay (or Exa, Apollo, your equivalent) becomes a lever. Not as an email finder, but as a research engine.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Data Source</th><th>What It Reveals</th><th>Outbound Angle</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Job Postings</strong></td><td>Who's hiring = has a problem + budget</td><td>"You're hiring a Head of Sales — sales is top priority right now."</td></tr>
+          <tr><td><strong>Tech Stack</strong></td><td>Which tools they already use</td><td>"You use HubSpot but no outbound tool — does that mean inbound alone isn't enough anymore?"</td></tr>
+          <tr><td><strong>Website Scraping</strong></td><td>Positioning, messaging, target audience</td><td>"Your website targets Enterprise, but your team has 12 people — how do you scale sales?"</td></tr>
+          <tr><td><strong>Funding Data</strong></td><td>Just raised = budget + pressure to grow</td><td>"Congrats on the Series A — the clock is ticking. What's the pipeline plan for Q3?"</td></tr>
+          <tr><td><strong>G2 / Capterra Reviews</strong></td><td>What customers say about competitors</td><td>"The #1 complaint about [competitor] is X — that's exactly what we do differently."</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3><span class="num">2.4</span>AI Research Agent — The Force Multiplier</h3>
+    <p>The most powerful pattern for micro-campaigns: let an AI agent run a mini-analysis per account.</p>
+    <ul>
+      <li><strong>Input:</strong> Website, job postings, company data, news</li>
+      <li><strong>Prompt:</strong> "What's the most likely problem this company has in the area of [your topic]? Formulate a hypothesis in 2 sentences."</li>
+      <li><strong>Output:</strong> An account-specific hypothesis you embed directly in the email</li>
+    </ul>
+    <p>This is where automation and relevance converge. You're no longer writing generically, but you're also not spending 30 minutes per account on manual research.</p>
+  </section>
+
+  <!-- COPYWRITING -->
+  <section id="copywriting">
+    <div class="section-tag">Part 1 · Block C</div>
+    <h2>Pain-First <span class="gradient">Copywriting</span></h2>
+    <p class="section-intro">
+      Most cold emails follow this pattern: "We are Company X. We do Y. Our features are Z. Want to chat?"
+      That's a pitch. Nobody replies to pitches from strangers. The Pain-First framework reverses it.
+    </p>
+
+    <h3><span class="num">3.1</span>The Four-Sentence Framework</h3>
+
+    <div class="steps">
+      <div class="step">
+        <h5>Name the Problem</h5>
+        <p>Show you understand what's happening at their company. Use real data.<br><em>"You have 3 open SDR roles that have been posted for 6 weeks."</em></p>
+      </div>
+      <div class="step">
+        <h5>Show the Implication</h5>
+        <p>What does this problem mean for them? Make the pain concrete.<br><em>"That means your pipeline isn't growing, while your burn rate keeps running."</em></p>
+      </div>
+      <div class="step">
+        <h5>Hint at the Solution</h5>
+        <p>No feature list. Only the outcome.<br><em>"We helped [similar company] build the pipeline of a 3-person SDR team in 3 weeks — without hiring anyone."</em></p>
+      </div>
+      <div class="step">
+        <h5>Soft CTA</h5>
+        <p>Not "can we jump on a call?" — too much commitment.<br><em>"Would it make sense for me to show you how that looks?"</em></p>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="callout-label">The Constraint</div>
+      <p>Total email: <strong>4 sentences. Under 80 words.</strong> No attachments. No HTML. No tracking pixels. No images.</p>
+    </div>
+
+    <h3><span class="num">3.2</span>Three Copywriting Rules for Founders</h3>
+    <ol>
+      <li><strong>Write like a human, not a marketer.</strong> No buzzwords, no corporate-speak. Imagine you're writing a text to an acquaintance who happens to fit your ICP.</li>
+      <li><strong>One idea per email.</strong> Don't cram three value props into one message. One hypothesis, one pain, one question.</li>
+      <li><strong>Subject lines: short, lowercase, specific.</strong> "quick question about your sales team" beats "Revolutionize Your Sales Pipeline with AI-Powered Automation" every single time.</li>
+    </ol>
+
+    <h3><span class="num">3.3</span>A Working Example, End-to-End</h3>
+    <p>Here's how the framework comes together on a real send:</p>
+
+    <div class="email-frame">
+      <div class="field"><strong>From:</strong> florian@yourcompany.io</div>
+      <div class="field"><strong>To:</strong> thomas@targetcompany.com</div>
+      <div class="field"><strong>Subject:</strong> 3 open SDR roles → 6 weeks</div>
+      <div class="body">
+        Thomas,<br><br>
+        Noticed you've had 3 SDR roles posted for ~6 weeks.<br><br>
+        At your stage that usually means pipeline coverage is slipping while burn keeps running — and new hires need 3–6 months to ramp anyway.<br><br>
+        We helped Hive get the output of a 3-person SDR team in 3 weeks, without hiring anyone.<br><br>
+        Worth a 10-min look to see if it'd map to your setup?<br><br>
+        — Florian
+      </div>
+    </div>
+
+    <p>Five sentences, 73 words. Plain text. One hypothesis, one number, one soft CTA. Could only be sent to Thomas — not to 500 other people.</p>
+  </section>
+
+  <!-- STACK -->
+  <section id="stack">
+    <div class="section-tag">Part 1 · Block D</div>
+    <h2>Minimal Viable <span class="gradient">Outbound Stack</span></h2>
+    <p class="section-intro">
+      A €1k/month HubSpot Enterprise setup at Pre-Seed is a slow death. So is a Clay subscription
+      before 200 accounts/month. The right stack at the right phase is leverage. The wrong one is
+      friction with a price tag.
+    </p>
+
+    <h3><span class="num">4.1</span>The Seed-Stage Stack</h3>
+
+    <div class="stack-flow">
+      <div class="stack-node"><strong>Clay / Exa</strong> — Research &amp; Enrichment</div>
+      <div class="stack-arrow">↓</div>
+      <div class="stack-node"><strong>Instantly</strong> — Email Sending &amp; Warm-up</div>
+      <div class="stack-arrow">↓</div>
+      <div class="stack-node"><strong>Claude / GPT</strong> — Personalization &amp; Copy</div>
+      <div class="stack-arrow">↓</div>
+      <div class="stack-node"><strong>Attio / Folk / Notion</strong> — Lightweight Tracking</div>
+      <div class="stack-arrow">↓</div>
+      <div class="stack-node"><strong>Cal.com / Calendly</strong> — Scheduling</div>
+    </div>
+    <p>That's it. No Salesloft, no Outreach, no 8-tool stack. Total monthly cost: <strong>€200–300</strong>.</p>
+
+    <h3><span class="num">4.2</span>Technical Basics You Can't Skip</h3>
+    <ul>
+      <li><strong>Burner domains.</strong> Never send from your main domain. A blocked domain = all your email traffic compromised. Buy 2–3 similar look-alike domains.</li>
+      <li><strong>Warm-up.</strong> New domains need 2–3 weeks of warm-up before you can send real outreach. Instantly handles this automatically. Don't skip it.</li>
+      <li><strong>Volume.</strong> Start with max 25–30 emails per day per mailbox. Not 200 on day one — that's the fastest way to land in spam permanently.</li>
+      <li><strong>Verification.</strong> Verify every email address before sending. Bounce rate above 3% = domain reputation destroyed.</li>
+    </ul>
+
+    <h3><span class="num">4.3</span>The Mission-Critical Filter</h3>
+    <p>For every new tool, every new tactic, every new channel — ask three questions:</p>
+    <ol>
+      <li>Does this directly move me toward my next milestone?</li>
+      <li>Is there evidence this works in my specific market?</li>
+      <li>Can I execute this well with my current resources?</li>
+    </ol>
+    <p>If not 3 of 3, it's a distraction, not a priority.</p>
+
+    <div class="callout">
+      <div class="callout-label">Distraction Hit List for Seed-Stage Founders</div>
+      <p>Redesigning the logo again. Perfecting the website before talking to customers. Building features nobody asked for. Attending conferences without a plan. Evaluating a 3rd tool instead of starting with the 1st.</p>
+    </div>
+  </section>
+
+  <!-- LIVE BUILD -->
+  <section id="live-build">
+    <div class="section-tag">Part 2</div>
+    <h2>The Live Build <span class="gradient">Method</span></h2>
+    <p class="section-intro">
+      How to take one real target account from blank page to relevant cold email in under 15 minutes.
+      The method we ran live in the workshop, now broken down step by step.
+    </p>
+
+    <div class="steps">
+      <div class="step">
+        <h5>Problem Check (2 min)</h5>
+        <p>Describe your best customer in 2 sentences. What's their biggest problem — in their words, not yours? What do they do today instead? (Workaround Test.) If you can't answer clearly, the tools won't save you. Stop and do customer interviews first.</p>
+      </div>
+      <div class="step">
+        <h5>Account Research (3 min)</h5>
+        <p>Enrich the target company's website. Pull job postings — what are they hiring for? What does that reveal about priorities? Check the tech stack. Run the AI agent: "What's the most likely problem this company has, based on this data?"</p>
+      </div>
+      <div class="step">
+        <h5>Draft the Email (3 min)</h5>
+        <p>Apply the Pain-First framework. Problem &rarr; Implication &rarr; Solution &rarr; Soft CTA. Goal: an email that <em>could only be sent to this one company</em>. Then craft the subject line.</p>
+      </div>
+      <div class="step">
+        <h5>The Crawford Check (2 min)</h5>
+        <p>Read your draft. Ask: "Could this email be sent to 500 other companies?" If yes, it's not good enough. Rewrite the first sentence until it names something only that one company could recognize as theirs.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Q&A -->
+  <section id="qa">
+    <div class="section-tag">Operator Q&amp;A</div>
+    <h2>The Hard <span class="gradient">Questions</span></h2>
+    <p class="section-intro">
+      The four questions that come up after every workshop. Each one with a 90-second answer
+      and the anti-rule that goes with it.
+    </p>
+
+    <h3><span class="num">Q1</span>What does the actual Founder-GTM stack cost?</h3>
+    <p><strong>Answer:</strong> €200–250/month, six layers, AI-native primitives over legacy SaaS.</p>
+    <ul>
+      <li><strong>CRM:</strong> Attio</li>
+      <li><strong>Sequencing:</strong> Instantly</li>
+      <li><strong>Research + Workflows:</strong> Claude Code</li>
+      <li><strong>Signal Discovery:</strong> Exa.ai</li>
+      <li><strong>Meeting Capture:</strong> Fireflies + Plaud</li>
+      <li><strong>Scheduling:</strong> Cal.com</li>
+    </ul>
+    <p><strong>Anti-rule:</strong> Don't set up HubSpot Enterprise at Seed. Don't use Clay below 200 accounts/month. The stack optimizes for leverage per hour, not scale.</p>
+
+    <h3><span class="num">Q2</span>What about AI SDRs — do they replace this?</h3>
+    <p><strong>Short answer:</strong> Not yet, and maybe not soon.</p>
+    <ul>
+      <li>What AI SDRs do well: high-volume, low-personalization, top-of-funnel.</li>
+      <li>What they don't do well yet: signal-stacking, hyper-relevance, multi-threading. The quality is still below what a human with good tooling produces.</li>
+      <li>The bet: AI SDRs replace the bottom 30% of outbound work (volume scoring, basic personalization) in 2026. The top 70% — the signal-driven, champion-hypothesis, multi-threading work — stays human-driven with AI augmentation for another 2–3 years.</li>
+    </ul>
+    <p><strong>Anti-rule:</strong> Don't automate sales. Automate the research, qualification, and signal-monitoring that feeds sales. Sales itself is still a human game at your stage.</p>
+
+    <h3><span class="num">Q3</span>How do I sell Enterprise at Seed without case studies?</h3>
+    <p><strong>Reframe:</strong> At Seed, Enterprise isn't a sales motion. It's a design-partnership motion that becomes sales in Month 7.</p>
+    <div class="steps">
+      <div class="step">
+        <h5>Phase 1 · Months 1–3</h5>
+        <p>Sign 3 design partners at 50% off, 12-month commitment. R&amp;D with revenue. Pitch: "Build this with us. Shape the roadmap. 50% off for 12 months. You get influence, we get proof."</p>
+      </div>
+      <div class="step">
+        <h5>Phase 2 · Months 4–6</h5>
+        <p>Deploy, document objections, turn into case studies and security docs. Make the asks you couldn't make in Phase 1.</p>
+      </div>
+      <div class="step">
+        <h5>Phase 3 · Month 7+</h5>
+        <p>Now run systematic Enterprise outbound with assets in hand. Pricing tiers 3–5x SMB. SOC2 (Type I min, Type II roadmap), SSO, DPA, data residency story.</p>
+      </div>
+    </div>
+    <p><strong>Anti-rule:</strong> Running Enterprise sales in Phase 1 without case studies or security docs. Deals die at procurement.</p>
+
+    <h3><span class="num">Q4</span>When do I hire my first GTM person?</h3>
+    <p><strong>Rule:</strong> Hire for the motion you've already proven, not the one you want to scale into.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Stage</th><th>ARR</th><th>First Hire</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>0–10 customers</td><td>€0–500k</td><td>Founder only. No agencies. Learn personally.</td></tr>
+          <tr><td>10–30 customers</td><td>€500k–1.5M</td><td>SDR (Business Buyer) <em>or</em> Content Marketer (Technical Buyer)</td></tr>
+          <tr><td>30–80 customers</td><td>€1.5M–4M</td><td>First AE + full-time SDR. Founder steps out of &lt;€25k deals.</td></tr>
+          <tr><td>80+ customers</td><td>€4M+</td><td>Head of Sales (NOT VP), Marketing Manager FTE, 2–3 SDRs, first CS.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p><strong>Anti-rule:</strong> Hiring a VP Sales before €3–5M ARR. VPs are multipliers, not pioneers. Hire a senior AE with hunter mentality instead.</p>
+  </section>
+
+  <!-- TAKEAWAYS -->
+  <section id="takeaways">
+    <div class="section-tag">Walkaway</div>
+    <h2>Five <span class="gradient">Takeaways</span></h2>
+    <p class="section-intro">
+      The whole manual compresses into these five rules. Each one actionable this week.
+    </p>
+
+    <div class="cards two">
+      <div class="card-item">
+        <div class="card-tag">Rule 01</div>
+        <h5>Problem First, Tool Second</h5>
+        <p>Understand your customer's problem across all four layers before you touch a tool. If you can't describe their pain in their words, no outbound will work.</p>
+      </div>
+      <div class="card-item">
+        <div class="card-tag">Rule 02</div>
+        <h5>Relevance > Personalization</h5>
+        <p>Show you understand their business, not that you can Google their name. Write emails that could only be sent to that one person.</p>
+      </div>
+      <div class="card-item">
+        <div class="card-tag">Rule 03</div>
+        <h5>50 Right > 5,000 Wrong</h5>
+        <p>Micro-campaigns with deep research beat spray-and-pray every time. You need 5–10 real conversations, not 75 unsubscribe replies.</p>
+      </div>
+      <div class="card-item">
+        <div class="card-tag">Rule 04</div>
+        <h5>Pain-First Copywriting</h5>
+        <p>Problem → Implication → Solution → Soft CTA. Four sentences, under 80 words. Plain text. One idea per email.</p>
+      </div>
+      <div class="card-item priority">
+        <div class="card-tag">Rule 05 · Priority</div>
+        <h5>Mission-Critical Focus</h5>
+        <p>One ICP, one channel, one campaign. Measure. Learn. Then scale. Not 5 channels at once. Not 5 segments at once. Not 5 messages at once.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- MATRIX -->
+  <section id="matrix">
+    <div class="section-tag">Strategic Rationale</div>
+    <h2>Why This Combination <span class="gradient">Works</span></h2>
+    <p class="section-intro">
+      Each framework solves a specific failure mode. Together they cover the full outbound journey
+      from blank page to replied conversation.
+    </p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Framework</th><th>Solves This Problem</th><th>Where in Manual</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Problem Space Deep Dive</strong></td><td>"I don't know what to say"</td><td>Section 2</td></tr>
+          <tr><td><strong>Value Proposition Bridge</strong></td><td>"I can't explain why we're different"</td><td>Section 2.3 + 2.4</td></tr>
+          <tr><td><strong>Crawford Relevance Principle</strong></td><td>"My emails sound generic"</td><td>Section 3.1</td></tr>
+          <tr><td><strong>Creative Data Sources</strong></td><td>"I don't have data for good emails"</td><td>Section 3.3</td></tr>
+          <tr><td><strong>Micro-Campaign Rule</strong></td><td>"Should I send 5,000 emails?"</td><td>Section 3.2 + Takeaway 03</td></tr>
+          <tr><td><strong>Pain-First Copywriting</strong></td><td>"My emails sound like a pitch"</td><td>Section 4</td></tr>
+          <tr><td><strong>Minimal Stack</strong></td><td>"I'm wasting money on tools"</td><td>Section 5</td></tr>
+          <tr><td><strong>Mission-Critical Filter</strong></td><td>"I'm doing too much at once"</td><td>Section 5.3 + Takeaway 05</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout">
+      <div class="callout-label">The One Idea</div>
+      <p>Great outbound results come from <strong>deep problem understanding</strong>, <strong>relevant messaging</strong>, and <strong>targeted automation</strong> — in that exact order. Reverse the sequence and you get a tool stack that scales spam.</p>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section" id="cta">
+    <div class="cta-content">
+      <div class="cta-label">Next Step · Cohort Mentor Slot</div>
+      <h3>
+        Got a lever that's still <span class="gradient">bottlenecking</span> your pipeline?
+      </h3>
+      <p>
+        30 minutes, 1:1. Same operator who ran the workshop — now available for recurring sparring
+        on whichever framework above is the one you can't move on your own. Inovexus cohort, no charge.
+      </p>
+      <a href="https://calendly.com/florian-lapiz/diagnose" target="_blank" rel="noopener" class="btn">
+        Book Mentor Slot →
+      </a>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>From ICP to Pipeline · Field Manual v1 · Built by Florian Lapiz for the Inovexus cohort</p>
+    <p style="margin-top: 8px;">
+      Frameworks: GTM Strategist (Maja Voje), Blueprint (Jordan Crawford) · Tools referenced: Clay, Instantly, Attio, Exa, Claude · <a href="https://inovexus.com" target="_blank" rel="noopener">inovexus.com →</a>
+    </p>
+  </footer>
+
+</div>
+
+</body>
+</html>
