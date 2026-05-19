@@ -11,28 +11,29 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg-deep: #07111F;
-    --bg: #0B1729;
-    --surface: #142235;
-    --surface-elevated: #1A2A42;
-    --surface-blue: #1E3050;
-    --border: #243A57;
-    --border-mid: #345173;
+    /* INOVEXUS PALETTE — black + orange/magenta/purple gradient */
+    --bg-deep: #000000;
+    --bg: #050505;
+    --surface: #121212;
+    --surface-elevated: #1A1A1A;
+    --surface-blue: #1F1018; /* warm-tinted dark for accent surfaces */
+    --border: #262626;
+    --border-mid: #3D3D3D;
     --text: #FFFFFF;
     --text-muted: rgba(255, 255, 255, 0.72);
     --text-dim: rgba(255, 255, 255, 0.48);
-    --accent: #4FB8FF;
-    --accent-bright: #6FCBFF;
-    --accent-deep: #2D8FE5;
-    --accent-soft: rgba(79, 184, 255, 0.10);
-    --accent-glow: rgba(79, 184, 255, 0.22);
+    --accent: #FF7A50;        /* warm orange — primary accent */
+    --accent-bright: #FFAA77; /* peach */
+    --accent-deep: #D946EF;   /* magenta — deep accent */
+    --accent-soft: rgba(255, 122, 80, 0.10);
+    --accent-glow: rgba(217, 70, 239, 0.24);
     --paper: #FFFFFF;
-    --gradient-blue: linear-gradient(90deg, #6FCBFF 0%, #4FB8FF 45%, #5D78FF 100%);
-    --gradient-button: linear-gradient(135deg, #6FCBFF 0%, #4FB8FF 50%, #5D78FF 100%);
-    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.25);
-    --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.35);
-    --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.45);
-    --shadow-blue: 0 12px 32px rgba(79, 184, 255, 0.28);
+    --gradient-blue: linear-gradient(90deg, #FFAA77 0%, #FF6B7A 35%, #D946EF 70%, #A855F7 100%);
+    --gradient-button: linear-gradient(135deg, #FF8855 0%, #FF5577 40%, #D946EF 80%, #A855F7 100%);
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
+    --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.5);
+    --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.6);
+    --shadow-blue: 0 12px 32px rgba(217, 70, 239, 0.32);
     --ease: cubic-bezier(0.65, 0, 0.35, 1);
     --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   }
@@ -55,9 +56,10 @@
     position: fixed;
     inset: 0;
     background:
-      radial-gradient(ellipse 80% 60% at 50% -10%, rgba(79, 184, 255, 0.18) 0%, transparent 60%),
-      radial-gradient(ellipse 60% 50% at 100% 110%, rgba(93, 120, 255, 0.14) 0%, transparent 60%),
-      radial-gradient(ellipse 50% 40% at 0% 80%, rgba(79, 184, 255, 0.08) 0%, transparent 55%);
+      radial-gradient(ellipse 75% 65% at 5% 0%, rgba(255, 136, 85, 0.40) 0%, transparent 55%),
+      radial-gradient(ellipse 60% 55% at 30% 35%, rgba(255, 85, 119, 0.28) 0%, transparent 60%),
+      radial-gradient(ellipse 70% 60% at 100% 100%, rgba(168, 85, 247, 0.32) 0%, transparent 55%),
+      radial-gradient(ellipse 55% 50% at 75% 70%, rgba(217, 70, 239, 0.22) 0%, transparent 55%);
     pointer-events: none;
     z-index: 0;
   }
@@ -182,7 +184,7 @@
   }
   .pill-accent {
     background: var(--surface-blue);
-    border-color: rgba(79, 184, 255, 0.3);
+    border-color: rgba(217, 70, 239, 0.35);
     color: var(--accent-bright);
   }
   .pill-dot {
@@ -407,8 +409,8 @@
     position: absolute;
     inset: 0;
     background:
-      radial-gradient(ellipse 70% 50% at 0% 0%, rgba(79, 184, 255, 0.18) 0%, transparent 55%),
-      radial-gradient(ellipse 60% 40% at 100% 100%, rgba(93, 120, 255, 0.12) 0%, transparent 55%);
+      radial-gradient(ellipse 70% 50% at 0% 0%, rgba(255, 136, 85, 0.22) 0%, transparent 55%),
+      radial-gradient(ellipse 60% 40% at 100% 100%, rgba(168, 85, 247, 0.18) 0%, transparent 55%);
     pointer-events: none;
   }
   .result-content { position: relative; z-index: 1; }
@@ -418,7 +420,7 @@
     gap: 8px;
     padding: 8px 16px;
     background: var(--surface-blue);
-    border: 1px solid rgba(79, 184, 255, 0.3);
+    border: 1px solid rgba(217, 70, 239, 0.35);
     border-radius: 100px;
     font-family: 'Inter', sans-serif;
     font-size: 12px;
@@ -442,7 +444,7 @@
     margin: 20px 0 12px;
     letter-spacing: -0.05em;
     font-variant-numeric: tabular-nums;
-    background: linear-gradient(135deg, #FFFFFF 0%, #B8D9FF 50%, #5D78FF 100%);
+    background: linear-gradient(135deg, #FFFFFF 0%, #FFAA77 30%, #FF5577 55%, #D946EF 80%, #A855F7 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -496,8 +498,8 @@
   }
   .play.priority {
     background: var(--surface-blue);
-    border-color: rgba(79, 184, 255, 0.35);
-    box-shadow: 0 8px 24px rgba(79, 184, 255, 0.12);
+    border-color: rgba(217, 70, 239, 0.40);
+    box-shadow: 0 8px 24px rgba(217, 70, 239, 0.14);
   }
   .play-kind {
     display: inline-block;
@@ -535,8 +537,8 @@
     letter-spacing: 0.04em;
   }
   .play.priority .play-pill {
-    background: rgba(79, 184, 255, 0.12);
-    border-color: rgba(79, 184, 255, 0.25);
+    background: rgba(217, 70, 239, 0.14);
+    border-color: rgba(217, 70, 239, 0.28);
     color: var(--accent-bright);
   }
 
@@ -668,7 +670,7 @@
     .option-tag { font-size: 10px; padding: 3px 9px; margin-top: 6px; }
     .option input { width: 20px; height: 20px; }
     .option:hover { transform: none; }
-    .option.selected { box-shadow: 0 4px 14px rgba(79, 184, 255, 0.22); }
+    .option.selected { box-shadow: 0 4px 14px rgba(217, 70, 239, 0.26); }
 
     .nav { margin-top: 28px; gap: 8px; }
     .btn { padding: 15px 20px; font-size: 13px; }
