@@ -128,6 +128,22 @@
     .cookie-actions { justify-content: stretch; }
     .cookie-accept, .cookie-reject { flex: 1; }
   }
+
+  /* Reveal on scroll / load */
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s cubic-bezier(.2,.8,.2,1); will-change: opacity, transform; }
+  .reveal.is-visible { opacity: 1; transform: translateY(0); }
+  .hero-photo.reveal { transform: scale(0.96); }
+  .hero-photo.reveal.is-visible { transform: scale(1); }
+  @keyframes letterDrop { from { opacity: 0; transform: translateY(-12px); } to { opacity: 0.95; transform: translateY(0); } }
+  .hero-photo.is-visible .hero-letter { opacity: 0; animation: letterDrop 0.6s cubic-bezier(.2,.8,.2,1) forwards; }
+  .hero-photo.is-visible .l-tl { animation-delay: 0.25s; }
+  .hero-photo.is-visible .l-tr { animation-delay: 0.40s; }
+  .hero-photo.is-visible .l-bl { animation-delay: 0.55s; }
+  .hero-photo.is-visible .l-br { animation-delay: 0.70s; }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal, .hero-photo.reveal { opacity: 1; transform: none; transition: none; }
+    .hero-photo.is-visible .hero-letter { opacity: 0.95; animation: none; }
+  }
 </style>
 </head>
 <body>
@@ -335,5 +351,41 @@
   }
 </script>
 
+
+<script>
+  (function() {
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var selectors = '.h1, .lead, .cta, .meta-item, .hero-photo, .h2, .label, .card, .uc, .grid-2 > .uc, .tl, .speaker, .cta-photo';
+    var els = document.querySelectorAll(selectors);
+    els.forEach(function(el) { el.classList.add('reveal'); });
+    // Stagger siblings within the same parent
+    var staggerGroups = {};
+    els.forEach(function(el) {
+      var parent = el.parentElement;
+      var key = parent && parent.tagName + (parent.className || '');
+      if (!key) return;
+      staggerGroups[key] = staggerGroups[key] || [];
+      staggerGroups[key].push(el);
+    });
+    Object.keys(staggerGroups).forEach(function(k) {
+      staggerGroups[k].forEach(function(el, i) {
+        el.style.transitionDelay = (i * 80) + 'ms';
+      });
+    });
+    if (!('IntersectionObserver' in window)) {
+      els.forEach(function(el) { el.classList.add('is-visible'); });
+      return;
+    }
+    var io = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) {
+          e.target.classList.add('is-visible');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    els.forEach(function(el) { io.observe(el); });
+  })();
+</script>
 </body>
 </html>
