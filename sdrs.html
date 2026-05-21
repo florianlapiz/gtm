@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Webinar · Aus Clay wird Pipeline · FL Digital × SDRs of Germany</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, "Helvetica Neue", Arial, sans-serif; color: #000; background: #f3f3f1; -webkit-font-smoothing: antialiased; }
+  .page { max-width: 1080px; margin: 32px auto; background: #fff; border-radius: 24px; overflow: hidden; box-shadow: 0 30px 80px rgba(0,0,0,0.08); }
+
+  /* HEADER mit Logo */
+  .header { padding: 28px 48px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(0,0,0,0.06); }
+  .nav { display: flex; gap: 28px; font-size: 14px; font-weight: 700; color: #000; }
+  .nav a { color: #000; text-decoration: none; }
+  .nav a:hover { color: #FF0019; }
+
+  /* SDR Logo */
+  .logo { width: 52px; height: 45px; }
+  .logo svg { width: 100%; height: 100%; display: block; }
+  .footer-logo { width: 36px; height: 31px; }
+  .footer-logo svg { width: 100%; height: 100%; display: block; }
+  .footer-logo svg path { fill: #fff !important; }
+
+  .nav-cta { background: #FF0019; color: #fff; font-weight: 800; padding: 12px 24px; border-radius: 999px; text-decoration: none; font-size: 14px; border: none; cursor: pointer; }
+
+  /* HERO */
+  .hero { padding: 56px 48px; display: grid; grid-template-columns: 1fr 360px; gap: 40px; align-items: center; }
+  .label { color: #FF0019; font-weight: 800; font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 18px; }
+  .h1 { color: #000; font-weight: 900; font-size: 56px; line-height: 1; letter-spacing: -0.025em; margin-bottom: 22px; }
+  .lead { color: #1a1a1a; font-size: 17px; line-height: 1.55; max-width: 540px; }
+  .cta { display: inline-flex; align-items: center; gap: 8px; background: #FF0019; color: #fff; font-weight: 800; font-size: 16px; padding: 16px 32px; border-radius: 999px; border: none; cursor: pointer; margin-top: 28px; text-decoration: none; }
+
+  .meta-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; margin-top: 36px; }
+  .meta-item { border-top: 2px solid #FF0019; padding-top: 12px; }
+  .meta-label { font-size: 11px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: #888; margin-bottom: 4px; }
+  .meta-value { font-size: 15px; font-weight: 800; color: #000; }
+
+  /* Hero Foto mit SDR-Buchstaben */
+  .hero-photo { position: relative; aspect-ratio: 1 / 1; border-radius: 18px; overflow: hidden; background: #FF6A19; }
+  .hero-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .hero-letter { position: absolute; color: #fff; font-weight: 900; font-size: 96px; line-height: 1; letter-spacing: -0.04em; opacity: 0.95; pointer-events: none; }
+  .l-tl { top: 8px; left: 18px; }
+  .l-tr { top: 8px; right: 18px; }
+  .l-bl { bottom: 8px; left: 18px; }
+  .l-br { bottom: 8px; right: 18px; }
+
+  /* SECTIONS */
+  .section { padding: 64px 48px; border-top: 1px solid rgba(0,0,0,0.06); }
+  .h2 { color: #000; font-weight: 900; font-size: 42px; line-height: 1.05; letter-spacing: -0.02em; margin-bottom: 36px; }
+
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  .card { background: #fafaf9; border-radius: 18px; padding: 32px 28px; }
+  .card-num { color: #FF0019; font-weight: 900; font-size: 14px; letter-spacing: 0.08em; margin-bottom: 14px; }
+  .card-title { color: #000; font-weight: 800; font-size: 21px; line-height: 1.2; margin-bottom: 12px; }
+  .card-body { color: #444; font-size: 15px; line-height: 1.55; }
+
+  /* Use-Case Cards */
+  .uc-list { display: grid; gap: 18px; }
+  .uc { background: #fafaf9; border-radius: 18px; padding: 32px 32px; }
+  .uc-tags { display: flex; gap: 10px; margin-bottom: 14px; }
+  .pill { display: inline-block; background: #000; color: #fff; font-size: 11px; font-weight: 800; padding: 5px 12px; border-radius: 999px; letter-spacing: 0.06em; text-transform: uppercase; }
+  .pill.red { background: #FF0019; }
+
+  /* Timeline */
+  .tl { display: grid; grid-template-columns: 72px 80px 1fr; gap: 18px; padding: 16px 0; border-bottom: 1px solid rgba(0,0,0,0.08); align-items: baseline; }
+  .tl-time { font-weight: 900; color: #FF0019; font-size: 15px; }
+  .tl-min { font-weight: 700; color: #888; font-size: 13px; }
+  .tl-block { font-weight: 700; color: #000; font-size: 16px; }
+
+  /* Speaker */
+  .speaker { display: grid; grid-template-columns: 120px 1fr; gap: 28px; align-items: center; background: #f5f5f4; padding: 32px; border-radius: 18px; }
+  .speaker-photo { width: 120px; height: 120px; border-radius: 50%; overflow: hidden; background: #FF6A19; }
+  .speaker-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .speaker-name { font-weight: 900; font-size: 24px; margin-bottom: 8px; }
+  .speaker-bio { color: #555; font-size: 15px; line-height: 1.55; }
+
+  /* Black CTA */
+  .cta-section { background: #000; color: #fff; padding: 72px 48px; }
+  .cta-section .h2 { color: #fff; }
+  .cta-section .lead { color: rgba(255,255,255,0.85); max-width: 640px; }
+  .cta-section .label { color: #FF0019; }
+  .cta-inner { display: grid; grid-template-columns: 1fr 280px; gap: 48px; align-items: center; }
+  .cta-photo { position: relative; aspect-ratio: 1 / 1; border-radius: 18px; overflow: hidden; background: #FF0019; }
+  .cta-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .cta-photo-letter { position: absolute; color: #fff; font-weight: 900; font-size: 64px; line-height: 1; letter-spacing: -0.04em; opacity: 0.95; pointer-events: none; }
+
+  /* Footer */
+  .footer { padding: 32px 48px; background: #000; color: rgba(255,255,255,0.6); font-size: 13px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.1); }
+  .footer a { color: rgba(255,255,255,0.6); text-decoration: none; }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero-photo { max-width: 360px; }
+    .cta-inner { grid-template-columns: 1fr; }
+    .cta-photo { max-width: 280px; }
+    .grid-3 { grid-template-columns: 1fr; }
+    .grid-2 { grid-template-columns: 1fr; }
+    .h1 { font-size: 40px; }
+    .h2 { font-size: 32px; }
+    .nav { display: none; }
+    .speaker { grid-template-columns: 1fr; text-align: left; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- HEADER mit SDR Logo oben -->
+  <div class="header">
+    <div class="logo" aria-label="SDRs of Germany">
+      <svg viewBox="0 0 37 32" xmlns="http://www.w3.org/2000/svg" fill="none">
+        <path d="M27.2805 0.313965C30.2574 0.313965 32.5023 0.927472 34.0152 2.15449C35.535 3.37453 36.2949 5.17322 36.2949 7.55056V7.71788C36.2949 10.0952 35.535 11.8974 34.0152 13.1244C32.5023 14.3444 30.2574 14.9545 27.2805 14.9545H18.4962V0.313965H27.2805ZM26.8204 11.0957C29.121 11.0957 30.2714 10.1231 30.2714 8.17801V7.09043C30.2714 5.14533 29.121 4.17278 26.8204 4.17278H24.1119V11.0957H26.8204Z" fill="black"/>
+        <path d="M8.60653 15.268C6.00609 15.268 3.97385 14.8462 2.5098 14.0026C1.04575 13.159 0.20915 11.939 0 10.3425H5.00914C5.16949 10.7956 5.56339 11.1547 6.19084 11.4196C6.82526 11.6775 7.64095 11.8065 8.6379 11.8065C9.27232 11.8065 9.83005 11.7577 10.3111 11.6601C10.7921 11.5555 11.1651 11.4091 11.4301 11.2209C11.695 11.0327 11.8274 10.8165 11.8274 10.5725V10.5412C11.8274 10.325 11.7229 10.1647 11.5137 10.0601C11.3046 9.95554 10.9664 9.88583 10.4993 9.85097L5.28104 9.49541C3.6915 9.39084 2.45054 8.97254 1.55817 8.24051C0.672766 7.50152 0.230065 6.46971 0.230065 5.14509V5.08235C0.230065 3.99477 0.547276 3.07451 1.1817 2.32157C1.81612 1.56165 2.73987 0.986492 3.95294 0.596078C5.17298 0.198693 6.64051 0 8.35555 0C9.95206 0 11.3429 0.184749 12.5281 0.554247C13.7202 0.916774 14.6649 1.46405 15.3621 2.19608C16.0592 2.92113 16.4706 3.82047 16.5961 4.89411H11.5765C11.4789 4.46187 11.1268 4.11677 10.5202 3.85882C9.91371 3.59389 9.1538 3.46143 8.24051 3.46143C7.63398 3.46143 7.10413 3.51024 6.65097 3.60784C6.20479 3.70544 5.86317 3.84139 5.62614 4.01568C5.3891 4.183 5.27058 4.38169 5.27058 4.61176V4.64313C5.27058 4.8732 5.37167 5.044 5.57385 5.15555C5.77603 5.26012 6.10718 5.32635 6.56731 5.35424L11.7333 5.7098C13.4832 5.83529 14.7765 6.24662 15.6131 6.94378C16.4497 7.63398 16.868 8.63441 16.868 9.94509V10.0183C16.868 11.1477 16.5507 12.1028 15.9163 12.8836C15.2819 13.6645 14.3477 14.2571 13.1137 14.6614C11.8867 15.0658 10.3843 15.268 8.60653 15.268Z" fill="black"/>
+        <path d="M27.2042 31.9999C24.6037 31.9999 22.5715 31.5781 21.1075 30.7345C19.6434 29.891 18.8068 28.6709 18.5977 27.0744H23.6068C23.7671 27.5276 24.161 27.8866 24.7885 28.1515C25.4229 28.4095 26.2386 28.5385 27.2356 28.5385C27.87 28.5385 28.4277 28.4897 28.9088 28.392C29.3898 28.2875 29.7628 28.1411 30.0277 27.9528C30.2926 27.7646 30.4251 27.5485 30.4251 27.3045V27.2731C30.4251 27.057 30.3205 26.8966 30.1114 26.7921C29.9022 26.6875 29.5641 26.6178 29.097 26.5829L23.8787 26.2273C22.2892 26.1228 21.0482 25.7045 20.1558 24.9724C19.2704 24.2334 18.8277 23.2016 18.8277 21.877V21.8143C18.8277 20.7267 19.1449 19.8064 19.7794 19.0535C20.4138 18.2936 21.3375 17.7184 22.5506 17.328C23.7706 16.9306 25.2382 16.7319 26.9532 16.7319C28.5497 16.7319 29.9406 16.9167 31.1257 17.2862C32.3179 17.6487 33.2626 18.196 33.9597 18.928C34.6569 19.6531 35.0682 20.5524 35.1937 21.626H30.1741C30.0765 21.1938 29.7244 20.8487 29.1179 20.5908C28.5114 20.3258 27.7515 20.1934 26.8382 20.1934C26.2316 20.1934 25.7018 20.2422 25.2486 20.3398C24.8024 20.4374 24.4608 20.5733 24.2238 20.7476C23.9868 20.9149 23.8682 21.1136 23.8682 21.3437V21.3751C23.8682 21.6051 23.9693 21.7759 24.1715 21.8875C24.3737 21.9921 24.7048 22.0583 25.165 22.0862L30.331 22.4417C32.0809 22.5672 33.3741 22.9785 34.2107 23.6757C35.0473 24.3659 35.4656 25.3663 35.4656 26.677V26.7502C35.4656 27.8796 35.1484 28.8348 34.514 29.6156C33.8796 30.3964 32.9454 30.989 31.7114 31.3934C30.4844 31.7977 28.982 31.9999 27.2042 31.9999Z" fill="black"/>
+        <path d="M0.783081 17.0459H10.6445C12.9103 17.0459 14.6218 17.4642 15.7791 18.3008C16.9434 19.1374 17.5255 20.3679 17.5255 21.9923V22.1492C17.5255 23.2716 17.2432 24.2058 16.6785 24.9518C16.1138 25.6977 15.2772 26.2485 14.1687 26.6041L17.8079 31.6864H11.3974L8.29157 27.0642H6.3883V31.6864H0.783081V17.0459ZM10.1844 23.5086C11.3486 23.5086 11.9308 23.0485 11.9308 22.1282V22.055C11.9308 21.6019 11.7844 21.2603 11.4916 21.0302C11.1988 20.8001 10.763 20.6851 10.1844 20.6851H6.3883V23.5086H10.1844Z" fill="black"/>
+      </svg>
+    </div>
+    <nav class="nav">
+      <a href="#what">Was du lernst</a>
+      <a href="#usecases">Playbooks</a>
+      <a href="#aufbau">Aufbau</a>
+      <a href="#speaker">Speaker</a>
+    </nav>
+    <a href="#anmelden" class="nav-cta">Jetzt anmelden</a>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div>
+      <p class="label">▸ Live-Demo-Webinar · SDRs of Germany</p>
+      <h1 class="h1">Aus Clay wird Pipeline.<br>In 60 Minuten.</h1>
+      <p class="lead">Fünf Live-Playbooks für DACH-Sales-Teams, die nicht mehr Outbound-Volumen wollen, sondern bessere Pipeline. KPIs, Architektur, Roadmap.</p>
+      <a href="#anmelden" class="cta">Jetzt anmelden →</a>
+
+      <div class="meta-grid">
+        <div class="meta-item"><p class="meta-label">Termin</p><p class="meta-value">Mi · 22. Juli 2026</p></div>
+        <div class="meta-item"><p class="meta-label">Format</p><p class="meta-value">60 Min · Live-Demo</p></div>
+        <div class="meta-item"><p class="meta-label">Für</p><p class="meta-value">Head of Sales · CRO · GF</p></div>
+        <div class="meta-item"><p class="meta-label">Speaker</p><p class="meta-value">Florian Lapiz</p></div>
+      </div>
+    </div>
+
+    <div class="hero-photo">
+      <img src="flo.jpg" alt="Florian Lapiz">
+      <span class="hero-letter l-tl">S</span>
+      <span class="hero-letter l-tr">D</span>
+      <span class="hero-letter l-bl">R</span>
+      <span class="hero-letter l-br">S</span>
+    </div>
+  </div>
+
+  <!-- WAS DU MITNIMMST -->
+  <div class="section" id="what">
+    <p class="label">Was du mitnimmst</p>
+    <h2 class="h2">Drei Mitnahmen,<br>eine Architektur.</h2>
+    <div class="grid-3">
+      <div class="card">
+        <p class="card-num">01</p>
+        <p class="card-title">Fünf Live-Playbooks</p>
+        <p class="card-body">CRM-Reaktivierung, Inbound-Enrichment, Champion-Tracking, News-Signale, Competitor Intel. Live in Clay aufgebaut.</p>
+      </div>
+      <div class="card">
+        <p class="card-num">02</p>
+        <p class="card-title">KPIs statt Tool-Tipps</p>
+        <p class="card-body">Build-vs-Buy-Logik, Demo-Conversion-Hebel, AE-Capacity-Rechnung. Zahlen, die Buyer-Entscheidungen tragen.</p>
+      </div>
+      <div class="card">
+        <p class="card-num">03</p>
+        <p class="card-title">12-Wochen-Roadmap</p>
+        <p class="card-body">Wie du von Signal-Diagnose zu produktiver Pipeline-Architektur kommst. Mit Capacity-Zahlen.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- USE CASES -->
+  <div class="section" id="usecases">
+    <p class="label">Die fünf Playbooks</p>
+    <h2 class="h2">Drei tief.<br>Zwei als Mini-Demo.</h2>
+
+    <div class="uc-list">
+      <div class="uc">
+        <div class="uc-tags"><span class="pill red">9 Min</span><span class="pill">Use Case 1</span></div>
+        <p class="card-title">CRM-Reaktivierung mit Signal-Layer</p>
+        <p class="card-body">10.000+ tote Kontakte im CRM auf Buy-Signale scannen. Job-Change, Funding, Hiring, News. SDR-Capacity gegen warme Accounts statt kalte Listen tauschen. Pipeline-Coverage steigt 30 bis 50 Prozent ohne neue Listen-Käufe.</p>
+      </div>
+      <div class="uc">
+        <div class="uc-tags"><span class="pill red">9 Min</span><span class="pill">Use Case 2</span></div>
+        <p class="card-title">Inbound-Enrichment mit AE-ROI-Story</p>
+        <p class="card-body">Demo-Formular liefert E-Mail. Clay baut in 60 Sekunden ein vollständiges Lead-Profil. AE bekommt Brief 24h vor dem Call. Demo-Conversion verdoppelt, No-Show-Quote halbiert.</p>
+      </div>
+      <div class="uc">
+        <div class="uc-tags"><span class="pill red">9 Min</span><span class="pill">Use Case 3</span></div>
+        <p class="card-title">Champion Job Tracking</p>
+        <p class="card-body">Dein bester Kunde wechselt zum Konkurrenten. Du merkst es nicht. 90 Tage Buying-Window verstreichen ungenutzt. Mit Champion-Tracking entdeckst du Pipeline, die in bestehenden Beziehungen schläft.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="uc" style="background:#f5f5f4;">
+          <div class="uc-tags"><span class="pill red">3 Min</span><span class="pill">Mini · 4</span></div>
+          <p class="card-title">News-Signal-Layer</p>
+          <p class="card-body">Google News RSS pro Account, gescored auf Funding, Layoff, M&amp;A. Slack-Trigger in Echtzeit.</p>
+        </div>
+        <div class="uc" style="background:#f5f5f4;">
+          <div class="uc-tags"><span class="pill red">3 Min</span><span class="pill">Mini · 5</span></div>
+          <p class="card-title">Competitor Intelligence</p>
+          <p class="card-body">Wettbewerber-LinkedIn, Job-Postings, Pricing-Changes. Täglicher Slack-Digest, Battle Cards automatisch.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AUFBAU -->
+  <div class="section" id="aufbau">
+    <p class="label">Aufbau</p>
+    <h2 class="h2">60 Minuten,<br>vom Pain zum Plan.</h2>
+    <div>
+      <div class="tl"><span class="tl-time">00:00</span><span class="tl-min">7 Min</span><span class="tl-block">Pain-Frame · drei Verlustkosten quantifiziert</span></div>
+      <div class="tl"><span class="tl-time">07:00</span><span class="tl-min">9 Min</span><span class="tl-block">Use Case 1 · CRM-Reaktivierung</span></div>
+      <div class="tl"><span class="tl-time">16:00</span><span class="tl-min">9 Min</span><span class="tl-block">Use Case 2 · Inbound-Enrichment</span></div>
+      <div class="tl"><span class="tl-time">25:00</span><span class="tl-min">9 Min</span><span class="tl-block">Use Case 3 · Champion-Tracking · emotionaler Peak</span></div>
+      <div class="tl"><span class="tl-time">34:00</span><span class="tl-min">3 Min</span><span class="tl-block">Mini · Google News RSS Signal-Layer</span></div>
+      <div class="tl"><span class="tl-time">37:00</span><span class="tl-min">3 Min</span><span class="tl-block">Mini · Competitor Intelligence Digest</span></div>
+      <div class="tl"><span class="tl-time">40:00</span><span class="tl-min">4 Min</span><span class="tl-block">Roadmap · 12-Wochen-Plan und Build-vs-Buy</span></div>
+      <div class="tl"><span class="tl-time">44:00</span><span class="tl-min">2 Min</span><span class="tl-block">CTA · Strategy-Call-Slots</span></div>
+      <div class="tl"><span class="tl-time">46:00</span><span class="tl-min">14 Min</span><span class="tl-block">Q&amp;A · moderiert</span></div>
+    </div>
+  </div>
+
+  <!-- SPEAKER -->
+  <div class="section" id="speaker">
+    <p class="label">Der Speaker</p>
+    <h2 class="h2">Wer das vorträgt.</h2>
+    <div class="speaker">
+      <div class="speaker-photo"><img src="flo.jpg" alt="Florian Lapiz"></div>
+      <div>
+        <p class="speaker-name">Florian Lapiz</p>
+        <p class="speaker-bio">GTM Engineer · FL Digital · Quickborn bei Hamburg. Baut Signal-basierte Outbound-Architekturen für DACH-Mittelstand B2B mit Clay, HubSpot, Claude und Make.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-section" id="anmelden">
+    <div class="cta-inner">
+      <div>
+        <p class="label">Decision-Window: 7 Tage</p>
+        <h2 class="h2">Wer entscheidet,<br>bucht.</h2>
+        <p class="lead">Nach dem Webinar: 30 Min Pipeline-Architektur-Sparring mit Florian. Kein Pitch. Konkreter Use Case mit ROI für dein Team. 8 Slots, Montag bis Mittwoch.</p>
+        <a href="#" class="cta">Jetzt anmelden →</a>
+      </div>
+      <div class="cta-photo">
+        <img src="flo.jpg" alt="Florian Lapiz">
+        <span class="cta-photo-letter l-tl">C</span>
+        <span class="cta-photo-letter l-tr">L</span>
+        <span class="cta-photo-letter l-bl">A</span>
+        <span class="cta-photo-letter l-br">Y</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div style="display: flex; align-items: center; gap: 14px;">
+      <div class="footer-logo" aria-label="SDRs of Germany">
+        <svg viewBox="0 0 37 32" xmlns="http://www.w3.org/2000/svg" fill="none">
+          <path d="M27.2805 0.313965C30.2574 0.313965 32.5023 0.927472 34.0152 2.15449C35.535 3.37453 36.2949 5.17322 36.2949 7.55056V7.71788C36.2949 10.0952 35.535 11.8974 34.0152 13.1244C32.5023 14.3444 30.2574 14.9545 27.2805 14.9545H18.4962V0.313965H27.2805ZM26.8204 11.0957C29.121 11.0957 30.2714 10.1231 30.2714 8.17801V7.09043C30.2714 5.14533 29.121 4.17278 26.8204 4.17278H24.1119V11.0957H26.8204Z"/>
+          <path d="M8.60653 15.268C6.00609 15.268 3.97385 14.8462 2.5098 14.0026C1.04575 13.159 0.20915 11.939 0 10.3425H5.00914C5.16949 10.7956 5.56339 11.1547 6.19084 11.4196C6.82526 11.6775 7.64095 11.8065 8.6379 11.8065C9.27232 11.8065 9.83005 11.7577 10.3111 11.6601C10.7921 11.5555 11.1651 11.4091 11.4301 11.2209C11.695 11.0327 11.8274 10.8165 11.8274 10.5725V10.5412C11.8274 10.325 11.7229 10.1647 11.5137 10.0601C11.3046 9.95554 10.9664 9.88583 10.4993 9.85097L5.28104 9.49541C3.6915 9.39084 2.45054 8.97254 1.55817 8.24051C0.672766 7.50152 0.230065 6.46971 0.230065 5.14509V5.08235C0.230065 3.99477 0.547276 3.07451 1.1817 2.32157C1.81612 1.56165 2.73987 0.986492 3.95294 0.596078C5.17298 0.198693 6.64051 0 8.35555 0C9.95206 0 11.3429 0.184749 12.5281 0.554247C13.7202 0.916774 14.6649 1.46405 15.3621 2.19608C16.0592 2.92113 16.4706 3.82047 16.5961 4.89411H11.5765C11.4789 4.46187 11.1268 4.11677 10.5202 3.85882C9.91371 3.59389 9.1538 3.46143 8.24051 3.46143C7.63398 3.46143 7.10413 3.51024 6.65097 3.60784C6.20479 3.70544 5.86317 3.84139 5.62614 4.01568C5.3891 4.183 5.27058 4.38169 5.27058 4.61176V4.64313C5.27058 4.8732 5.37167 5.044 5.57385 5.15555C5.77603 5.26012 6.10718 5.32635 6.56731 5.35424L11.7333 5.7098C13.4832 5.83529 14.7765 6.24662 15.6131 6.94378C16.4497 7.63398 16.868 8.63441 16.868 9.94509V10.0183C16.868 11.1477 16.5507 12.1028 15.9163 12.8836C15.2819 13.6645 14.3477 14.2571 13.1137 14.6614C11.8867 15.0658 10.3843 15.268 8.60653 15.268Z"/>
+          <path d="M27.2042 31.9999C24.6037 31.9999 22.5715 31.5781 21.1075 30.7345C19.6434 29.891 18.8068 28.6709 18.5977 27.0744H23.6068C23.7671 27.5276 24.161 27.8866 24.7885 28.1515C25.4229 28.4095 26.2386 28.5385 27.2356 28.5385C27.87 28.5385 28.4277 28.4897 28.9088 28.392C29.3898 28.2875 29.7628 28.1411 30.0277 27.9528C30.2926 27.7646 30.4251 27.5485 30.4251 27.3045V27.2731C30.4251 27.057 30.3205 26.8966 30.1114 26.7921C29.9022 26.6875 29.5641 26.6178 29.097 26.5829L23.8787 26.2273C22.2892 26.1228 21.0482 25.7045 20.1558 24.9724C19.2704 24.2334 18.8277 23.2016 18.8277 21.877V21.8143C18.8277 20.7267 19.1449 19.8064 19.7794 19.0535C20.4138 18.2936 21.3375 17.7184 22.5506 17.328C23.7706 16.9306 25.2382 16.7319 26.9532 16.7319C28.5497 16.7319 29.9406 16.9167 31.1257 17.2862C32.3179 17.6487 33.2626 18.196 33.9597 18.928C34.6569 19.6531 35.0682 20.5524 35.1937 21.626H30.1741C30.0765 21.1938 29.7244 20.8487 29.1179 20.5908C28.5114 20.3258 27.7515 20.1934 26.8382 20.1934C26.2316 20.1934 25.7018 20.2422 25.2486 20.3398C24.8024 20.4374 24.4608 20.5733 24.2238 20.7476C23.9868 20.9149 23.8682 21.1136 23.8682 21.3437V21.3751C23.8682 21.6051 23.9693 21.7759 24.1715 21.8875C24.3737 21.9921 24.7048 22.0583 25.165 22.0862L30.331 22.4417C32.0809 22.5672 33.3741 22.9785 34.2107 23.6757C35.0473 24.3659 35.4656 25.3663 35.4656 26.677V26.7502C35.4656 27.8796 35.1484 28.8348 34.514 29.6156C33.8796 30.3964 32.9454 30.989 31.7114 31.3934C30.4844 31.7977 28.982 31.9999 27.2042 31.9999Z"/>
+          <path d="M0.783081 17.0459H10.6445C12.9103 17.0459 14.6218 17.4642 15.7791 18.3008C16.9434 19.1374 17.5255 20.3679 17.5255 21.9923V22.1492C17.5255 23.2716 17.2432 24.2058 16.6785 24.9518C16.1138 25.6977 15.2772 26.2485 14.1687 26.6041L17.8079 31.6864H11.3974L8.29157 27.0642H6.3883V31.6864H0.783081V17.0459ZM10.1844 23.5086C11.3486 23.5086 11.9308 23.0485 11.9308 22.1282V22.055C11.9308 21.6019 11.7844 21.2603 11.4916 21.0302C11.1988 20.8001 10.763 20.6851 10.1844 20.6851H6.3883V23.5086H10.1844Z"/>
+        </svg>
+      </div>
+      <span>SDRs of Germany × FL Digital</span>
+    </div>
+    <div style="display: flex; gap: 18px;">
+      <a href="#">Impressum</a>
+      <a href="#">Datenschutz</a>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
