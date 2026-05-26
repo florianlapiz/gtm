@@ -4,9 +4,8 @@
 <meta charset="UTF-8">
 <title>GTM-Audit Quiz | GTM FLO</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<!-- Google Fonts (Inter, JetBrains Mono) werden erst nach Einwilligung per JS geladen.
+     Bis dahin greift der System-Schriften-Fallback. Siehe Cookie-Banner + consent-Logik unten. -->
 <style>
   :root {
     --bg: #0A0A0A;
@@ -838,7 +837,77 @@
     .intro-stats { grid-template-columns: 1fr; }
     .cta { flex-direction: column; align-items: flex-start; padding: 24px; }
     .cta-author { align-self: center; }
+    .cookie-banner { bottom: 12px; width: calc(100% - 24px); }
+    .cookie-inner { flex-direction: column; align-items: stretch; gap: 14px; padding: 18px; }
+    .cookie-actions { flex-direction: column-reverse; }
+    .cookie-btn { width: 100%; justify-content: center; }
+    .footer { flex-direction: column; gap: 10px; }
   }
+
+  /* FOOTER LINKS */
+  .footer-links { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+  .footer-links a {
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+  .footer-links a:hover { color: var(--orange); }
+  .footer-links span { color: var(--text-dim); }
+
+  .form-meta a {
+    color: var(--orange);
+    text-decoration: none;
+    border-bottom: 1px solid var(--orange-line);
+  }
+  .form-meta a:hover { color: var(--orange-bright); border-color: var(--orange-bright); }
+
+  /* COOKIE BANNER */
+  .cookie-banner {
+    position: fixed;
+    left: 50%;
+    bottom: 20px;
+    transform: translate(-50%, 160%);
+    width: min(760px, calc(100% - 32px));
+    z-index: 1000;
+    background: linear-gradient(135deg, rgba(20,20,20,0.98) 0%, rgba(15,15,15,0.98) 100%);
+    border: 1px solid var(--orange-line);
+    border-radius: 14px;
+    box-shadow:
+      0 0 32px rgba(255,107,26,0.16),
+      0 20px 50px rgba(0,0,0,0.6),
+      inset 0 1px 0 rgba(255,255,255,0.03);
+    backdrop-filter: blur(12px);
+    opacity: 0;
+    transition: transform 0.45s cubic-bezier(0.4,0,0.2,1), opacity 0.4s ease;
+    pointer-events: none;
+  }
+  .cookie-banner.visible {
+    transform: translate(-50%, 0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .cookie-inner {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    padding: 18px 22px;
+  }
+  .cookie-text {
+    flex: 1;
+    font-size: 13.5px;
+    line-height: 1.5;
+    color: var(--text-muted);
+  }
+  .cookie-text strong { color: var(--text); font-weight: 600; }
+  .cookie-text a {
+    color: var(--orange);
+    text-decoration: none;
+    border-bottom: 1px solid var(--orange-line);
+  }
+  .cookie-text a:hover { color: var(--orange-bright); border-color: var(--orange-bright); }
+  .cookie-sep { color: var(--text-dim); margin: 0 5px; }
+  .cookie-actions { display: flex; gap: 10px; flex-shrink: 0; }
+  .cookie-btn { padding: 11px 18px; font-size: 14px; white-space: nowrap; }
 </style>
 </head>
 <body>
@@ -934,7 +1003,7 @@
         </div>
 
         <p class="form-meta">
-          Kein Spam. Du bekommst Dein Ergebnis sofort und maximal eine Follow-up-Mail mit Tipps zu Deinen schwächsten Hebeln. Abmeldung jederzeit per Klick.
+          Kein Spam. Du bekommst Dein Ergebnis sofort und maximal eine Follow-up-Mail mit Tipps zu Deinen schwächsten Hebeln. Abmeldung jederzeit per Klick. Wie ich Deine Daten verarbeite, steht in der <a href="https://florianlapiz.de/datenschutz" target="_blank" rel="noopener">Datenschutzerklärung</a>.
         </p>
       </form>
     </div>
@@ -983,9 +1052,28 @@
 
   <footer class="footer">
     <div>GTM FLO · GTM Engineering Consultancy</div>
-    <div>florianlapiz.de</div>
+    <div class="footer-links">
+      <a href="https://florianlapiz.de/impressum" target="_blank" rel="noopener">Impressum</a>
+      <a href="https://florianlapiz.de/datenschutz" target="_blank" rel="noopener">Datenschutz</a>
+      <span>florianlapiz.de</span>
+    </div>
   </footer>
 
+</div>
+
+<!-- COOKIE CONSENT -->
+<div class="cookie-banner" id="cookie-banner" role="dialog" aria-live="polite" aria-label="Hinweis zu Cookies und Schriftarten">
+  <div class="cookie-inner">
+    <div class="cookie-text">
+      <strong>Cookies &amp; Schriftarten.</strong>
+      Diese Seite speichert nur das technisch Notwendige. Optional lade ich Schriftarten von Google Fonts, dabei geht Deine IP-Adresse an Google. Du entscheidest.
+      <a href="https://florianlapiz.de/datenschutz" target="_blank" rel="noopener">Datenschutz</a><span class="cookie-sep">·</span><a href="https://florianlapiz.de/impressum" target="_blank" rel="noopener">Impressum</a>
+    </div>
+    <div class="cookie-actions">
+      <button type="button" class="btn btn-secondary cookie-btn" id="cookie-necessary">Nur notwendige</button>
+      <button type="button" class="btn cookie-btn" id="cookie-accept">Alle akzeptieren</button>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -1302,6 +1390,47 @@
   }
 
   renderProgress();
+
+  /* ---------- COOKIE / FONT CONSENT ---------- */
+  (function () {
+    var CONSENT_KEY = 'fldigital_consent_v1';
+    var banner = document.getElementById('cookie-banner');
+
+    function loadFonts() {
+      if (document.getElementById('gfonts')) return;
+      var l = document.createElement('link');
+      l.id = 'gfonts';
+      l.rel = 'stylesheet';
+      l.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap';
+      document.head.appendChild(l);
+    }
+
+    function hideBanner() {
+      if (banner) banner.classList.remove('visible');
+    }
+
+    function setConsent(value) {
+      try { localStorage.setItem(CONSENT_KEY, value); } catch (e) {}
+      if (value === 'all') loadFonts();
+      hideBanner();
+    }
+
+    var stored = null;
+    try { stored = localStorage.getItem(CONSENT_KEY); } catch (e) {}
+
+    if (stored === 'all') {
+      loadFonts();
+    } else if (stored !== 'necessary' && banner) {
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () { banner.classList.add('visible'); });
+      });
+    }
+
+    var acceptBtn = document.getElementById('cookie-accept');
+    var necessaryBtn = document.getElementById('cookie-necessary');
+    if (acceptBtn) acceptBtn.addEventListener('click', function () { setConsent('all'); });
+    if (necessaryBtn) necessaryBtn.addEventListener('click', function () { setConsent('necessary'); });
+  })();
 </script>
 
 </body>
