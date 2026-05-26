@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<title>GTM-Audit Quiz | GTM FLO</title>
+<title>GTM-Audit Quiz | Florian Lapiz</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Google Fonts (Inter, JetBrains Mono) werden erst nach Einwilligung per JS geladen.
      Bis dahin greift der System-Schriften-Fallback. Siehe Cookie-Banner + consent-Logik unten. -->
@@ -349,6 +349,19 @@
     text-transform: uppercase;
     letter-spacing: 0.12em;
   }
+  .quiz-category {
+    margin-left: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--orange);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    padding: 4px 10px;
+    border: 1px solid var(--orange-line);
+    border-radius: 100px;
+    background: var(--orange-soft);
+  }
 
   .quiz-question {
     font-size: 37px;
@@ -640,6 +653,134 @@
     line-height: 1.5;
   }
 
+  /* AXIS BREAKDOWN (3 categories) */
+  .axis-breakdown {
+    margin: 48px 0 32px;
+    background: var(--surface);
+    border: 1px solid var(--orange-line);
+    border-radius: 12px;
+    padding: 28px;
+    box-shadow: 0 0 32px var(--orange-glow-soft);
+  }
+  .axis-title {
+    font-size: 15px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+    margin-bottom: 22px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .axis-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+  .axis-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+  .axis-cell {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 18px 16px;
+    position: relative;
+    transition: all 0.2s;
+  }
+  .axis-cell.weakest {
+    border-color: var(--orange);
+    background: var(--orange-soft);
+    box-shadow: 0 0 24px var(--orange-glow-soft);
+  }
+  .axis-cell-label {
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    margin-bottom: 10px;
+  }
+  .axis-cell.weakest .axis-cell-label { color: var(--orange); }
+  .axis-cell-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 30px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    margin-bottom: 12px;
+    color: var(--text);
+  }
+  .axis-cell.weakest .axis-cell-value {
+    background: linear-gradient(135deg, var(--orange) 0%, var(--orange-bright) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .axis-cell-value .axis-max {
+    font-size: 15px;
+    color: var(--text-dim);
+    font-weight: 500;
+    -webkit-text-fill-color: var(--text-dim);
+  }
+  .axis-cell-track {
+    height: 6px;
+    border-radius: 3px;
+    background: var(--bg);
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .axis-cell-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--orange-deep), var(--orange-bright));
+    border-radius: 3px;
+    box-shadow: 0 0 8px var(--orange-glow);
+    transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .axis-cell-marker {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--orange);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 2px 6px;
+    border: 1px solid var(--orange);
+    border-radius: 3px;
+    background: var(--bg);
+  }
+  .axis-diagnosis {
+    font-size: 15px;
+    color: var(--text-muted);
+    line-height: 1.55;
+    padding-left: 14px;
+    border-left: 2px solid var(--orange);
+  }
+  .axis-diagnosis strong { color: var(--text); font-weight: 600; }
+  @media (max-width: 720px) {
+    .axis-grid { grid-template-columns: 1fr; }
+  }
+
+  /* CATEGORY GROUPS IN BREAKDOWN */
+  .breakdown-group-header {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--orange);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    padding: 16px 0 6px;
+    border-bottom: 1px solid var(--border);
+  }
+  .breakdown-group-header:first-child { padding-top: 0; }
+
   .breakdown {
     margin: 48px 0;
     background: var(--surface);
@@ -917,32 +1058,32 @@
   <header class="header">
     <div class="brand">
       <span class="brand-dot"></span>
-      GTM <span class="brand-mark">FLO</span>
+      Florian <span class="brand-mark">Lapiz</span>
     </div>
-    <div class="header-meta">GTM-Audit <span>·</span> Interactive</div>
+    <div class="header-meta">GTM Engineering <span>·</span> Audit</div>
   </header>
 
   <!-- INTRO SCREEN -->
   <div class="screen" id="screen-intro">
-    <div class="intro-eyebrow">Selbstdiagnose · 3 Minuten</div>
+    <div class="intro-eyebrow">Selbstdiagnose · 5 Minuten</div>
     <h1>Wie viel Pipeline lässt Dein Vertrieb <span class="accent">jeden Monat liegen?</span></h1>
     <p class="lede">
-      Sechs Hebel entscheiden im B2B-Mittelstand, ob Lead-Generierung mit Personal skaliert oder mit System.
-      Beantworte sie ehrlich. Am Ende weißt Du, wo Dein größter ROI im nächsten Quartal liegt.
+      Zwölf Hebel auf drei Achsen entscheiden im B2B-Mittelstand, ob Lead-Generierung mit Personal skaliert oder mit System.
+      Beantworte sie ehrlich. Am Ende siehst Du Deinen Score pro Achse und Deinen größten Hebel fürs nächste Quartal.
     </p>
 
     <div class="intro-stats">
       <div class="stat-cell">
-        <div class="label">Fragen</div>
-        <div class="value"><span class="num">6</span> Hebel</div>
+        <div class="label">Hebel</div>
+        <div class="value"><span class="num">12</span> auf 3 Achsen</div>
       </div>
       <div class="stat-cell">
         <div class="label">Dauer</div>
-        <div class="value"><span class="num">3</span> Minuten</div>
+        <div class="value"><span class="num">5</span> Minuten</div>
       </div>
       <div class="stat-cell">
         <div class="label">Output</div>
-        <div class="value">Score + nächster Schritt</div>
+        <div class="value">Score + größter Hebel</div>
       </div>
     </div>
 
@@ -956,7 +1097,8 @@
     <div class="progress-bar-wrap" id="progress"></div>
     <div class="q-wrap" id="q-wrap">
       <div class="quiz-meta">
-        <span class="quiz-counter mono">FRAGE <span class="current" id="q-current">1</span> / <span id="q-total">6</span></span>
+        <span class="quiz-counter mono">FRAGE <span class="current" id="q-current">1</span> / <span id="q-total">12</span></span>
+        <span class="quiz-category" id="q-category"></span>
         <span class="quiz-hebel-name" id="q-hebel"></span>
       </div>
       <h2 class="quiz-question" id="q-question"></h2>
@@ -1016,10 +1158,16 @@
       <p class="result-greeting" id="result-greeting"></p>
       <div class="result-score">
         <span class="number" id="result-number">0</span>
-        <span class="max">/ 12</span>
+        <span class="max">/ 24</span>
       </div>
       <div class="tier-badge" id="tier-badge"></div>
       <p class="tier-impact" id="tier-impact"></p>
+    </div>
+
+    <div class="axis-breakdown">
+      <div class="axis-title">Score pro Achse</div>
+      <div class="axis-grid" id="axis-grid"></div>
+      <p class="axis-diagnosis" id="axis-diagnosis"></p>
     </div>
 
     <div class="breakdown">
@@ -1077,8 +1225,16 @@
 </div>
 
 <script>
+  const CATEGORIES = {
+    strategy:  { label: "Strategy",  short: "Strategie" },
+    execution: { label: "Execution", short: "Execution" },
+    system:    { label: "System",    short: "System" }
+  };
+
   const QUESTIONS = [
+    // ---------- STRATEGY ----------
     {
+      category: "strategy",
       hebel: "ICP-Schärfe",
       question: "Wie klar ist Euer Wunschkunden-Profil?",
       cost: "Wenn das fehlt: Vertrieb verkauft an die Falschen. Closed-Won-Rate stagniert.",
@@ -1089,6 +1245,7 @@
       ]
     },
     {
+      category: "strategy",
       hebel: "Trigger-Erkennung",
       question: "Erkennt Ihr Kauf-Signale, wenn sie entstehen?",
       cost: "Wenn das fehlt: Du kontaktierst Accounts, die heute gar nicht kaufen können.",
@@ -1099,6 +1256,31 @@
       ]
     },
     {
+      category: "strategy",
+      hebel: "Disqualifikation",
+      question: "Wie schnell sortiert Ihr unpassende Leads aus?",
+      cost: "Wenn das fehlt: SDR jagt Termine, AE verliert Wochen in Deals, die nie schließen.",
+      options: [
+        { score: 0, text: "Erst im Discovery-Call. Manchmal erst im Demo." },
+        { score: 1, text: "Lose Faustregeln. Jeder im Team disqualifiziert anders." },
+        { score: 2, text: "Dokumentiertes Anti-ICP. SDR disqualifiziert vor dem ersten Call." }
+      ]
+    },
+    {
+      category: "strategy",
+      hebel: "Value-Prop-Klarheit",
+      question: "Kann jeder im Team Eure Value Prop in einem Satz wiedergeben?",
+      cost: "Wenn das fehlt: Outbound, Website und Pitch widersprechen sich. Lead versteht nicht, was er kauft.",
+      options: [
+        { score: 0, text: "Wir reden je nach Gesprächspartner anders über das Produkt." },
+        { score: 1, text: "Es gibt eine Value Prop. Sie ist generisch oder featurelastig." },
+        { score: 2, text: "Ein Satz, der Problem, Persona und Outcome trifft. Alle nutzen ihn." }
+      ]
+    },
+
+    // ---------- EXECUTION ----------
+    {
+      category: "execution",
       hebel: "Daten-Tiefe",
       question: "Wie wird Eure Outbound-Liste angereichert?",
       cost: "Wenn das fehlt: SDR verbringt 60 % des Tages mit Recherche statt Outreach.",
@@ -1109,6 +1291,7 @@
       ]
     },
     {
+      category: "execution",
       hebel: "Personalisierung",
       question: "Wie personalisiert sind Eure Outbound-Nachrichten?",
       cost: "Wenn das fehlt: Antwortrate unter 2 %. Outreach fühlt sich nach Spam an.",
@@ -1119,6 +1302,7 @@
       ]
     },
     {
+      category: "execution",
       hebel: "Channel-Cadence",
       question: "Wie sind Eure Kanäle orchestriert?",
       cost: "Wenn das fehlt: Leads gehen verloren, weil ein Kanal allein nicht durchkommt.",
@@ -1129,6 +1313,20 @@
       ]
     },
     {
+      category: "execution",
+      hebel: "Deliverability",
+      question: "Wie ist Eure Cold-Email-Infrastruktur aufgesetzt?",
+      cost: "Wenn das fehlt: Mails landen in Spam. Ihr seht es nicht, weil keiner antwortet.",
+      options: [
+        { score: 0, text: "Hauptdomain. Ein Postfach. Keine SPF/DKIM/DMARC-Kontrolle." },
+        { score: 1, text: "Separate Sending-Domains, aber kein Reputation-Monitoring." },
+        { score: 2, text: "Dedizierte Domains, gewarmte Inboxes, wöchentliches Reputation-Tracking." }
+      ]
+    },
+
+    // ---------- SYSTEM ----------
+    {
+      category: "system",
       hebel: "Closed-Loop-Messung",
       question: "Wie misst Ihr Eure Outbound-Performance?",
       cost: "Wenn das fehlt: Du iterierst gegen Bauchgefühl statt gegen Daten.",
@@ -1136,6 +1334,39 @@
         { score: 0, text: "SDR meldet Termine. Mehr nicht." },
         { score: 1, text: "Standard-CRM-Reports zu Volumen und Conversion." },
         { score: 2, text: "Funnel-Metriken pro Vertikale. Wöchentliche Iteration." }
+      ]
+    },
+    {
+      category: "system",
+      hebel: "CRM-Hygiene",
+      question: "Wie sauber sind Eure CRM-Daten?",
+      cost: "Wenn das fehlt: Reports lügen. Forecast und Pipeline-Reviews basieren auf Müll.",
+      options: [
+        { score: 0, text: "Felder sind Pflicht-Theater. Niemand vertraut den Daten." },
+        { score: 1, text: "Pflichtfelder bei Stage-Wechsel. Manuell, fehleranfällig." },
+        { score: 2, text: "Automatisierte Validierung. Datenqualität ist KPI im SDR-Team." }
+      ]
+    },
+    {
+      category: "system",
+      hebel: "Playbooks & Enablement",
+      question: "Wie wird Wissen im Vertriebsteam dokumentiert?",
+      cost: "Wenn das fehlt: Jeder neue SDR braucht 6 Monate Anlauf. Top-Performer-Wissen verschwindet.",
+      options: [
+        { score: 0, text: "Wissen im Kopf des Senior-Reps. Onboarding ist Schatten-Modus." },
+        { score: 1, text: "Statisches Playbook. Vor 12+ Monaten geschrieben, nie aktualisiert." },
+        { score: 2, text: "Lebende Playbooks pro Persona. Best-Performer-Calls als Trainingsmaterial." }
+      ]
+    },
+    {
+      category: "system",
+      hebel: "Experiment-Velocity",
+      question: "Wie häufig testet Ihr neue Hypothesen im Outbound?",
+      cost: "Wenn das fehlt: Ihr läuft mit derselben Sequenz wie vor sechs Monaten. Markt verändert sich, Ihr nicht.",
+      options: [
+        { score: 0, text: "Wir ändern, wenn die Zahlen schon eingebrochen sind." },
+        { score: 1, text: "Ein neues Experiment pro Monat. Keine systematische Auswertung." },
+        { score: 2, text: "Wöchentlicher Test-Zyklus. Dokumentierte Hypothesen und Learnings." }
       ]
     }
   ];
@@ -1181,6 +1412,7 @@
     $('q-current').textContent = state.currentIndex + 1;
     $('q-total').textContent = QUESTIONS.length;
     $('q-hebel').textContent = q.hebel;
+    $('q-category').textContent = CATEGORIES[q.category].label;
     $('q-question').textContent = q.question;
     $('q-cost').textContent = q.cost;
 
@@ -1285,12 +1517,21 @@
     state.lead.email = email;
 
     const total = state.answers.reduce((a, b) => a + b, 0);
+    const axisTotals = { strategy: 0, execution: 0, system: 0 };
+    QUESTIONS.forEach((q, i) => { axisTotals[q.category] += state.answers[i]; });
+
     const payload = {
       name,
       email,
       score: total,
+      max_score: 24,
+      axis_scores: axisTotals,
       answers: state.answers,
-      hebel: QUESTIONS.map((q, i) => ({ name: q.hebel, score: state.answers[i] })),
+      hebel: QUESTIONS.map((q, i) => ({
+        name: q.hebel,
+        category: q.category,
+        score: state.answers[i]
+      })),
       timestamp: new Date().toISOString()
     };
 
@@ -1313,17 +1554,17 @@
 
   // RESULT
   function getTier(score) {
-    if (score <= 4) return {
+    if (score <= 8) return {
       cls: 'high',
       name: 'Hoher Hebel',
       impact: '30 bis 50 % geschätzte Pipeline-Lücke. Wachstum hängt aktuell direkt am Personal-Aufbau.',
-      headline: 'Du sitzt auf 30 bis 50 % ungenutzter Pipeline. Lass uns die zwei größten Hebel identifizieren.'
+      headline: 'Du sitzt auf 30 bis 50 % ungenutzter Pipeline. Lass uns Deinen größten Hebel identifizieren.'
     };
-    if (score <= 8) return {
+    if (score <= 16) return {
       cls: 'mid',
       name: 'Mittlerer Hebel',
       impact: '15 bis 25 % Output-Lücke. Jeder zusätzliche qualifizierte Termin kostet linear mehr Aufwand.',
-      headline: '30 Minuten. Wir gehen die zwei Hebel durch, die Dein Quartal am stärksten beschleunigen.'
+      headline: '30 Minuten. Wir gehen die Achse durch, die Dein Quartal am stärksten beschleunigt.'
     };
     return {
       cls: 'low',
@@ -1357,33 +1598,80 @@
       if (current >= target) clearInterval(interval);
     }, 40);
 
-    const sortedIdx = state.answers
-      .map((s, i) => ({ score: s, idx: i }))
-      .sort((a, b) => a.score - b.score)
-      .slice(0, 2)
-      .map(o => o.idx);
+    // ----- Axis aggregation -----
+    const axisScores = {};
+    const axisMax = {};
+    Object.keys(CATEGORIES).forEach(k => { axisScores[k] = 0; axisMax[k] = 0; });
+    QUESTIONS.forEach((q, idx) => {
+      axisScores[q.category] += state.answers[idx];
+      axisMax[q.category] += 2;
+    });
 
+    const weakestAxis = Object.keys(axisScores)
+      .sort((a, b) => (axisScores[a] / axisMax[a]) - (axisScores[b] / axisMax[b]))[0];
+
+    const axisGrid = $('axis-grid');
+    axisGrid.innerHTML = '';
+    Object.keys(CATEGORIES).forEach(key => {
+      const sc = axisScores[key];
+      const mx = axisMax[key];
+      const pct = Math.round((sc / mx) * 100);
+      const isWeak = key === weakestAxis;
+      const cell = document.createElement('div');
+      cell.className = 'axis-cell' + (isWeak ? ' weakest' : '');
+      cell.innerHTML = `
+        ${isWeak ? '<div class="axis-cell-marker">Hebel</div>' : ''}
+        <div class="axis-cell-label">${CATEGORIES[key].label}</div>
+        <div class="axis-cell-value">${sc}<span class="axis-max">/${mx}</span></div>
+        <div class="axis-cell-track"><div class="axis-cell-fill" style="width:0%"></div></div>
+      `;
+      axisGrid.appendChild(cell);
+      // Animate fill after insert
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          cell.querySelector('.axis-cell-fill').style.width = pct + '%';
+        });
+      });
+    });
+
+    // Diagnosis sentence (focused on weakest axis)
+    const axisDiagnosis = {
+      strategy:  'Dein größter Hebel liegt in der <strong>Strategie</strong>. Targeting, Trigger oder Value Prop sind nicht scharf genug. Mehr Outbound-Volumen löst das nicht, im Gegenteil: es vergrößert die Lücke.',
+      execution: 'Dein größter Hebel liegt in der <strong>Execution</strong>. Die Strategie steht, aber Daten, Personalisierung, Kanäle oder Deliverability lassen Pipeline liegen. Hier holst Du den schnellsten ROI.',
+      system:    'Dein größter Hebel liegt im <strong>System</strong>. Strategy und Execution laufen, aber Wissen, Daten und Lernen skalieren nicht. Jeder neue SDR fängt bei null an.'
+    };
+    $('axis-diagnosis').innerHTML = axisDiagnosis[weakestAxis];
+
+    // ----- Breakdown grouped by category -----
     const list = $('breakdown-list');
     list.innerHTML = '';
-    QUESTIONS.forEach((q, idx) => {
-      const score = state.answers[idx];
-      const isWeak = sortedIdx.includes(idx) && score < 2;
-      const row = document.createElement('div');
-      row.className = 'breakdown-row' + (isWeak ? ' weakest' : '');
+    Object.keys(CATEGORIES).forEach(key => {
+      const header = document.createElement('div');
+      header.className = 'breakdown-group-header';
+      header.textContent = CATEGORIES[key].label;
+      list.appendChild(header);
 
-      const bars = [0, 1, 2].map(i =>
-        `<div class="bar${i <= score ? ' filled' : ''}"></div>`
-      ).join('');
+      QUESTIONS.forEach((q, idx) => {
+        if (q.category !== key) return;
+        const score = state.answers[idx];
+        const isWeak = (key === weakestAxis) && score < 2;
+        const row = document.createElement('div');
+        row.className = 'breakdown-row' + (isWeak ? ' weakest' : '');
 
-      row.innerHTML = `
-        <div class="breakdown-label">
-          ${q.hebel}
-          ${isWeak ? '<span class="weakest-marker">Hebel</span>' : ''}
-        </div>
-        <div class="breakdown-bars">${bars}</div>
-        <div class="breakdown-score mono">${score}/2</div>
-      `;
-      list.appendChild(row);
+        const bars = [0, 1, 2].map(i =>
+          `<div class="bar${i <= score ? ' filled' : ''}"></div>`
+        ).join('');
+
+        row.innerHTML = `
+          <div class="breakdown-label">
+            ${q.hebel}
+            ${isWeak ? '<span class="weakest-marker">Hebel</span>' : ''}
+          </div>
+          <div class="breakdown-bars">${bars}</div>
+          <div class="breakdown-score mono">${score}/2</div>
+        `;
+        list.appendChild(row);
+      });
     });
 
     showScreen('screen-result');
