@@ -435,15 +435,15 @@
     display: inline-flex;
     align-items: center;
     gap: 12px;
-    background: linear-gradient(135deg, var(--orange-br), var(--orange));
-    color: #1A0E06;
+    background: linear-gradient(180deg, var(--orange-br), var(--orange));
+    color: var(--white);
     font-weight: 700;
     font-size: 16px;
     padding: 18px 28px;
     border-radius: 12px;
     text-decoration: none;
     margin-top: 36px;
-    box-shadow: 0 12px 40px rgba(242,100,26,0.35);
+    box-shadow: 0 10px 34px rgba(242,100,26,0.45), inset 0 1px 0 rgba(255,255,255,0.18);
     transition: transform 0.2s, box-shadow 0.2s;
     border: none;
     cursor: pointer;
@@ -570,46 +570,7 @@
   </div>
 </section>
 
-<!-- ============ 3. JOURNEY ============ -->
-<section id="s3">
-  <div class="pill reveal">Die Lead-Journey</div>
-  <h2 class="reveal d1">Vom Rohlead zum<br>BDR-ready Kontakt</h2>
-  <div class="journey">
-    <div class="card step reveal d1">
-      <span class="step-num">01</span>
-      <div class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 14v5a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5"/><path d="M12 3v10"/><path d="M8 9l4 4 4-4"/></svg></div>
-      <div class="step-title">Incoming Lead</div>
-      <div class="step-sub">Formular, Webinar, Kampagne</div>
-    </div>
-    <div class="card step reveal d2">
-      <span class="step-num">02</span>
-      <div class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="11" height="18" rx="1"/><path d="M15 8h5v13H4"/><path d="M8 7h3M8 11h3M8 15h3"/></svg></div>
-      <div class="step-title">Company Enrichment</div>
-      <div class="step-sub">Firmographics, Tech, Signale</div>
-    </div>
-    <div class="card step reveal d3">
-      <span class="step-num">03</span>
-      <div class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5"/></svg></div>
-      <div class="step-title">Contact Enrichment</div>
-      <div class="step-sub">Mail, Rolle, Validierung</div>
-    </div>
-    <div class="card step reveal d4">
-      <span class="step-num">04</span>
-      <div class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 4.9L19 9.8l-5.1 1.9L12 17l-1.9-5.3L5 9.8l5.1-1.9L12 3z"/><path d="M19 14.5l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8.8-2z"/></svg></div>
-      <div class="step-title">KI-Recherche</div>
-      <div class="step-sub">Personalisierung, Opener</div>
-    </div>
-    <div class="card step hi reveal d5">
-      <span class="step-num">05</span>
-      <div class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 0 1-9 9 9 9 0 0 1-7.5-4"/><path d="M3 12a9 9 0 0 1 9-9 9 9 0 0 1 7.5 4"/><path d="M21 3v4h-4"/><path d="M3 21v-4h4"/></svg></div>
-      <div class="step-title">Enriched Sync</div>
-      <div class="step-sub">Zurück ins CRM, BDR-ready</div>
-    </div>
-  </div>
-  <div class="journey-note reveal d5">Research-Zeit pro Kontakt sinkt von 30 auf 3 Minuten. Typischer Wert im DACH-SaaS-Markt.</div>
-</section>
-
-<!-- ============ 4. VORHER / NACHHER (slider) ============ -->
+<!-- ============ 3. VORHER / NACHHER (slider) ============ -->
 <section id="s4">
   <div class="pill reveal">Vorher / Nachher</div>
   <h2 class="reveal d1">Eine Eingabe.<br><span class="orange">Der ganze Kontakt.</span></h2>
@@ -647,6 +608,45 @@
       <div class="compare-note">Echter Kontakt aus dem Funnel, identifizierende Daten anonymisiert.</div>
     </div>
   </div>
+</section>
+
+<!-- ============ 4. JOURNEY ============ -->
+<section id="s3">
+  <div class="pill reveal">Die Lead-Journey</div>
+  <h2 class="reveal d1">Vom Rohlead zum<br>BDR-ready Kontakt</h2>
+  <div class="journey">
+    <div class="card step reveal d1">
+      <span class="step-num">01</span>
+      <div class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 14v5a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5"/><path d="M12 3v10"/><path d="M8 9l4 4 4-4"/></svg></div>
+      <div class="step-title">Incoming Lead</div>
+      <div class="step-sub">Formular, Webinar, Kampagne</div>
+    </div>
+    <div class="card step reveal d2">
+      <span class="step-num">02</span>
+      <div class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="11" height="18" rx="1"/><path d="M15 8h5v13H4"/><path d="M8 7h3M8 11h3M8 15h3"/></svg></div>
+      <div class="step-title">Company Enrichment</div>
+      <div class="step-sub">Firmographics, Tech, Signale</div>
+    </div>
+    <div class="card step reveal d3">
+      <span class="step-num">03</span>
+      <div class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5"/></svg></div>
+      <div class="step-title">Contact Enrichment</div>
+      <div class="step-sub">Mail, Rolle, Validierung</div>
+    </div>
+    <div class="card step reveal d4">
+      <span class="step-num">04</span>
+      <div class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 4.9L19 9.8l-5.1 1.9L12 17l-1.9-5.3L5 9.8l5.1-1.9L12 3z"/><path d="M19 14.5l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8.8-2z"/></svg></div>
+      <div class="step-title">KI-Recherche</div>
+      <div class="step-sub">Personalisierung, Opener</div>
+    </div>
+    <div class="card step hi reveal d5">
+      <span class="step-num">05</span>
+      <div class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 0 1-9 9 9 9 0 0 1-7.5-4"/><path d="M3 12a9 9 0 0 1 9-9 9 9 0 0 1 7.5 4"/><path d="M21 3v4h-4"/><path d="M3 21v-4h4"/></svg></div>
+      <div class="step-title">Enriched Sync</div>
+      <div class="step-sub">Zurück ins CRM, BDR-ready</div>
+    </div>
+  </div>
+  <div class="journey-note reveal d5">Research-Zeit pro Kontakt sinkt von 30 auf 3 Minuten. Typischer Wert im DACH-SaaS-Markt.</div>
 </section>
 
 <!-- ============ 5. BDR ============ -->
@@ -704,7 +704,7 @@
   <h1 class="reveal d1" style="font-size:clamp(34px,5.5vw,68px)">Pipeline-Strategie,<br><span class="orange">operativ wirksam gemacht.</span></h1>
   <p class="lede reveal d2">GTM-Strategie und technische Infrastruktur aus einer Hand. Für DACH B2B-SaaS und Software-Mittelstand mit eigener Sales-Organisation.</p>
   <div class="reveal d3">
-    <a href="./" class="cta-btn">GTM-Diagnose starten <span>→</span></a>
+    <a href="https://calendly.com/florian-lapiz/diagnose" class="cta-btn">GTM-Diagnose starten <span>→</span></a>
     <a href="https://florianlapiz.de" class="cta-link">florianlapiz.de</a>
   </div>
 </section>
