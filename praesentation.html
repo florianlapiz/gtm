@@ -195,6 +195,7 @@
   }
   .stat-label { font-size: 16px; font-weight: 600; color: var(--white); margin-bottom: 12px; }
   .stat-sub { font-size: 13px; color: var(--grey); line-height: 1.55; }
+  .stat-source { margin-top: 26px; font-size: 12px; color: var(--grey-d); font-style: italic; }
 
   /* ========== SECTION 2: ARCHITECTURE (FLOW DIAGRAM) ========== */
   .flow { width: 100%; max-width: 880px; display: flex; flex-direction: column; align-items: center; margin-top: 40px; }
@@ -284,7 +285,7 @@
   /* ========== SECTION 4: VORHER/NACHHER SLIDER ========== */
   .s4-grid {
     display: grid;
-    grid-template-columns: 1fr minmax(300px, 380px) 1fr;
+    grid-template-columns: 1fr auto 1fr;
     gap: 48px;
     align-items: center;
     margin-top: 36px;
@@ -300,15 +301,15 @@
   }
   .compare {
     position: relative;
-    width: 100%;
-    max-width: 380px;
+    height: min(64vh, 660px);
+    max-width: 100%;
     aspect-ratio: 680 / 1490;
     border-radius: 14px;
     overflow: hidden;
     border: 1px solid var(--hair);
     box-shadow: 0 30px 80px rgba(0,0,0,0.5);
     user-select: none;
-    margin: 0;
+    margin: 0 auto;
   }
   .compare-img {
     position: absolute;
@@ -398,15 +399,19 @@
     border: 1.5px solid var(--orange);
     border-radius: 14px;
     background: #100D0A;
-    min-height: 380px;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
     gap: 10px;
     color: var(--grey-d);
     font-style: italic;
     box-shadow: 0 0 60px rgba(242,100,26,0.12);
     overflow: hidden;
+    justify-self: center;
+    align-self: center;
+    max-height: min(70vh, 720px);
+    line-height: 0;
   }
-  .bdr-screen img { width: 100%; height: 100%; object-fit: cover; }
+  .bdr-screen img { display: block; max-height: min(70vh, 720px); width: auto; max-width: 100%; }
+  .bdr-screen .placeholder-frame { min-height: 380px; min-width: 280px; line-height: 1.5; }
 
   /* ========== SECTION 6: EFFEKT ========== */
   .effekt-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 48px; }
@@ -510,6 +515,7 @@
       <div class="stat-sub">Marketing und Sales auf verschiedenen Wahrheiten.</div>
     </div>
   </div>
+  <div class="stat-source reveal d4">Standardwerte aus der HubSpot-Studie, branchenüblich im B2B-SaaS.</div>
 </section>
 
 <!-- ============ 2. LÖSUNG ============ -->
