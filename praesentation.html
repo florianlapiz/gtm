@@ -265,13 +265,18 @@
   /* ========== SECTION 4: VORHER/NACHHER SLIDER ========== */
   .s4-grid {
     display: grid;
-    grid-template-columns: 1fr 400px;
-    gap: 56px;
+    grid-template-columns: 1fr minmax(300px, 380px) 1fr;
+    gap: 48px;
     align-items: center;
-    margin-top: 12px;
+    margin-top: 36px;
+    width: 100%;
   }
+  #s4 > .pill, #s4 > h2 { align-self: center; text-align: center; }
+  .s4-copy-l { text-align: right; }
+  .s4-copy-r { text-align: left; }
   @media (max-width: 968px) {
-    .s4-grid { grid-template-columns: 1fr; gap: 32px; justify-items: start; }
+    .s4-grid { grid-template-columns: 1fr; gap: 28px; justify-items: center; }
+    .s4-copy-l, .s4-copy-r { text-align: center; }
     .compare { margin: 0 auto; }
   }
   .compare {
@@ -560,10 +565,8 @@
   <h2 class="reveal d1">Eine Eingabe.<br><span class="orange">Der ganze Kontakt.</span></h2>
 
   <div class="s4-grid">
-    <div>
-      <p class="lede reveal d2">Nur die geschäftliche E-Mail kommt rein. Daraus leiten wir Unternehmen, Rolle, LinkedIn, Karrierestufe und Signal automatisch ab.</p>
-      <p class="lede reveal d2" style="margin-bottom:0">Zieh den orangenen Griff seitlich und sieh den Unterschied.</p>
-      <div class="compare-note reveal d4" style="margin-top:24px">Echter Kontakt aus dem Funnel, identifizierende Daten anonymisiert.</div>
+    <div class="s4-copy-l reveal d2">
+      <p class="lede" style="margin-bottom:0">Nur die geschäftliche E-Mail kommt rein. Daraus leiten wir Unternehmen, Rolle, LinkedIn, Karrierestufe und Signal automatisch ab.</p>
     </div>
 
     <div class="compare reveal d3" id="compareSlider">
@@ -587,6 +590,11 @@
       <span class="compare-label left">ROH</span>
       <span class="compare-label right">ANGEREICHERT</span>
       <div class="compare-handle" id="compareHandle"></div>
+    </div>
+
+    <div class="s4-copy-r reveal d4">
+      <p class="lede" style="margin-bottom:16px">Zieh den orangenen Griff seitlich und sieh den Unterschied.</p>
+      <div class="compare-note">Echter Kontakt aus dem Funnel, identifizierende Daten anonymisiert.</div>
     </div>
   </div>
 </section>
