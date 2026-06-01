@@ -1,0 +1,1897 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>Ausbildungs-Kosten-Check | e-bizA Diagnose</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="description" content="60-Sekunden-Diagnose für Ausbildungsleiter: Wie viel Verwaltungszeit kostet Dich Dein Ausbildungs-Setup pro Jahr? Fünf Fragen, eine Zahl.">
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F2F7FB;
+    --bg-soft: #EAF1F7;
+    --surface: #FFFFFF;
+    --surface-tint: #F6FAFD;
+    --surface-blue: #EAF4FB;
+    --border: #DCE7F0;
+    --border-mid: #BDD2E2;
+    --border-strong: #0E2230;
+    --text: #0E2230;
+    --text-muted: #44586A;
+    --text-dim: #7E91A2;
+    --accent: #3C9DD7;
+    --accent-bright: #5BB6E8;
+    --accent-deep: #2B7CB0;
+    --accent-green: #AEBE45;
+    --accent-soft: rgba(60, 157, 215, 0.08);
+    --accent-glow: rgba(60, 157, 215, 0.18);
+    --ink: #0E2230;
+    --paper: #FFFFFF;
+    --gradient-blue: linear-gradient(90deg, #5BB6E8 0%, #3C9DD7 55%, #AEBE45 115%);
+    --gradient-button: linear-gradient(135deg, #5BB6E8 0%, #3C9DD7 55%, #2B7CB0 100%);
+    --gradient-bg: linear-gradient(180deg, #E4EEF6 0%, #D9E7F2 40%, #E2EDF4 100%);
+    --shadow-sm: 0 2px 8px rgba(14, 34, 48, 0.04);
+    --shadow-md: 0 8px 24px rgba(14, 34, 48, 0.06);
+    --shadow-lg: 0 16px 48px rgba(14, 34, 48, 0.08);
+    --shadow-blue: 0 12px 32px rgba(60, 157, 215, 0.18);
+    --ease: cubic-bezier(0.65, 0, 0.35, 1);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 17px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% -10%, rgba(91, 182, 232, 0.20) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 100% 110%, rgba(174, 190, 69, 0.12) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 40% at 0% 80%, rgba(60, 157, 215, 0.08) 0%, transparent 55%),
+      var(--gradient-bg);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .mono {
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.02em;
+  }
+
+  /* APP SHELL */
+  .app {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 36px;
+    position: sticky;
+    top: 0;
+    background: rgba(242, 247, 251, 0.7);
+    backdrop-filter: blur(20px) saturate(150%);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+    z-index: 10;
+    border-bottom: 1px solid rgba(220, 231, 240, 0.6);
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  /* BILTECH Wortmarke (CSS-Nachbau, bei echtem Asset durch <img> ersetzen) */
+  .biltech-logo {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    line-height: 1;
+  }
+  .biltech-word {
+    position: relative;
+    display: inline-flex;
+    align-items: flex-start;
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
+    font-size: 23px;
+    letter-spacing: 0.005em;
+    color: #3E454F;
+    line-height: 1;
+  }
+  .biltech-i { position: relative; }
+  .biltech-i::before {
+    content: '';
+    position: absolute;
+    top: -0.34em;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 0.22em solid transparent;
+    border-right: 0.22em solid transparent;
+    border-top: 0.30em solid var(--accent);
+  }
+  .biltech-wedge {
+    align-self: flex-start;
+    width: 0;
+    height: 0;
+    margin-left: -0.04em;
+    border-top: 0.46em solid var(--accent-green);
+    border-right: 0.34em solid transparent;
+  }
+  .biltech-sub {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: 0.035em;
+    color: var(--text-dim);
+    line-height: 1;
+  }
+  .brand-logo-img { display: block; height: 38px; width: auto; }
+  .topbar-meta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    box-shadow: var(--shadow-sm);
+  }
+  .topbar-meta-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    box-shadow: 0 0 0 3px var(--accent-soft);
+  }
+
+  /* PROGRESS LINE */
+  .progress-track {
+    position: relative;
+    height: 3px;
+    background: rgba(189, 210, 226, 0.4);
+    overflow: hidden;
+  }
+  .progress-fill {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 0;
+    background: var(--gradient-blue);
+    transition: width 0.6s var(--ease-out);
+  }
+
+  /* STAGE */
+  .stage {
+    flex: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 56px 36px 80px;
+    overflow: hidden;
+  }
+  .stage-inner {
+    width: 100%;
+    max-width: 760px;
+    position: relative;
+  }
+
+  /* STEPS */
+  .step {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transform: translateX(40px);
+    transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
+    pointer-events: none;
+    visibility: hidden;
+  }
+  .step.active {
+    position: relative;
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
+    visibility: visible;
+  }
+  .step.prev {
+    opacity: 0;
+    transform: translateX(-40px);
+    visibility: hidden;
+  }
+
+  /* PILL BADGES */
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    letter-spacing: 0.02em;
+    box-shadow: var(--shadow-sm);
+  }
+  .pill-accent {
+    background: var(--surface-blue);
+    border-color: rgba(60, 157, 215, 0.2);
+    color: var(--accent-deep);
+  }
+  .pill-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+  }
+
+  /* STEP HEADER */
+  .step-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+  }
+  .step-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    color: var(--text-dim);
+  }
+  .step-num strong {
+    color: var(--text);
+    font-weight: 700;
+  }
+
+  .step-title {
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
+    font-size: clamp(36px, 6vw, 58px);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    color: var(--ink);
+    margin-bottom: 18px;
+  }
+  .step-title .gradient {
+    background: var(--gradient-blue);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .step-sub {
+    font-size: 18px;
+    line-height: 1.55;
+    color: var(--text-muted);
+    max-width: 600px;
+    margin-bottom: 44px;
+  }
+
+  /* INTRO META */
+  .intro-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 40px;
+  }
+  .intro-meta-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+    box-shadow: var(--shadow-sm);
+  }
+  .intro-meta-pill::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+  }
+
+  /* CARDS */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 36px 32px;
+    box-shadow: var(--shadow-md);
+  }
+
+  /* SLIDER */
+  .slider-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 36px 32px;
+    box-shadow: var(--shadow-md);
+    position: relative;
+    overflow: hidden;
+  }
+  .slider-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(91, 182, 232, 0.06) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .slider-content { position: relative; z-index: 1; }
+  .slider-value {
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
+    font-size: clamp(56px, 10vw, 92px);
+    line-height: 1;
+    color: var(--ink);
+    margin-bottom: 28px;
+    letter-spacing: -0.04em;
+  }
+  .slider-value .unit {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+    margin-left: 16px;
+    display: inline-block;
+    vertical-align: middle;
+    padding-bottom: 8px;
+  }
+  .ticket-badge {
+    display: inline-block;
+    margin-left: 12px;
+    padding: 5px 12px;
+    background: var(--accent-soft);
+    color: var(--accent-deep);
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 600;
+    vertical-align: middle;
+    letter-spacing: 0.02em;
+  }
+  input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 6px;
+    background: linear-gradient(to right, var(--accent) 0%, var(--accent) var(--fill, 0%), rgba(189, 210, 226, 0.6) var(--fill, 0%), rgba(189, 210, 226, 0.6) 100%);
+    outline: none;
+    cursor: pointer;
+    border-radius: 100px;
+    margin: 12px 0 8px;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 28px;
+    height: 28px;
+    background: var(--paper);
+    border: 2px solid var(--accent);
+    box-shadow: var(--shadow-blue);
+    cursor: grab;
+    border-radius: 50%;
+    transition: transform 0.15s var(--ease);
+  }
+  input[type="range"]::-webkit-slider-thumb:active {
+    cursor: grabbing;
+    transform: scale(1.15);
+  }
+  input[type="range"]::-moz-range-thumb {
+    width: 28px;
+    height: 28px;
+    background: var(--paper);
+    border: 2px solid var(--accent);
+    box-shadow: var(--shadow-blue);
+    cursor: grab;
+    border-radius: 50%;
+  }
+  .slider-marks {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 0.04em;
+  }
+
+  /* OPTIONS */
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .option {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    padding: 20px 24px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    cursor: pointer;
+    transition: all 0.25s var(--ease);
+    line-height: 1.4;
+    border-radius: 16px;
+    box-shadow: var(--shadow-sm);
+  }
+  .option:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+  .option input {
+    appearance: none;
+    width: 22px;
+    height: 22px;
+    border: 1.5px solid var(--border-mid);
+    background: var(--paper);
+    cursor: pointer;
+    flex-shrink: 0;
+    position: relative;
+    border-radius: 50%;
+    margin-top: 2px;
+    transition: all 0.15s var(--ease);
+  }
+  .option input:checked {
+    background: var(--accent);
+    border-color: var(--accent);
+    box-shadow: inset 0 0 0 4px var(--paper), 0 0 0 4px var(--accent-glow);
+  }
+  .option.selected {
+    border-color: var(--accent);
+    background: var(--surface-blue);
+    box-shadow: var(--shadow-blue);
+  }
+  .option input[type="checkbox"] { border-radius: 7px; }
+  .option input[type="checkbox"]:checked {
+    box-shadow: inset 0 0 0 3px var(--paper), 0 0 0 4px var(--accent-glow);
+  }
+  .option-hint {
+    font-size: 13px;
+    color: var(--text-dim);
+    margin-top: 14px;
+  }
+  .option-content {
+    flex: 1;
+  }
+  .option-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+    letter-spacing: -0.005em;
+  }
+  .option-desc {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.45;
+  }
+  .option-tag {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 3px 10px;
+    background: var(--accent-soft);
+    color: var(--accent-deep);
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+
+  /* NAV */
+  .nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 36px;
+    gap: 16px;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 18px 32px;
+    background: var(--ink);
+    color: var(--paper);
+    border: 1px solid var(--ink);
+    border-radius: 100px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    cursor: pointer;
+    transition: all 0.25s var(--ease);
+    text-decoration: none;
+    box-shadow: var(--shadow-md);
+  }
+  .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+  }
+  .btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    pointer-events: none;
+    box-shadow: none;
+  }
+  .btn-primary {
+    background: var(--gradient-button);
+    border-color: transparent;
+    color: var(--paper);
+  }
+  .btn-primary:hover {
+    box-shadow: var(--shadow-blue);
+  }
+  .btn-ghost {
+    background: transparent;
+    color: var(--text-muted);
+    border: 1px solid var(--border-mid);
+    box-shadow: none;
+    padding: 14px 22px;
+    font-size: 13px;
+  }
+  .btn-ghost:hover {
+    border-color: var(--ink);
+    background: var(--surface);
+    color: var(--ink);
+    box-shadow: var(--shadow-sm);
+  }
+  .btn-large {
+    padding: 22px 44px;
+    font-size: 15px;
+  }
+  .nav-spacer { flex: 1; }
+
+  /* RESULT */
+  .result-wrap {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 64px 48px 56px;
+    border-radius: 32px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+  }
+  .result-wrap::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 70% 50% at 0% 0%, rgba(91, 182, 232, 0.35) 0%, transparent 55%),
+      radial-gradient(ellipse 60% 40% at 100% 100%, rgba(174, 190, 69, 0.18) 0%, transparent 55%),
+      radial-gradient(ellipse 50% 40% at 50% 50%, rgba(60, 157, 215, 0.08) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .result-content {
+    position: relative;
+    z-index: 1;
+  }
+  .result-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 100px;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: rgba(255,255,255,0.75);
+    margin-bottom: 28px;
+  }
+  .result-tag-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--accent-bright);
+    border-radius: 50%;
+    box-shadow: 0 0 12px var(--accent-bright);
+  }
+  .result-headline {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: clamp(26px, 4vw, 36px);
+    line-height: 1.15;
+    color: var(--paper);
+    margin-bottom: 8px;
+    letter-spacing: -0.015em;
+  }
+  .result-headline .muted {
+    color: rgba(255,255,255,0.55);
+    font-weight: 600;
+  }
+  .result-number {
+    font-family: 'Inter', sans-serif;
+    font-weight: 900;
+    font-size: clamp(64px, 13vw, 140px);
+    line-height: 0.95;
+    color: var(--paper);
+    margin: 24px 0 12px;
+    letter-spacing: -0.045em;
+    font-variant-numeric: tabular-nums;
+    background: linear-gradient(135deg, #FFFFFF 0%, #A8DCF5 42%, #CDE08A 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .result-number .currency {
+    font-size: 0.4em;
+    vertical-align: top;
+    line-height: 2.2;
+    margin-right: 8px;
+    font-weight: 700;
+  }
+  .result-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 40px;
+  }
+  .result-breakdown {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 36px;
+  }
+  .breakdown-item {
+    padding: 20px 22px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 16px;
+  }
+  .breakdown-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 8px;
+  }
+  .breakdown-value {
+    font-family: 'Inter', sans-serif;
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--paper);
+    letter-spacing: -0.02em;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .breakdown-value .currency {
+    color: rgba(255,255,255,0.5);
+    font-size: 0.7em;
+    margin-right: 3px;
+  }
+  .breakdown-desc {
+    font-size: 12px;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.4;
+  }
+  .result-diagnosis {
+    font-size: 17px;
+    line-height: 1.55;
+    color: rgba(255,255,255,0.85);
+    max-width: 600px;
+    margin-bottom: 44px;
+  }
+  .result-diagnosis strong {
+    color: var(--paper);
+    font-weight: 600;
+  }
+  .result-cta-section {
+    border-top: 1px solid rgba(255,255,255,0.12);
+    padding-top: 36px;
+    margin-top: 8px;
+  }
+  .result-cta-pre {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 14px;
+  }
+  .result-cta-h {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: clamp(22px, 3.5vw, 30px);
+    line-height: 1.2;
+    margin-bottom: 28px;
+    letter-spacing: -0.015em;
+  }
+  .result-cta-h .muted {
+    color: rgba(255,255,255,0.6);
+    font-weight: 500;
+  }
+  .btn-inverted {
+    background: var(--paper);
+    color: var(--ink);
+    border-color: var(--paper);
+  }
+  .btn-inverted:hover {
+    background: var(--accent-bright);
+    color: var(--paper);
+    border-color: var(--accent-bright);
+  }
+
+  /* LEAD GATE */
+  .gate {
+    display: none;
+    margin-top: 8px;
+  }
+  .gate.visible {
+    display: block;
+    animation: gateIn 0.5s var(--ease-out);
+  }
+  @keyframes gateIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .gate-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 8px;
+  }
+  .gate-field {
+    margin-bottom: 16px;
+  }
+  .gate-field.full {
+    grid-column: 1 / -1;
+  }
+  .gate-field label {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+  .gate-field input,
+  .gate-field select {
+    width: 100%;
+    padding: 16px 18px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.18);
+    color: var(--paper);
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    outline: none;
+    transition: all 0.2s var(--ease);
+    border-radius: 12px;
+  }
+  .gate-field input:focus,
+  .gate-field select:focus {
+    border-color: var(--accent-bright);
+    background: rgba(255,255,255,0.08);
+  }
+  .gate-field input::placeholder {
+    color: rgba(255,255,255,0.3);
+  }
+  .gate-field select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='white' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 18px center;
+    padding-right: 44px;
+  }
+  .gate-field select option {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .gate-submit {
+    margin-top: 12px;
+    width: 100%;
+  }
+
+  /* THANK YOU */
+  .thank-you {
+    display: none;
+    padding: 32px 0 8px;
+  }
+  .thank-you.visible {
+    display: block;
+    animation: gateIn 0.5s var(--ease-out);
+  }
+  .thank-you-h {
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
+    font-size: clamp(32px, 5vw, 42px);
+    line-height: 1;
+    margin-bottom: 20px;
+    color: var(--paper);
+    letter-spacing: -0.025em;
+  }
+  .thank-you-p {
+    color: rgba(255,255,255,0.75);
+    margin-bottom: 32px;
+    font-size: 16px;
+    line-height: 1.55;
+    max-width: 480px;
+  }
+
+  /* METHODOLOGY */
+  .methodology {
+    max-width: 760px;
+    margin: 48px auto 0;
+    padding: 28px 32px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    box-shadow: var(--shadow-sm);
+  }
+  .methodology summary {
+    cursor: pointer;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text);
+    font-weight: 600;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .methodology summary::-webkit-details-marker { display: none; }
+  .methodology summary::after {
+    content: '+';
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 16px;
+    transition: transform 0.2s var(--ease);
+  }
+  .methodology[open] summary::after { content: '\2212'; }
+  .methodology-body {
+    margin-top: 18px;
+    padding-top: 18px;
+    border-top: 1px solid var(--border);
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--text-muted);
+  }
+  .methodology-body p { margin-bottom: 12px; }
+  .methodology-body strong {
+    color: var(--text);
+    font-weight: 700;
+  }
+
+  /* FOOTER */
+  .footer {
+    padding: 32px 36px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: var(--text-dim);
+    margin-top: 64px;
+    background: rgba(242, 247, 251, 0.4);
+  }
+  .footer a {
+    color: var(--text);
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .footer a:hover { text-decoration: underline; }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .stage-inner { max-width: 100%; }
+  }
+
+  @media (max-width: 640px) {
+    .topbar {
+      padding: 12px 16px;
+      padding-top: max(12px, env(safe-area-inset-top));
+    }
+    .biltech-word { font-size: 20px; }
+    .biltech-sub { font-size: 10px; }
+    .brand-logo-img { height: 34px; }
+    .topbar-meta {
+      padding: 6px 10px;
+      font-size: 10px;
+      letter-spacing: 0.06em;
+    }
+    .stage {
+      padding: 28px 18px 56px;
+      padding-left: max(18px, env(safe-area-inset-left));
+      padding-right: max(18px, env(safe-area-inset-right));
+    }
+    .step-head {
+      gap: 8px;
+      margin-bottom: 22px;
+      flex-wrap: wrap;
+    }
+    .step-title {
+      font-size: 31px;
+      line-height: 1.05;
+      letter-spacing: -0.022em;
+      margin-bottom: 14px;
+    }
+    .step-sub {
+      font-size: 15px;
+      line-height: 1.5;
+      margin-bottom: 26px;
+    }
+    .intro-meta {
+      gap: 8px;
+      margin-bottom: 30px;
+    }
+    .intro-meta-pill {
+      padding: 8px 12px;
+      font-size: 12px;
+    }
+    .slider-card {
+      padding: 24px 20px;
+      border-radius: 20px;
+    }
+    .slider-value {
+      font-size: 50px;
+      margin-bottom: 22px;
+      line-height: 0.95;
+    }
+    .slider-value .unit {
+      font-size: 13px;
+      letter-spacing: 0.04em;
+      display: block;
+      padding-bottom: 0;
+      padding-top: 8px;
+      margin-left: 0;
+    }
+    .ticket-badge {
+      font-size: 11px;
+      padding: 4px 10px;
+      margin-left: 8px;
+    }
+    input[type="range"] {
+      height: 8px;
+      margin: 16px 0 8px;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      width: 32px;
+      height: 32px;
+      border-width: 3px;
+    }
+    input[type="range"]::-moz-range-thumb {
+      width: 32px;
+      height: 32px;
+      border-width: 3px;
+    }
+    .slider-marks {
+      font-size: 10px;
+      margin-top: 12px;
+    }
+    .options { gap: 10px; }
+    .option {
+      padding: 16px 18px;
+      gap: 14px;
+      border-radius: 14px;
+    }
+    .option-title {
+      font-size: 15px;
+      margin-bottom: 3px;
+    }
+    .option-desc {
+      font-size: 13px;
+      line-height: 1.4;
+    }
+    .option-tag {
+      font-size: 10px;
+      padding: 3px 9px;
+      margin-top: 6px;
+    }
+    .option input {
+      width: 20px;
+      height: 20px;
+    }
+    .option:hover { transform: none; }
+    .option.selected {
+      box-shadow: 0 4px 14px rgba(60, 157, 215, 0.18);
+    }
+    .nav {
+      margin-top: 28px;
+      gap: 8px;
+    }
+    .btn {
+      padding: 15px 20px;
+      font-size: 13px;
+      letter-spacing: 0;
+    }
+    .btn-large {
+      padding: 17px 26px;
+      font-size: 14px;
+    }
+    .btn-ghost {
+      padding: 12px 16px;
+      font-size: 12px;
+    }
+    .btn:hover { transform: none; }
+    .result-wrap {
+      padding: 36px 22px 32px;
+      border-radius: 24px;
+    }
+    .result-tag {
+      padding: 6px 12px;
+      font-size: 11px;
+      margin-bottom: 22px;
+    }
+    .result-headline {
+      font-size: 22px;
+      line-height: 1.2;
+      margin-bottom: 4px;
+    }
+    .result-number {
+      font-size: 62px;
+      margin: 18px 0 8px;
+      letter-spacing: -0.04em;
+    }
+    .result-number .currency {
+      font-size: 0.45em;
+    }
+    .result-label {
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      margin-bottom: 32px;
+    }
+    .result-breakdown {
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+    .breakdown-item {
+      padding: 18px 20px;
+      border-radius: 14px;
+    }
+    .breakdown-label {
+      font-size: 10px;
+      letter-spacing: 0.12em;
+    }
+    .breakdown-value {
+      font-size: 28px;
+    }
+    .breakdown-desc {
+      font-size: 12px;
+    }
+    .result-diagnosis {
+      font-size: 15px;
+      line-height: 1.5;
+      margin-bottom: 32px;
+    }
+    .result-cta-section {
+      padding-top: 28px;
+    }
+    .result-cta-pre {
+      font-size: 10px;
+      margin-bottom: 10px;
+    }
+    .result-cta-h {
+      font-size: 22px;
+      line-height: 1.2;
+      margin-bottom: 22px;
+    }
+    .gate-grid {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    .gate-field {
+      margin-bottom: 14px;
+    }
+    .gate-field label {
+      font-size: 10px;
+      margin-bottom: 8px;
+    }
+    .gate-field input,
+    .gate-field select {
+      padding: 14px 16px;
+      font-size: 16px;
+      border-radius: 12px;
+    }
+    .thank-you {
+      padding: 24px 0 8px;
+    }
+    .thank-you-h {
+      font-size: 30px;
+    }
+    .thank-you-p {
+      font-size: 14px;
+    }
+    .methodology {
+      margin: 32px 18px 0;
+      padding: 22px 22px;
+      border-radius: 18px;
+    }
+    .methodology summary {
+      font-size: 10px;
+    }
+    .methodology-body {
+      font-size: 13px;
+      line-height: 1.6;
+    }
+    .footer {
+      padding: 20px 18px;
+      padding-bottom: max(20px, env(safe-area-inset-bottom));
+      flex-direction: column;
+      gap: 8px;
+      text-align: center;
+      font-size: 10px;
+    }
+  }
+
+  @media (max-width: 380px) {
+    .topbar { padding: 10px 14px; }
+    .biltech-word { font-size: 18px; }
+    .biltech-sub { font-size: 9px; }
+    .brand-logo-img { height: 30px; }
+    .topbar-meta { display: none; }
+    .stage { padding: 24px 14px 48px; }
+    .step-title { font-size: 27px; }
+    .step-sub { font-size: 14px; }
+    .slider-card { padding: 22px 18px; }
+    .slider-value { font-size: 42px; }
+    .slider-value .unit { font-size: 12px; }
+    .option { padding: 14px 16px; gap: 12px; }
+    .option-title { font-size: 14px; }
+    .option-desc { font-size: 12px; }
+    .btn { padding: 14px 18px; font-size: 12px; }
+    .btn-large { padding: 16px 22px; font-size: 13px; }
+    .result-wrap { padding: 32px 18px 28px; }
+    .result-number { font-size: 54px; }
+    .result-headline { font-size: 20px; }
+    .result-cta-h { font-size: 20px; }
+    .breakdown-value { font-size: 26px; }
+  }
+
+  @media (hover: none) {
+    .option:hover { transform: none; border-color: var(--border); }
+    .option:hover { box-shadow: var(--shadow-sm); }
+    .btn:hover { transform: none; }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .fade-up { animation: fadeUp 0.6s var(--ease-out) both; }
+  .delay-1 { animation-delay: 0.08s; }
+  .delay-2 { animation-delay: 0.16s; }
+  .delay-3 { animation-delay: 0.24s; }
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <header class="topbar">
+    <div class="brand">
+      <!-- Echtes Logo: <img src="logo.svg" alt="BILTECH" class="brand-logo-img"> statt .biltech-logo -->
+      <div class="biltech-logo">
+        <span class="biltech-word">B<span class="biltech-i">I</span>LTECH<span class="biltech-wedge"></span></span>
+        <span class="biltech-sub">bildung und technik</span>
+      </div>
+    </div>
+    <div class="topbar-meta">
+      <span class="topbar-meta-dot"></span>
+      <span id="topbarLabel">Ausbildungs-Check · 60 Sek</span>
+    </div>
+  </header>
+
+  <div class="progress-track">
+    <div class="progress-fill" id="progressFill"></div>
+  </div>
+
+  <main class="stage">
+    <div class="stage-inner">
+
+      <!-- INTRO -->
+      <section class="step active" data-step="intro">
+        <div class="step-head fade-up">
+          <span class="pill pill-accent">
+            <span class="pill-dot"></span>
+            Für Ausbildungsleiter und HR im Mittelstand
+          </span>
+        </div>
+        <h1 class="step-title fade-up delay-1">
+          Wie viel kostet Dich Deine<br>
+          <span class="gradient">Azubi-Verwaltung</span><br>
+          wirklich?
+        </h1>
+        <p class="step-sub fade-up delay-2">
+          Die meiste Verwaltungszeit in der Ausbildung versickert unsichtbar: Listen pflegen, Nachweise prüfen,
+          Pläne über Standorte abstimmen, Daten suchen. Fünf Fragen, eine Zahl, kein Marketing-Gerede.
+        </p>
+        <div class="intro-meta fade-up delay-3">
+          <span class="intro-meta-pill">Keine Anmeldung für die Zahl</span>
+          <span class="intro-meta-pill">60 Sekunden</span>
+          <span class="intro-meta-pill">Auf Basis von BIBB-Benchmarks</span>
+        </div>
+        <div class="nav fade-up delay-3">
+          <div class="nav-spacer"></div>
+          <button class="btn btn-primary btn-large" data-action="next">
+            Check starten · 01 / 05 →
+          </button>
+        </div>
+      </section>
+
+      <!-- Q1: AZUBIS -->
+      <section class="step" data-step="q1">
+        <div class="step-head">
+          <span class="step-num"><strong>01</strong> / 05</span>
+          <span class="pill">Auszubildende</span>
+        </div>
+        <h2 class="step-title">
+          Wie viele Azubis<br>
+          <span class="gradient">betreut Ihr</span> aktuell?
+        </h2>
+        <p class="step-sub">
+          Alle Auszubildenden, dual Studierenden und Praktikanten zusammen, über alle Standorte.
+          Je mehr Köpfe, desto mehr verteilte Datenpflege.
+        </p>
+        <div class="slider-card">
+          <div class="slider-content">
+            <div class="slider-value">
+              <span id="azubisDisplay">50</span><span class="unit">Azubis</span>
+            </div>
+            <input type="range" id="azubis" min="10" max="500" value="50" step="5">
+            <div class="slider-marks">
+              <span>10</span>
+              <span>500+</span>
+            </div>
+          </div>
+        </div>
+        <div class="nav">
+          <button class="btn btn-ghost" data-action="back">← Zurück</button>
+          <div class="nav-spacer"></div>
+          <button class="btn btn-primary" data-action="next">Weiter →</button>
+        </div>
+      </section>
+
+      <!-- Q2: STANDORTE -->
+      <section class="step" data-step="q2">
+        <div class="step-head">
+          <span class="step-num"><strong>02</strong> / 05</span>
+          <span class="pill">Standorte</span>
+        </div>
+        <h2 class="step-title">
+          Über wie viele Standorte<br>
+          ist Eure Ausbildung <span class="gradient">verteilt</span>?
+        </h2>
+        <p class="step-sub">
+          Je mehr Standorte, desto mehr Abstimmung, doppelte Pflege und Medienbrüche.
+          Verteilte Strukturen treiben den Aufwand pro Azubi spürbar nach oben.
+        </p>
+        <div class="options" data-group="standorte">
+          <label class="option">
+            <input type="radio" name="standorte" value="s1">
+            <div class="option-content">
+              <div class="option-title">1 Standort</div>
+              <div class="option-desc">Alles an einem Ort, kurze Wege.</div>
+            </div>
+          </label>
+          <label class="option">
+            <input type="radio" name="standorte" value="s2">
+            <div class="option-content">
+              <div class="option-title">2 bis 5 Standorte</div>
+              <div class="option-desc">Erste Abstimmungsverluste zwischen den Standorten.</div>
+            </div>
+          </label>
+          <label class="option">
+            <input type="radio" name="standorte" value="s3">
+            <div class="option-content">
+              <div class="option-title">6 bis 15 Standorte</div>
+              <div class="option-desc">Datenpflege läuft parallel und mehrfach.</div>
+            </div>
+          </label>
+          <label class="option">
+            <input type="radio" name="standorte" value="s4">
+            <div class="option-content">
+              <div class="option-title">Mehr als 15 Standorte</div>
+              <div class="option-desc">Ohne zentrales System kaum noch konsistent zu halten.</div>
+            </div>
+          </label>
+        </div>
+        <div class="nav">
+          <button class="btn btn-ghost" data-action="back">← Zurück</button>
+          <div class="nav-spacer"></div>
+          <button class="btn btn-primary" data-action="next" disabled>Weiter →</button>
+        </div>
+      </section>
+
+      <!-- Q3: VERWALTUNGSART -->
+      <section class="step" data-step="q3">
+        <div class="step-head">
+          <span class="step-num"><strong>03</strong> / 05</span>
+          <span class="pill">Verwaltung</span>
+        </div>
+        <h2 class="step-title">
+          Wie verwaltet Ihr<br>
+          Eure Ausbildung <span class="gradient">heute</span>?
+        </h2>
+        <p class="step-sub">
+          Versetzungspläne, Ausbildungsnachweise, Beurteilungen, Abwesenheiten, Zeugnisse.
+          Wo liegen diese Daten gerade wirklich?
+        </p>
+        <div class="options" data-group="verwaltung">
+          <label class="option">
+            <input type="radio" name="verwaltung" value="excel">
+            <div class="option-content">
+              <div class="option-title">Excel und Papier</div>
+              <div class="option-desc">Verteilt über 20 bis 30 Listen, Ordner und Mail-Postfächer. Kein zentrales System.</div>
+              <span class="option-tag">höchster Aufwand</span>
+            </div>
+          </label>
+          <label class="option">
+            <input type="radio" name="verwaltung" value="partial">
+            <div class="option-content">
+              <div class="option-title">Teils Excel, teils Insellösungen</div>
+              <div class="option-desc">Einzelne Tools für Einzelaufgaben, aber Medienbrüche und doppelte Pflege bleiben.</div>
+              <span class="option-tag">mittlerer Aufwand</span>
+            </div>
+          </label>
+          <label class="option">
+            <input type="radio" name="verwaltung" value="software">
+            <div class="option-content">
+              <div class="option-title">Zentrale Ausbildungssoftware</div>
+              <div class="option-desc">Alles in einem System, rollenbasiert, ein Datenstand für alle Beteiligten.</div>
+              <span class="option-tag">geringer Aufwand</span>
+            </div>
+          </label>
+        </div>
+        <div class="nav">
+          <button class="btn btn-ghost" data-action="back">← Zurück</button>
+          <div class="nav-spacer"></div>
+          <button class="btn btn-primary" data-action="next" disabled>Weiter →</button>
+        </div>
+      </section>
+
+      <!-- Q4: ZEITFRESSER -->
+      <section class="step" data-step="q4">
+        <div class="step-head">
+          <span class="step-num"><strong>04</strong> / 05</span>
+          <span class="pill">Zeitfresser</span>
+        </div>
+        <h2 class="step-title">
+          Welche Aufgaben kosten<br>
+          Euch am meisten <span class="gradient">Nerven</span>?
+        </h2>
+        <p class="step-sub">
+          Wähl die Bereiche, die heute am meisten Zeit und Reibung erzeugen.
+          Genau dafür hat e-bizA eigene Module.
+        </p>
+        <div class="options" data-group="pain">
+          <label class="option">
+            <input type="checkbox" name="pain" value="nachweis">
+            <div class="option-content">
+              <div class="option-title">Ausbildungsnachweise und Berichtshefte prüfen</div>
+            </div>
+          </label>
+          <label class="option">
+            <input type="checkbox" name="pain" value="versetzung">
+            <div class="option-content">
+              <div class="option-title">Versetzungs- und Einsatzpläne</div>
+            </div>
+          </label>
+          <label class="option">
+            <input type="checkbox" name="pain" value="beurteilung">
+            <div class="option-content">
+              <div class="option-title">Beurteilungen und Feedbackgespräche</div>
+            </div>
+          </label>
+          <label class="option">
+            <input type="checkbox" name="pain" value="abwesenheit">
+            <div class="option-content">
+              <div class="option-title">Abwesenheiten und Fehltage</div>
+            </div>
+          </label>
+          <label class="option">
+            <input type="checkbox" name="pain" value="zeugnis">
+            <div class="option-content">
+              <div class="option-title">Zeugnis-Erstellung</div>
+            </div>
+          </label>
+          <label class="option">
+            <input type="checkbox" name="pain" value="reporting">
+            <div class="option-content">
+              <div class="option-title">Reporting und Übersicht fürs Management</div>
+            </div>
+          </label>
+        </div>
+        <p class="option-hint">Mehrfachauswahl möglich, oder direkt weiter.</p>
+        <div class="nav">
+          <button class="btn btn-ghost" data-action="back">← Zurück</button>
+          <div class="nav-spacer"></div>
+          <button class="btn btn-primary" data-action="next">Weiter →</button>
+        </div>
+      </section>
+
+      <!-- Q5: ABBRUECHE -->
+      <section class="step" data-step="q5">
+        <div class="step-head">
+          <span class="step-num"><strong>05</strong> / 05</span>
+          <span class="pill">Abbrüche</span>
+        </div>
+        <h2 class="step-title">
+          Wie viele Azubis haben letztes Jahr<br>
+          <span class="gradient">abgebrochen</span>?
+        </h2>
+        <p class="step-sub">
+          Abbrüche und vorzeitige Vertragslösungen zusammen. Bundesweit liegt die Quote laut BIBB bei rund
+          26 Prozent. Jeder einzelne Fall bindet die investierte Ausbildungszeit, die nie zurückkommt.
+        </p>
+        <div class="slider-card">
+          <div class="slider-content">
+            <div class="slider-value">
+              <span id="abbruecheDisplay">4</span><span class="ticket-badge" id="quoteBadge">im Schnitt</span>
+            </div>
+            <input type="range" id="abbrueche" min="0" max="50" value="4" step="1">
+            <div class="slider-marks">
+              <span>0</span>
+              <span>50+</span>
+            </div>
+          </div>
+        </div>
+        <div class="nav">
+          <button class="btn btn-ghost" data-action="back">← Zurück</button>
+          <div class="nav-spacer"></div>
+          <button class="btn btn-primary" data-action="next">Kosten-Leck aufdecken →</button>
+        </div>
+      </section>
+
+      <!-- RESULT -->
+      <section class="step" data-step="result">
+        <div class="result-wrap">
+          <div class="result-content">
+            <span class="result-tag">
+              <span class="result-tag-dot"></span>
+              Dein Verwaltungs-Zeitverlust
+            </span>
+            <h2 class="result-headline">
+              Dein aktuelles Setup verbrennt<br>
+              <span class="muted">pro Jahr an Verwaltung:</span>
+            </h2>
+            <div class="result-number">
+              <span class="currency">€</span><span id="totalNumber">0</span>
+            </div>
+            <div class="result-label">pro Jahr · vermeidbarer Verwaltungs-Zeitverlust</div>
+
+            <div class="result-breakdown">
+              <div class="breakdown-item">
+                <div class="breakdown-label">Vergeudete Zeit</div>
+                <div class="breakdown-value"><span id="hoursLost">0</span> <span class="currency">Std</span></div>
+                <div class="breakdown-desc">Vermeidbare Verwaltungsstunden pro Jahr. Auf Vollkosten gerechnet (45 € pro Stunde) ergibt das die Summe oben.</div>
+              </div>
+              <div class="breakdown-item">
+                <div class="breakdown-label">Gebundene Abbruch-Kosten</div>
+                <div class="breakdown-value"><span class="currency">€</span><span id="abbruchLoss">0</span></div>
+                <div class="breakdown-desc">Verlorene Investition durch Abbrüche im letzten Jahr. e-bizA senkt das indirekt über strukturiertes Feedback und Frühwarnsignale.</div>
+              </div>
+            </div>
+
+            <p class="result-diagnosis" id="diagnosis"></p>
+
+            <div class="result-cta-section" id="ctaBlock">
+              <div class="result-cta-pre">Nächster Schritt</div>
+              <h3 class="result-cta-h">
+                Sieh, wie e-bizA dieses Leck schließt<br>
+                <span class="muted">+ kostenlose Live-Demo an Euren Daten</span>
+              </h3>
+              <button class="btn btn-inverted btn-large" id="openGateBtn">
+                Plan anzeigen →
+              </button>
+            </div>
+
+            <form id="gateForm" class="gate">
+              <div class="gate-grid">
+                <div class="gate-field">
+                  <label for="g-name">Dein Name</label>
+                  <input type="text" id="g-name" name="name" required autocomplete="name">
+                </div>
+                <div class="gate-field">
+                  <label for="g-email">Geschäftliche E-Mail</label>
+                  <input type="email" id="g-email" name="email" required autocomplete="email">
+                </div>
+                <div class="gate-field full">
+                  <label for="g-company">Unternehmen</label>
+                  <input type="text" id="g-company" name="company" required autocomplete="organization">
+                </div>
+                <div class="gate-field">
+                  <label for="g-role">Deine Rolle</label>
+                  <select id="g-role" name="role" required>
+                    <option value="">Bitte wählen…</option>
+                    <option>Ausbildungsleitung</option>
+                    <option>HR-Leitung / Personalleitung</option>
+                    <option>Geschäftsführung</option>
+                    <option>Ausbilder / Ausbilderin</option>
+                    <option>Sonstige</option>
+                  </select>
+                </div>
+                <div class="gate-field">
+                  <label for="g-standorte">Anzahl Standorte</label>
+                  <select id="g-standorte" name="standorte" required>
+                    <option value="">Bitte wählen…</option>
+                    <option>1 Standort</option>
+                    <option>2 bis 5 Standorte</option>
+                    <option>6 bis 15 Standorte</option>
+                    <option>mehr als 15 Standorte</option>
+                  </select>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-inverted btn-large gate-submit">Auswertung und Demo anfragen →</button>
+            </form>
+
+            <div id="thankYou" class="thank-you">
+              <div class="thank-you-h">Passt.</div>
+              <p class="thank-you-p">
+                Deine vollständige Auswertung ist innerhalb von 24 Stunden bei Dir.<br>
+                Wenn Du nicht warten willst, buch Dir direkt einen Demo-Termin:
+              </p>
+              <a id="demoLink" href="#" target="_blank" rel="noopener" class="btn btn-inverted btn-large">
+                Demo-Termin buchen →
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <details class="methodology">
+    <summary>Wie wird das berechnet?</summary>
+    <div class="methodology-body">
+      <p>
+        <strong>Kurzfassung:</strong> Die große Zahl oben ist die vermeidbare Verwaltungszeit, hochgerechnet
+        auf Vollkosten. Wir leiten sie aus drei Angaben ab, die Du sicher kennst: Anzahl Azubis, Verwaltungsart
+        und Standortstruktur. Keine geschätzten Wochenstunden, die niemand seriös beantworten kann.
+      </p>
+      <p>
+        <strong>Verwaltungs-Zeitverlust:</strong> Anzahl Azubis mal vermeidbare Stunden pro Azubi und Jahr mal
+        45 Euro Vollkosten. Die vermeidbaren Stunden hängen an Deiner Verwaltungsart: Excel und Papier rund 9
+        Stunden, Insellösungen rund 5 Stunden, zentrale Software rund 1,5 Stunden pro Azubi und Jahr. Mehrere
+        Standorte erhöhen den Aufwand zusätzlich (Faktor 1,0 bei einem Standort bis 1,45 bei einem großen Netz),
+        weil Abstimmung, Doppelpflege und Datensuche über Standorte hinweg überproportional wachsen.
+      </p>
+      <p>
+        <strong>Gebundene Abbruch-Kosten:</strong> Anzahl Abbrüche mal 8.000 Euro pro Fall. Bewusst konservativ
+        für Rekrutierung, Einarbeitung und verlorene Ausbildungszeit. Die bundesweite Vertragslösungsquote liegt
+        laut BIBB bei rund 26 Prozent. Das ist kein direkter Software-Hebel. e-bizA senkt diese Kosten indirekt,
+        über strukturiertes Feedback und Frühwarnsignale, die Abbrüche früher sichtbar machen.
+      </p>
+      <p>
+        <strong>Was das nicht ist:</strong> eine exakte Prüfung. Es ist eine richtungssichere Schätzung aus
+        öffentlichen Benchmarks. Die echten Zahlen hängen von Branche, Berufsbild und Standortstruktur ab.
+        Erfahrungsgemäß unterschätzen die meisten Betriebe den Verwaltungsaufwand deutlich.
+      </p>
+    </div>
+  </details>
+
+  <footer class="footer">
+    <span>e-bizA von BILTECH · Ausbildungsmanagement für den Mittelstand</span>
+    <a href="https://www.bildungundtechnik.de/" target="_blank" rel="noopener">bildungundtechnik.de →</a>
+  </footer>
+
+</div>
+
+<script>
+  // === CONFIG ===
+  const DEMO_URL = 'https://www.bildungundtechnik.de/kontakt'; // TODO: echten Demo-/Kalender-Link eintragen
+
+  // === STATE ===
+  const STEPS = ['intro', 'q1', 'q2', 'q3', 'q4', 'q5', 'result'];
+  const state = {
+    current: 0,
+    azubis: 50,
+    standorte: null,
+    verwaltung: null,
+    pain: [],
+    abbrueche: 4,
+  };
+
+  // === CONSTANTS ===
+  const HOURLY = 45;          // Vollkosten pro Stunde
+  const ABBRUCH_COST = 8000;  // konservative Kosten pro Abbruch
+  const BIBB_QUOTE = 0.26;    // bundesweite Vertragslösungsquote
+  const AVOID_H = { excel: 9, partial: 5, software: 1.5 };          // vermeidbare Std / Azubi / Jahr
+  const STANDORT_F = { s1: 1.0, s2: 1.15, s3: 1.3, s4: 1.45 };      // Standort-Faktor
+  const PAIN_LABELS = {
+    nachweis: 'Ausbildungsnachweise',
+    versetzung: 'Versetzungspläne',
+    beurteilung: 'Beurteilungen',
+    abwesenheit: 'Abwesenheiten',
+    zeugnis: 'Zeugnisse',
+    reporting: 'Reporting',
+  };
+  const STANDORT_LABEL = {
+    s1: 'einen Standort',
+    s2: 'mehrere Standorte',
+    s3: 'viele Standorte',
+    s4: 'ein großes Standortnetz',
+  };
+
+  // === ELEMENTS ===
+  const stepEls = document.querySelectorAll('.step');
+  const progressFill = document.getElementById('progressFill');
+  const topbarLabel = document.getElementById('topbarLabel');
+  const azubisInput = document.getElementById('azubis');
+  const azubisDisplay = document.getElementById('azubisDisplay');
+  const abbruecheInput = document.getElementById('abbrueche');
+  const abbruecheDisplay = document.getElementById('abbruecheDisplay');
+  const quoteBadge = document.getElementById('quoteBadge');
+  const totalNumber = document.getElementById('totalNumber');
+  const hoursLost = document.getElementById('hoursLost');
+  const abbruchLoss = document.getElementById('abbruchLoss');
+  const diagnosis = document.getElementById('diagnosis');
+  const openGateBtn = document.getElementById('openGateBtn');
+  const ctaBlock = document.getElementById('ctaBlock');
+  const gateForm = document.getElementById('gateForm');
+  const thankYou = document.getElementById('thankYou');
+  const demoLink = document.getElementById('demoLink');
+  demoLink.href = DEMO_URL;
+
+  // === NAVIGATION ===
+  function showStep(index) {
+    stepEls.forEach((el, i) => {
+      el.classList.remove('active', 'prev');
+      if (i === index) el.classList.add('active');
+      else if (i < index) el.classList.add('prev');
+    });
+    state.current = index;
+    updateProgress();
+    updateTopbar();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function updateProgress() {
+    const stepName = STEPS[state.current];
+    const pctMap = { intro: 0, q1: 16, q2: 33, q3: 50, q4: 66, q5: 83, result: 100 };
+    progressFill.style.width = pctMap[stepName] + '%';
+  }
+
+  function updateTopbar() {
+    const stepName = STEPS[state.current];
+    if (stepName === 'intro') topbarLabel.textContent = 'Ausbildungs-Check · 60 Sek';
+    else if (stepName === 'result') topbarLabel.textContent = 'Ergebnis';
+    else {
+      const num = STEPS.indexOf(stepName);
+      topbarLabel.textContent = `Frage ${num} von 5`;
+    }
+  }
+
+  function canAdvance() {
+    const stepName = STEPS[state.current];
+    if (stepName === 'q2') return state.standorte !== null;
+    if (stepName === 'q3') return state.verwaltung !== null;
+    return true;
+  }
+
+  function next() {
+    if (!canAdvance()) return;
+    const stepName = STEPS[state.current];
+    if (stepName === 'q5') { reveal(); return; }
+    if (state.current < STEPS.length - 1) showStep(state.current + 1);
+  }
+
+  function back() {
+    if (state.current > 0) showStep(state.current - 1);
+  }
+
+  document.querySelectorAll('[data-action="next"]').forEach(b => b.addEventListener('click', next));
+  document.querySelectorAll('[data-action="back"]').forEach(b => b.addEventListener('click', back));
+
+  // === SLIDERS ===
+  function updateSliderFill(input) {
+    const min = parseFloat(input.min);
+    const max = parseFloat(input.max);
+    const val = parseFloat(input.value);
+    const pct = ((val - min) / (max - min)) * 100;
+    input.style.setProperty('--fill', pct + '%');
+  }
+  updateSliderFill(azubisInput);
+  updateSliderFill(abbruecheInput);
+
+  azubisInput.addEventListener('input', (e) => {
+    state.azubis = parseInt(e.target.value, 10);
+    azubisDisplay.textContent = state.azubis;
+    updateSliderFill(e.target);
+    updateQuoteBadge();
+  });
+
+  abbruecheInput.addEventListener('input', (e) => {
+    state.abbrueche = parseInt(e.target.value, 10);
+    abbruecheDisplay.textContent = state.abbrueche;
+    updateSliderFill(e.target);
+    updateQuoteBadge();
+  });
+
+  function updateQuoteBadge() {
+    const rate = state.azubis > 0 ? state.abbrueche / state.azubis : 0;
+    if (state.abbrueche === 0) quoteBadge.textContent = 'keine';
+    else if (rate <= 0.15) quoteBadge.textContent = 'unter Schnitt';
+    else if (rate <= 0.30) quoteBadge.textContent = 'im Schnitt';
+    else quoteBadge.textContent = 'über Schnitt';
+  }
+
+  // === RADIO HANDLERS ===
+  function setupRadios(groupName, stateKey, autoStep) {
+    document.querySelectorAll(`input[name="${groupName}"]`).forEach(el => {
+      el.addEventListener('change', (e) => {
+        state[stateKey] = e.target.value;
+        const group = e.target.closest('.options');
+        group.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+        e.target.closest('.option').classList.add('selected');
+        const step = e.target.closest('.step');
+        const nextBtn = step.querySelector('[data-action="next"]');
+        if (nextBtn) nextBtn.disabled = false;
+        setTimeout(() => {
+          if (STEPS[state.current] === autoStep) next();
+        }, 450);
+      });
+    });
+  }
+  setupRadios('standorte', 'standorte', 'q2');
+  setupRadios('verwaltung', 'verwaltung', 'q3');
+
+  // === CHECKBOX HANDLER (Q4 Zeitfresser, Mehrfachauswahl) ===
+  document.querySelectorAll('input[name="pain"]').forEach(el => {
+    el.addEventListener('change', (e) => {
+      const val = e.target.value;
+      const label = e.target.closest('.option');
+      if (e.target.checked) {
+        if (!state.pain.includes(val)) state.pain.push(val);
+        label.classList.add('selected');
+      } else {
+        state.pain = state.pain.filter(p => p !== val);
+        label.classList.remove('selected');
+      }
+    });
+  });
+
+  // === CALCULATION ===
+  function calculate() {
+    const hoursLostRaw = state.azubis * AVOID_H[state.verwaltung] * STANDORT_F[state.standorte];
+    let verwaltung = Math.round(hoursLostRaw * HOURLY / 100) * 100;
+    let abbruch = Math.round(state.abbrueche * ABBRUCH_COST / 100) * 100;
+    return { verwaltung, abbruch, hours: Math.round(hoursLostRaw) };
+  }
+
+  function formatEuro(num) {
+    return Math.round(num).toLocaleString('de-DE');
+  }
+
+  function formatPlain(num) {
+    return Math.round(num).toLocaleString('de-DE');
+  }
+
+  function animateNumber(from, to, duration, el, fmt) {
+    const format = fmt || formatEuro;
+    const start = performance.now();
+    function tick(now) {
+      const t = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - t, 3);
+      const current = Math.round(from + (to - from) * eased);
+      el.textContent = format(current);
+      if (t < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+
+  function buildDiagnosis(calc) {
+    const v = state.verwaltung;
+    const rate = state.azubis > 0 ? state.abbrueche / state.azubis : 0;
+    const standortText = STANDORT_LABEL[state.standorte];
+    const stundenProAzubi = AVOID_H[v].toLocaleString('de-DE');
+    let line1, line2, line3;
+
+    if (v === 'excel') {
+      line1 = `Bei ${state.azubis} Azubis über ${standortText} in Excel und Papier verteilst Du Versetzungspläne, Nachweise und Beurteilungen über Dutzende Listen. Rund ${stundenProAzubi} Stunden pro Azubi und Jahr sind reine Sucharbeit, die ein zentrales System ersatzlos streicht.`;
+    } else if (v === 'partial') {
+      line1 = `Insellösungen sind besser als Papier, aber jeder Medienbruch zwischen den Tools erzeugt doppelte Datenpflege. Bei ${state.azubis} Azubis über ${standortText} bleiben rund ${stundenProAzubi} vermeidbare Stunden pro Azubi und Jahr, die ein durchgängiges System zurückholt.`;
+    } else {
+      line1 = `Dein Verwaltungs-Setup ist solide. Bei ${state.azubis} Azubis über ${standortText} bleiben rund ${stundenProAzubi} Stunden pro Azubi und Jahr als Restaufwand. Der größere Hebel liegt jetzt bei Datenqualität und Abbruchquote.`;
+    }
+
+    if (state.pain.length > 0) {
+      const labels = state.pain.map(p => PAIN_LABELS[p]);
+      let joined;
+      if (labels.length === 1) joined = labels[0];
+      else joined = labels.slice(0, -1).join(', ') + ' und ' + labels[labels.length - 1];
+      line2 = `Du hast ${joined} als größte Zeitfresser markiert. Genau diese Bereiche bildet e-bizA als zusammenhängende Module ab, ein Datensatz pro Azubi statt verteilter Listen.`;
+    } else {
+      line2 = 'e-bizA bündelt Nachweise, Versetzungspläne, Beurteilungen und Reporting in einem System, ein Datensatz pro Azubi statt verteilter Listen.';
+    }
+
+    if (state.abbrueche === 0) {
+      line3 = '<strong>Null Abbrüche im letzten Jahr ist stark.</strong> Halte das Niveau mit strukturiertem Feedback und Frühwarnsignalen, bevor es bei wachsender Azubi-Zahl kippt.';
+    } else if (rate > 0.30) {
+      line3 = '<strong>Deine Abbruchquote liegt über dem Bundesschnitt (BIBB: rund 26 Prozent).</strong> Das ist kein direkter Software-Hebel, aber strukturiertes Feedback und frühe Warnsignale machen Abbrüche früher sichtbar und bremsen genau hier.';
+    } else {
+      line3 = 'Jeder gebundene Abbruch kostet rund 8.000 Euro an verlorener Investition. Das ist kein direkter Software-Hebel, aber e-bizA macht Warnsignale über Feedback und Beurteilungen früher sichtbar.';
+    }
+    return line1 + ' ' + line2 + ' ' + line3;
+  }
+
+  // === REVEAL ===
+  function reveal() {
+    const calc = calculate();
+    diagnosis.innerHTML = buildDiagnosis(calc);
+    showStep(STEPS.indexOf('result'));
+    setTimeout(() => {
+      animateNumber(0, calc.verwaltung, 1400, totalNumber);
+      animateNumber(0, calc.hours, 1100, hoursLost, formatPlain);
+      animateNumber(0, calc.abbruch, 1000, abbruchLoss);
+    }, 500);
+  }
+
+  // === LEAD GATE ===
+  openGateBtn.addEventListener('click', () => {
+    ctaBlock.style.display = 'none';
+    gateForm.classList.add('visible');
+  });
+
+  gateForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    gateForm.classList.remove('visible');
+    thankYou.classList.add('visible');
+  });
+
+  // === KEYBOARD NAV ===
+  document.addEventListener('keydown', (e) => {
+    const tag = document.activeElement.tagName;
+    if (e.key === 'Enter' && tag !== 'BUTTON' && tag !== 'INPUT' && tag !== 'SELECT' && tag !== 'TEXTAREA') {
+      if (canAdvance()) next();
+    }
+  });
+
+  // === URL PARAM ===
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('name')) document.getElementById('g-name').value = params.get('name');
+  if (params.get('company')) document.getElementById('g-company').value = params.get('company');
+
+  // Init
+  updateProgress();
+  updateTopbar();
+  updateQuoteBadge();
+</script>
+
+</body>
+</html>
