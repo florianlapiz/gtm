@@ -1557,9 +1557,7 @@
 
 <script>
   // === CONFIG ===
-  const WEBHOOK = 'https://hook.eu1.make.com/1npebtm7jcj283enhqvmulnfxcnkhm47';
   const CALENDLY = 'https://calendly.com/stefan-wurl/strategy'; // TODO: replace with real Stefan slot
-  const SOURCE_TAG = 'copecart-vendor-audit';
 
   // === STATE ===
   const STEPS = ['intro', 'q1', 'q2', 'q3', 'q4', 'result'];
@@ -1782,17 +1780,6 @@
       animateNumber(0, calc.paymentGap, 1200, paymentLoss);
       animateNumber(0, calc.taxCost, 1000, taxLoss);
     }, 500);
-
-    sendWebhook({
-      stage: 'reveal',
-      revenue_monthly_k: state.revenue,
-      aov_eur: state.aov,
-      payment: state.payment,
-      tax: state.tax,
-      total_gap: calc.total,
-      payment_gap: calc.paymentGap,
-      tax_cost: calc.taxCost,
-    });
   }
 
   // === LEAD GATE ===
@@ -1803,40 +1790,9 @@
 
   gateForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    const formData = new FormData(gateForm);
-    const calc = calculate();
-    const lead = {
-      stage: 'lead',
-      name: formData.get('name'),
-      email: formData.get('email'),
-      company: formData.get('company'),
-      platform: formData.get('platform'),
-      business_stage: formData.get('stage'),
-      revenue_monthly_k: state.revenue,
-      aov_eur: state.aov,
-      payment: state.payment,
-      tax: state.tax,
-      total_gap: calc.total,
-      payment_gap: calc.paymentGap,
-      tax_cost: calc.taxCost,
-    };
-    sendWebhook(lead);
     gateForm.classList.remove('visible');
     thankYou.classList.add('visible');
   });
-
-  function sendWebhook(payload) {
-    fetch(WEBHOOK, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        source: SOURCE_TAG,
-        timestamp: new Date().toISOString(),
-        ...payload,
-      }),
-      mode: 'no-cors',
-    }).catch(() => {});
-  }
 
   // === KEYBOARD NAV ===
   document.addEventListener('keydown', (e) => {
