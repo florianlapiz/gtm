@@ -1,0 +1,1960 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>Vorfall-Kosten-Check | IAR Sicherheit</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="description" content="60-Sekunden-Diagnose für Werk- und Objektverantwortliche: Was kostet ein einziger Sicherheitsvorfall an Ihrem Standort? Fünf Fragen, eine Zahl.">
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F2F7FB;
+    --bg-soft: #EAF1F7;
+    --surface: #FFFFFF;
+    --surface-tint: #F6FAFD;
+    --surface-blue: #EAF4FB;
+    --border: #DCE7F0;
+    --border-mid: #BDD2E2;
+    --border-strong: #0E2230;
+    --text: #0E2230;
+    --text-muted: #44586A;
+    --text-dim: #7E91A2;
+    --accent: #003DA5;
+    --accent-bright: #1E5FCB;
+    --accent-deep: #002B73;
+    --accent-green: #5BB6E8;
+    --accent-soft: rgba(0, 61, 165, 0.08);
+    --accent-glow: rgba(0, 61, 165, 0.18);
+    --ink: #0E2230;
+    --paper: #FFFFFF;
+    --gradient-blue: linear-gradient(90deg, #1E5FCB 0%, #003DA5 70%, #002B73 120%);
+    --gradient-button: linear-gradient(135deg, #1E5FCB 0%, #003DA5 55%, #002B73 100%);
+    --gradient-bg: linear-gradient(180deg, #E4EDF6 0%, #D8E4F1 40%, #E1EBF4 100%);
+    --shadow-sm: 0 2px 8px rgba(14, 34, 48, 0.05);
+    --shadow-md: 0 8px 24px rgba(14, 34, 48, 0.07);
+    --shadow-lg: 0 16px 48px rgba(14, 34, 48, 0.09);
+    --shadow-blue: 0 12px 32px rgba(0, 61, 165, 0.20);
+    --ease: cubic-bezier(0.65, 0, 0.35, 1);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 17px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% -10%, rgba(91, 182, 232, 0.20) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 100% 110%, rgba(30, 95, 203, 0.10) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 40% at 0% 80%, rgba(60, 157, 215, 0.08) 0%, transparent 55%),
+      var(--gradient-bg);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .mono {
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.02em;
+  }
+
+  /* APP SHELL */
+  .app {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 36px;
+    position: sticky;
+    top: 0;
+    background: rgba(242, 247, 251, 0.7);
+    backdrop-filter: blur(20px) saturate(150%);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+    z-index: 10;
+    border-bottom: 1px solid rgba(220, 231, 240, 0.6);
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  /* IAR Wortmarke (CSS-Nachbau, bei echtem Asset durch <img> ersetzen) */
+  .iar-logo {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    line-height: 1;
+  }
+  .iar-word {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 900;
+    font-size: 25px;
+    letter-spacing: 0.02em;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .iar-mark {
+    display: inline-block;
+    width: 7px;
+    height: 19px;
+    background: var(--accent-green);
+    border-radius: 1px;
+  }
+  .iar-sub {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    line-height: 1;
+  }
+  .brand-logo-img { display: block; height: 48px; width: auto; }
+  .topbar-meta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    box-shadow: var(--shadow-sm);
+  }
+  .topbar-meta-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    box-shadow: 0 0 0 3px var(--accent-soft);
+  }
+
+  /* PROGRESS LINE */
+  .progress-track {
+    position: relative;
+    height: 3px;
+    background: rgba(189, 210, 226, 0.4);
+    overflow: hidden;
+  }
+  .progress-fill {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 0;
+    background: var(--gradient-blue);
+    transition: width 0.6s var(--ease-out);
+  }
+
+  /* STAGE */
+  .stage {
+    flex: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 56px 36px 80px;
+    overflow: hidden;
+  }
+  .stage-inner {
+    width: 100%;
+    max-width: 760px;
+    position: relative;
+  }
+
+  /* STEPS */
+  .step {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transform: translateX(40px);
+    transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
+    pointer-events: none;
+    visibility: hidden;
+  }
+  .step.active {
+    position: relative;
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
+    visibility: visible;
+  }
+  .step.prev {
+    opacity: 0;
+    transform: translateX(-40px);
+    visibility: hidden;
+  }
+
+  /* PILL BADGES */
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    letter-spacing: 0.02em;
+    box-shadow: var(--shadow-sm);
+  }
+  .pill-accent {
+    background: var(--surface-blue);
+    border-color: rgba(60, 157, 215, 0.2);
+    color: var(--accent-deep);
+  }
+  .pill-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+  }
+
+  /* STEP HEADER */
+  .step-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+  }
+  .step-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    color: var(--text-dim);
+  }
+  .step-num strong {
+    color: var(--text);
+    font-weight: 700;
+  }
+
+  .step-title {
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
+    font-size: clamp(36px, 6vw, 58px);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    color: var(--ink);
+    margin-bottom: 18px;
+  }
+  .step-title .gradient {
+    background: var(--gradient-blue);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .step-sub {
+    font-size: 18px;
+    line-height: 1.55;
+    color: var(--text-muted);
+    max-width: 600px;
+    margin-bottom: 44px;
+  }
+
+  /* INTRO META */
+  .intro-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 40px;
+  }
+  .intro-meta-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+    box-shadow: var(--shadow-sm);
+  }
+  .intro-meta-pill::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+  }
+
+  /* CARDS */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 36px 32px;
+    box-shadow: var(--shadow-md);
+  }
+
+  /* SLIDER */
+  .slider-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 36px 32px;
+    box-shadow: var(--shadow-md);
+    position: relative;
+    overflow: hidden;
+  }
+  .slider-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(91, 182, 232, 0.06) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .slider-content { position: relative; z-index: 1; }
+  .slider-value {
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
+    font-size: clamp(56px, 10vw, 92px);
+    line-height: 1;
+    color: var(--ink);
+    margin-bottom: 28px;
+    letter-spacing: -0.04em;
+  }
+  .slider-value .unit {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+    margin-left: 16px;
+    display: inline-block;
+    vertical-align: middle;
+    padding-bottom: 8px;
+  }
+  .ticket-badge {
+    display: inline-block;
+    margin-left: 12px;
+    padding: 5px 12px;
+    background: var(--accent-soft);
+    color: var(--accent-deep);
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 600;
+    vertical-align: middle;
+    letter-spacing: 0.02em;
+  }
+  input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 6px;
+    background: linear-gradient(to right, var(--accent) 0%, var(--accent) var(--fill, 0%), rgba(189, 210, 226, 0.6) var(--fill, 0%), rgba(189, 210, 226, 0.6) 100%);
+    outline: none;
+    cursor: pointer;
+    border-radius: 100px;
+    margin: 12px 0 8px;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 28px;
+    height: 28px;
+    background: var(--paper);
+    border: 2px solid var(--accent);
+    box-shadow: var(--shadow-blue);
+    cursor: grab;
+    border-radius: 50%;
+    transition: transform 0.15s var(--ease);
+  }
+  input[type="range"]::-webkit-slider-thumb:active {
+    cursor: grabbing;
+    transform: scale(1.15);
+  }
+  input[type="range"]::-moz-range-thumb {
+    width: 28px;
+    height: 28px;
+    background: var(--paper);
+    border: 2px solid var(--accent);
+    box-shadow: var(--shadow-blue);
+    cursor: grab;
+    border-radius: 50%;
+  }
+  .slider-marks {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 0.04em;
+  }
+
+  /* OPTIONS */
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .option {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    padding: 20px 24px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    cursor: pointer;
+    transition: all 0.25s var(--ease);
+    line-height: 1.4;
+    border-radius: 16px;
+    box-shadow: var(--shadow-sm);
+  }
+  .option:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+  .option input {
+    appearance: none;
+    width: 22px;
+    height: 22px;
+    border: 1.5px solid var(--border-mid);
+    background: var(--paper);
+    cursor: pointer;
+    flex-shrink: 0;
+    position: relative;
+    border-radius: 50%;
+    margin-top: 2px;
+    transition: all 0.15s var(--ease);
+  }
+  .option input:checked {
+    background: var(--accent);
+    border-color: var(--accent);
+    box-shadow: inset 0 0 0 4px var(--paper), 0 0 0 4px var(--accent-glow);
+  }
+  .option.selected {
+    border-color: var(--accent);
+    background: var(--surface-blue);
+    box-shadow: var(--shadow-blue);
+  }
+  .option input[type="checkbox"] { border-radius: 7px; }
+  .option input[type="checkbox"]:checked {
+    box-shadow: inset 0 0 0 3px var(--paper), 0 0 0 4px var(--accent-glow);
+  }
+  .option-hint {
+    font-size: 13px;
+    color: var(--text-dim);
+    margin-top: 14px;
+  }
+  .option-content {
+    flex: 1;
+  }
+  .option-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+    letter-spacing: -0.005em;
+  }
+  .option-desc {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.45;
+  }
+  .option-tag {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 3px 10px;
+    background: var(--accent-soft);
+    color: var(--accent-deep);
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+
+  /* NAV */
+  .nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 36px;
+    gap: 16px;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 18px 32px;
+    background: var(--ink);
+    color: var(--paper);
+    border: 1px solid var(--ink);
+    border-radius: 100px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    cursor: pointer;
+    transition: all 0.25s var(--ease);
+    text-decoration: none;
+    box-shadow: var(--shadow-md);
+  }
+  .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+  }
+  .btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    pointer-events: none;
+    box-shadow: none;
+  }
+  .btn-primary {
+    background: var(--gradient-button);
+    border-color: transparent;
+    color: var(--paper);
+  }
+  .btn-primary:hover {
+    box-shadow: var(--shadow-blue);
+  }
+  .btn-ghost {
+    background: transparent;
+    color: var(--text-muted);
+    border: 1px solid var(--border-mid);
+    box-shadow: none;
+    padding: 14px 22px;
+    font-size: 13px;
+  }
+  .btn-ghost:hover {
+    border-color: var(--ink);
+    background: var(--surface);
+    color: var(--ink);
+    box-shadow: var(--shadow-sm);
+  }
+  .btn-large {
+    padding: 22px 44px;
+    font-size: 15px;
+  }
+  .nav-spacer { flex: 1; }
+
+  /* RESULT */
+  .result-wrap {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 64px 48px 56px;
+    border-radius: 32px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+  }
+  .result-wrap::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 70% 50% at 0% 0%, rgba(91, 182, 232, 0.35) 0%, transparent 55%),
+      radial-gradient(ellipse 60% 40% at 100% 100%, rgba(30, 95, 203, 0.22) 0%, transparent 55%),
+      radial-gradient(ellipse 50% 40% at 50% 50%, rgba(60, 157, 215, 0.08) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .result-content {
+    position: relative;
+    z-index: 1;
+  }
+  .result-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 100px;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: rgba(255,255,255,0.75);
+    margin-bottom: 28px;
+  }
+  .result-tag-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--accent-bright);
+    border-radius: 50%;
+    box-shadow: 0 0 12px var(--accent-bright);
+  }
+  .result-headline {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: clamp(26px, 4vw, 36px);
+    line-height: 1.15;
+    color: var(--paper);
+    margin-bottom: 8px;
+    letter-spacing: -0.015em;
+  }
+  .result-headline .muted {
+    color: rgba(255,255,255,0.55);
+    font-weight: 600;
+  }
+  .result-number {
+    font-family: 'Inter', sans-serif;
+    font-weight: 900;
+    font-size: clamp(64px, 13vw, 140px);
+    line-height: 0.95;
+    color: var(--paper);
+    margin: 24px 0 12px;
+    letter-spacing: -0.045em;
+    font-variant-numeric: tabular-nums;
+    background: linear-gradient(135deg, #FFFFFF 0%, #A8DCF5 45%, #5BB6E8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .result-number .currency {
+    font-size: 0.4em;
+    vertical-align: top;
+    line-height: 2.2;
+    margin-right: 8px;
+    font-weight: 700;
+  }
+  .result-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 40px;
+  }
+  .result-breakdown {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 36px;
+  }
+  .breakdown-item {
+    padding: 20px 22px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 16px;
+  }
+  .breakdown-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 8px;
+  }
+  .breakdown-value {
+    font-family: 'Inter', sans-serif;
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--paper);
+    letter-spacing: -0.02em;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .breakdown-value .currency {
+    color: rgba(255,255,255,0.5);
+    font-size: 0.7em;
+    margin-right: 3px;
+  }
+  .breakdown-desc {
+    font-size: 12px;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.4;
+  }
+  .result-diagnosis {
+    font-size: 17px;
+    line-height: 1.55;
+    color: rgba(255,255,255,0.85);
+    max-width: 600px;
+    margin-bottom: 44px;
+  }
+  .result-diagnosis strong {
+    color: var(--paper);
+    font-weight: 600;
+  }
+  .result-cta-section {
+    border-top: 1px solid rgba(255,255,255,0.12);
+    padding-top: 36px;
+    margin-top: 8px;
+  }
+  .result-cta-pre {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 14px;
+  }
+  .result-cta-h {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: clamp(22px, 3.5vw, 30px);
+    line-height: 1.2;
+    margin-bottom: 28px;
+    letter-spacing: -0.015em;
+  }
+  .result-cta-h .muted {
+    color: rgba(255,255,255,0.6);
+    font-weight: 500;
+  }
+  .btn-inverted {
+    background: var(--paper);
+    color: var(--ink);
+    border-color: var(--paper);
+  }
+  .btn-inverted:hover {
+    background: var(--accent-bright);
+    color: var(--paper);
+    border-color: var(--accent-bright);
+  }
+
+  /* LEAD GATE */
+  .gate {
+    display: none;
+    margin-top: 8px;
+  }
+  .gate.visible {
+    display: block;
+    animation: gateIn 0.5s var(--ease-out);
+  }
+  @keyframes gateIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .gate-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 8px;
+  }
+  .gate-field {
+    margin-bottom: 16px;
+  }
+  .gate-field.full {
+    grid-column: 1 / -1;
+  }
+  .gate-field label {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+  .gate-field input,
+  .gate-field select {
+    width: 100%;
+    padding: 16px 18px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.18);
+    color: var(--paper);
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    outline: none;
+    transition: all 0.2s var(--ease);
+    border-radius: 12px;
+  }
+  .gate-field input:focus,
+  .gate-field select:focus {
+    border-color: var(--accent-bright);
+    background: rgba(255,255,255,0.08);
+  }
+  .gate-field input::placeholder {
+    color: rgba(255,255,255,0.3);
+  }
+  .gate-field select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='white' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 18px center;
+    padding-right: 44px;
+  }
+  .gate-field select option {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .gate-submit {
+    margin-top: 12px;
+    width: 100%;
+  }
+
+  /* THANK YOU */
+  .thank-you {
+    display: none;
+    padding: 32px 0 8px;
+  }
+  .thank-you.visible {
+    display: block;
+    animation: gateIn 0.5s var(--ease-out);
+  }
+  .thank-you-h {
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
+    font-size: clamp(32px, 5vw, 42px);
+    line-height: 1;
+    margin-bottom: 20px;
+    color: var(--paper);
+    letter-spacing: -0.025em;
+  }
+  .thank-you-p {
+    color: rgba(255,255,255,0.75);
+    margin-bottom: 32px;
+    font-size: 16px;
+    line-height: 1.55;
+    max-width: 480px;
+  }
+
+  /* METHODOLOGY */
+  .methodology {
+    max-width: 760px;
+    margin: 48px auto 0;
+    padding: 28px 32px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    box-shadow: var(--shadow-sm);
+  }
+  .methodology summary {
+    cursor: pointer;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text);
+    font-weight: 600;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .methodology summary::-webkit-details-marker { display: none; }
+  .methodology summary::after {
+    content: '+';
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 16px;
+    transition: transform 0.2s var(--ease);
+  }
+  .methodology[open] summary::after { content: '\2212'; }
+  .methodology-body {
+    margin-top: 18px;
+    padding-top: 18px;
+    border-top: 1px solid var(--border);
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--text-muted);
+  }
+  .methodology-body p { margin-bottom: 12px; }
+  .methodology-body strong {
+    color: var(--text);
+    font-weight: 700;
+  }
+
+  /* FOOTER */
+  .footer {
+    padding: 32px 36px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: var(--text-dim);
+    margin-top: 64px;
+    background: rgba(242, 247, 251, 0.4);
+  }
+  .footer a {
+    color: var(--text);
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .footer a:hover { text-decoration: underline; }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .stage-inner { max-width: 100%; }
+  }
+
+  @media (max-width: 640px) {
+    .topbar {
+      padding: 12px 16px;
+      padding-top: max(12px, env(safe-area-inset-top));
+    }
+    .iar-word { font-size: 22px; }
+    .iar-mark { height: 17px; }
+    .iar-sub { font-size: 10px; letter-spacing: 0.2em; }
+    .brand-logo-img { height: 40px; }
+    .topbar-meta {
+      padding: 6px 10px;
+      font-size: 10px;
+      letter-spacing: 0.06em;
+    }
+    .stage {
+      padding: 28px 18px 56px;
+      padding-left: max(18px, env(safe-area-inset-left));
+      padding-right: max(18px, env(safe-area-inset-right));
+    }
+    .step-head {
+      gap: 8px;
+      margin-bottom: 22px;
+      flex-wrap: wrap;
+    }
+    .step-title {
+      font-size: 31px;
+      line-height: 1.05;
+      letter-spacing: -0.022em;
+      margin-bottom: 14px;
+    }
+    .step-sub {
+      font-size: 15px;
+      line-height: 1.5;
+      margin-bottom: 26px;
+    }
+    .intro-meta {
+      gap: 8px;
+      margin-bottom: 30px;
+    }
+    .intro-meta-pill {
+      padding: 8px 12px;
+      font-size: 12px;
+    }
+    .slider-card {
+      padding: 24px 20px;
+      border-radius: 20px;
+    }
+    .slider-value {
+      font-size: 50px;
+      margin-bottom: 22px;
+      line-height: 0.95;
+    }
+    .slider-value .unit {
+      font-size: 13px;
+      letter-spacing: 0.04em;
+      display: block;
+      padding-bottom: 0;
+      padding-top: 8px;
+      margin-left: 0;
+    }
+    .ticket-badge {
+      font-size: 11px;
+      padding: 4px 10px;
+      margin-left: 8px;
+    }
+    input[type="range"] {
+      height: 8px;
+      margin: 16px 0 8px;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      width: 32px;
+      height: 32px;
+      border-width: 3px;
+    }
+    input[type="range"]::-moz-range-thumb {
+      width: 32px;
+      height: 32px;
+      border-width: 3px;
+    }
+    .slider-marks {
+      font-size: 10px;
+      margin-top: 12px;
+    }
+    .options { gap: 10px; }
+    .option {
+      padding: 16px 18px;
+      gap: 14px;
+      border-radius: 14px;
+    }
+    .option-title {
+      font-size: 15px;
+      margin-bottom: 3px;
+    }
+    .option-desc {
+      font-size: 13px;
+      line-height: 1.4;
+    }
+    .option-tag {
+      font-size: 10px;
+      padding: 3px 9px;
+      margin-top: 6px;
+    }
+    .option input {
+      width: 20px;
+      height: 20px;
+    }
+    .option:hover { transform: none; }
+    .option.selected {
+      box-shadow: 0 4px 14px rgba(60, 157, 215, 0.18);
+    }
+    .nav {
+      margin-top: 28px;
+      gap: 8px;
+    }
+    .btn {
+      padding: 15px 20px;
+      font-size: 13px;
+      letter-spacing: 0;
+    }
+    .btn-large {
+      padding: 17px 26px;
+      font-size: 14px;
+    }
+    .btn-ghost {
+      padding: 12px 16px;
+      font-size: 12px;
+    }
+    .btn:hover { transform: none; }
+    .result-wrap {
+      padding: 36px 22px 32px;
+      border-radius: 24px;
+    }
+    .result-tag {
+      padding: 6px 12px;
+      font-size: 11px;
+      margin-bottom: 22px;
+    }
+    .result-headline {
+      font-size: 22px;
+      line-height: 1.2;
+      margin-bottom: 4px;
+    }
+    .result-number {
+      font-size: 62px;
+      margin: 18px 0 8px;
+      letter-spacing: -0.04em;
+    }
+    .result-number .currency {
+      font-size: 0.45em;
+    }
+    .result-label {
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      margin-bottom: 32px;
+    }
+    .result-breakdown {
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+    .breakdown-item {
+      padding: 18px 20px;
+      border-radius: 14px;
+    }
+    .breakdown-label {
+      font-size: 10px;
+      letter-spacing: 0.12em;
+    }
+    .breakdown-value {
+      font-size: 28px;
+    }
+    .breakdown-desc {
+      font-size: 12px;
+    }
+    .result-diagnosis {
+      font-size: 15px;
+      line-height: 1.5;
+      margin-bottom: 32px;
+    }
+    .result-cta-section {
+      padding-top: 28px;
+    }
+    .result-cta-pre {
+      font-size: 10px;
+      margin-bottom: 10px;
+    }
+    .result-cta-h {
+      font-size: 22px;
+      line-height: 1.2;
+      margin-bottom: 22px;
+    }
+    .gate-grid {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    .gate-field {
+      margin-bottom: 14px;
+    }
+    .gate-field label {
+      font-size: 10px;
+      margin-bottom: 8px;
+    }
+    .gate-field input,
+    .gate-field select {
+      padding: 14px 16px;
+      font-size: 16px;
+      border-radius: 12px;
+    }
+    .thank-you {
+      padding: 24px 0 8px;
+    }
+    .thank-you-h {
+      font-size: 30px;
+    }
+    .thank-you-p {
+      font-size: 14px;
+    }
+    .methodology {
+      margin: 32px 18px 0;
+      padding: 22px 22px;
+      border-radius: 18px;
+    }
+    .methodology summary {
+      font-size: 10px;
+    }
+    .methodology-body {
+      font-size: 13px;
+      line-height: 1.6;
+    }
+    .footer {
+      padding: 20px 18px;
+      padding-bottom: max(20px, env(safe-area-inset-bottom));
+      flex-direction: column;
+      gap: 8px;
+      text-align: center;
+      font-size: 10px;
+    }
+  }
+
+  @media (max-width: 380px) {
+    .topbar { padding: 10px 14px; }
+    .iar-word { font-size: 20px; }
+    .iar-mark { height: 15px; }
+    .iar-sub { font-size: 9px; letter-spacing: 0.18em; }
+    .brand-logo-img { height: 34px; }
+    .topbar-meta { display: none; }
+    .stage { padding: 24px 14px 48px; }
+    .step-title { font-size: 27px; }
+    .step-sub { font-size: 14px; }
+    .slider-card { padding: 22px 18px; }
+    .slider-value { font-size: 42px; }
+    .slider-value .unit { font-size: 12px; }
+    .option { padding: 14px 16px; gap: 12px; }
+    .option-title { font-size: 14px; }
+    .option-desc { font-size: 12px; }
+    .btn { padding: 14px 18px; font-size: 12px; }
+    .btn-large { padding: 16px 22px; font-size: 13px; }
+    .result-wrap { padding: 32px 18px 28px; }
+    .result-number { font-size: 54px; }
+    .result-headline { font-size: 20px; }
+    .result-cta-h { font-size: 20px; }
+    .breakdown-value { font-size: 26px; }
+  }
+
+  @media (hover: none) {
+    .option:hover { transform: none; border-color: var(--border); }
+    .option:hover { box-shadow: var(--shadow-sm); }
+    .btn:hover { transform: none; }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .fade-up { animation: fadeUp 0.6s var(--ease-out) both; }
+  .delay-1 { animation-delay: 0.08s; }
+  .delay-2 { animation-delay: 0.16s; }
+  .delay-3 { animation-delay: 0.24s; }
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <header class="topbar">
+    <div class="brand">
+      <!-- Echtes Logo. Datei als logo.png (oder logo.svg) in diesen Ordner legen.
+           Faellt die Datei weg, greift automatisch die Wortmarke darunter. -->
+      <img src="logo.png" alt="IAR Sicherheit GmbH" class="brand-logo-img"
+           onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+      <div class="iar-logo" style="display:none;">
+        <span class="iar-word">IAR</span>
+        <span class="iar-sub">Sicherheit GmbH</span>
+      </div>
+    </div>
+    <div class="topbar-meta">
+      <span class="topbar-meta-dot"></span>
+      <span id="topbarLabel">Vorfall-Check · 60 Sek</span>
+    </div>
+  </header>
+
+  <div class="progress-track">
+    <div class="progress-fill" id="progressFill"></div>
+  </div>
+
+  <main class="stage">
+    <div class="stage-inner">
+
+      <!-- INTRO -->
+      <section class="step active" data-step="intro">
+        <div class="step-head fade-up">
+          <span class="pill pill-accent">
+            <span class="pill-dot"></span>
+            Für Werkleiter, Objekt- und Sicherheitsverantwortliche
+          </span>
+        </div>
+        <h1 class="step-title fade-up delay-1">
+          Was kostet Sie ein einziger<br>
+          <span class="gradient">Sicherheitsvorfall</span><br>
+          an Ihrem Standort?
+        </h1>
+        <p class="step-sub fade-up delay-2">
+          Die meisten Betriebe rechnen Sicherheit als laufende Kosten, nie als das, was ein einzelner Vorfall
+          wirklich kostet: Sachschaden, Stillstand, Folgekosten. Fünf Fragen, eine Zahl, kein Angst-Gerede.
+        </p>
+        <div class="intro-meta fade-up delay-3">
+          <span class="intro-meta-pill">Keine Anmeldung für die Zahl</span>
+          <span class="intro-meta-pill">60 Sekunden</span>
+          <span class="intro-meta-pill">Auf Basis von BKA- und Versicherungsdaten</span>
+        </div>
+        <div class="nav fade-up delay-3">
+          <div class="nav-spacer"></div>
+          <button class="btn btn-primary btn-large" data-action="next">
+            Check starten · 01 / 05 →
+          </button>
+        </div>
+      </section>
+
+      <!-- Q1: OBJEKTTYP -->
+      <section class="step" data-step="q1">
+        <div class="step-head">
+          <span class="step-num"><strong>01</strong> / 05</span>
+          <span class="pill">Objekttyp</span>
+        </div>
+        <h2 class="step-title">
+          Was für ein Standort<br>
+          soll <span class="gradient">geschützt</span> werden?
+        </h2>
+        <p class="step-sub">
+          Der Objekttyp bestimmt, was bei einem Vorfall auf dem Spiel steht und wie teuer ein Stillstand wird.
+          Wählen Sie, was am ehesten passt.
+        </p>
+        <div class="options" data-group="objekttyp">
+          <label class="option">
+            <input type="radio" name="objekttyp" value="produktion">
+            <div class="option-content">
+              <div class="option-title">Produktion / Industrie</div>
+              <div class="option-desc">Maschinen, Anlagen, laufende Fertigung.</div>
+            </div>
+          </label>
+          <label class="option">
+            <input type="radio" name="objekttyp" value="logistik">
+            <div class="option-content">
+              <div class="option-title">Logistik / Lager</div>
+              <div class="option-desc">Waren, Material, hoher Durchsatz, große Flächen.</div>
+            </div>
+          </label>
+          <label class="option">
+            <input type="radio" name="objekttyp" value="handel">
+            <div class="option-content">
+              <div class="option-title">Handel / Filiale</div>
+              <div class="option-desc">Verkaufsflächen, Warenbestand, Bargeld.</div>
+            </div>
+          </label>
+          <label class="option">
+            <input type="radio" name="objekttyp" value="bank">
+            <div class="option-content">
+              <div class="option-title">Bank / Finanz</div>
+              <div class="option-desc">Geld- und Wertbereiche, hohe Schutzanforderung.</div>
+            </div>
+          </label>
+          <label class="option">
+            <input type="radio" name="objekttyp" value="bau">
+            <div class="option-content">
+              <div class="option-title">Baustelle / Anlage</div>
+              <div class="option-desc">Geräte, Material, offenes Gelände, wechselnde Lage.</div>
+            </div>
+          </label>
+          <label class="option">
+            <input type="radio" name="objekttyp" value="buero">
+            <div class="option-content">
+              <div class="option-title">Büro / Verwaltung</div>
+              <div class="option-desc">IT, Daten, Einrichtung, sensible Unterlagen.</div>
+            </div>
+          </label>
+        </div>
+        <div class="nav">
+          <button class="btn btn-ghost" data-action="back">← Zurück</button>
+          <div class="nav-spacer"></div>
+          <button class="btn btn-primary" data-action="next" disabled>Weiter →</button>
+        </div>
+      </section>
+
+      <!-- Q2: WERTE -->
+      <section class="step" data-step="q2">
+        <div class="step-head">
+          <span class="step-num"><strong>02</strong> / 05</span>
+          <span class="pill">Werte</span>
+        </div>
+        <h2 class="step-title">
+          Welche Werte stehen an Ihrem<br>
+          Standort auf dem <span class="gradient">Spiel</span>?
+        </h2>
+        <p class="step-sub">
+          Maschinen, Warenbestand, Geräte, IT, Material. Grob geschätzt: Was steht an einem
+          typischen Tag an beweglichen und beschädigbaren Werten an Ihrem Standort?
+        </p>
+        <div class="slider-card">
+          <div class="slider-content">
+            <div class="slider-value">
+              <span id="werteDisplay">500.000</span><span class="unit">Euro</span><span class="ticket-badge" id="werteBadge">mittlerer Bestand</span>
+            </div>
+            <input type="range" id="werte" min="50000" max="5000000" value="500000" step="50000">
+            <div class="slider-marks">
+              <span>50 Tsd</span>
+              <span>5 Mio +</span>
+            </div>
+          </div>
+        </div>
+        <div class="nav">
+          <button class="btn btn-ghost" data-action="back">← Zurück</button>
+          <div class="nav-spacer"></div>
+          <button class="btn btn-primary" data-action="next">Weiter →</button>
+        </div>
+      </section>
+
+      <!-- Q3: STILLSTAND -->
+      <section class="step" data-step="q3">
+        <div class="step-head">
+          <span class="step-num"><strong>03</strong> / 05</span>
+          <span class="pill">Stillstand</span>
+        </div>
+        <h2 class="step-title">
+          Was kostet Sie<br>
+          ein Tag <span class="gradient">Stillstand</span>?
+        </h2>
+        <p class="step-sub">
+          Nach einem Vorfall steht oft mehr still als nur der Tatort: Fertigung, Verkauf, Auslieferung.
+          Was kostet ein Tag ohne Betrieb an diesem Standort, grob über den Daumen?
+        </p>
+        <div class="slider-card">
+          <div class="slider-content">
+            <div class="slider-value">
+              <span id="stillstandDisplay">10.000</span><span class="unit">Euro / Tag</span><span class="ticket-badge" id="stillstandBadge">spürbar</span>
+            </div>
+            <input type="range" id="stillstand" min="0" max="100000" value="10000" step="1000">
+            <div class="slider-marks">
+              <span>0</span>
+              <span>100 Tsd +</span>
+            </div>
+          </div>
+        </div>
+        <div class="nav">
+          <button class="btn btn-ghost" data-action="back">← Zurück</button>
+          <div class="nav-spacer"></div>
+          <button class="btn btn-primary" data-action="next">Weiter →</button>
+        </div>
+      </section>
+
+      <!-- Q4: ABSICHERUNG -->
+      <section class="step" data-step="q4">
+        <div class="step-head">
+          <span class="step-num"><strong>04</strong> / 05</span>
+          <span class="pill">Absicherung</span>
+        </div>
+        <h2 class="step-title">
+          Wie ist der Standort<br>
+          heute <span class="gradient">abgesichert</span>?
+        </h2>
+        <p class="step-sub">
+          Entscheidend ist nicht nur, ob etwas passiert. Entscheidend ist, wie schnell jemand eingreift.
+          Je kürzer die Zeit bis zur Reaktion, desto kleiner Schaden und Stillstand.
+        </p>
+        <div class="options" data-group="absicherung">
+          <label class="option">
+            <input type="radio" name="absicherung" value="keine">
+            <div class="option-content">
+              <div class="option-title">Keine ständige Sicherung</div>
+              <div class="option-desc">Schloss, Zaun, vielleicht eine Kamera. Niemand reagiert in Echtzeit.</div>
+              <span class="option-tag">höchstes Risiko</span>
+            </div>
+          </label>
+          <label class="option">
+            <input type="radio" name="absicherung" value="alarm">
+            <div class="option-content">
+              <div class="option-title">Alarm- und Videotechnik</div>
+              <div class="option-desc">Technik meldet den Vorfall, aber bis jemand vor Ort ist, vergeht Zeit.</div>
+              <span class="option-tag">mittleres Risiko</span>
+            </div>
+          </label>
+          <label class="option">
+            <input type="radio" name="absicherung" value="streife">
+            <div class="option-content">
+              <div class="option-title">Mobile Streife / Revierdienst</div>
+              <div class="option-desc">Regelmäßige Kontrollgänge und Interventionsdienst, aber nicht durchgehend vor Ort.</div>
+              <span class="option-tag">reduziertes Risiko</span>
+            </div>
+          </label>
+          <label class="option">
+            <input type="radio" name="absicherung" value="werkschutz">
+            <div class="option-content">
+              <div class="option-title">Ständiger Werk- / Objektschutz</div>
+              <div class="option-desc">Personal dauerhaft vor Ort, Reaktion in Minuten statt Stunden.</div>
+              <span class="option-tag">geringstes Risiko</span>
+            </div>
+          </label>
+        </div>
+        <div class="nav">
+          <button class="btn btn-ghost" data-action="back">← Zurück</button>
+          <div class="nav-spacer"></div>
+          <button class="btn btn-primary" data-action="next" disabled>Weiter →</button>
+        </div>
+      </section>
+
+      <!-- Q5: GEFAHREN -->
+      <section class="step" data-step="q5">
+        <div class="step-head">
+          <span class="step-num"><strong>05</strong> / 05</span>
+          <span class="pill">Gefahren</span>
+        </div>
+        <h2 class="step-title">
+          Was bereitet Ihnen am Standort<br>
+          die größten <span class="gradient">Sorgen</span>?
+        </h2>
+        <p class="step-sub">
+          Wählen Sie die Szenarien, die Sie am ehesten treffen können.
+          Genau dafür hat IAR passende Dienste, vom Revierdienst bis zum ständigen Werkschutz.
+        </p>
+        <div class="options" data-group="gefahr">
+          <label class="option">
+            <input type="checkbox" name="gefahr" value="einbruch">
+            <div class="option-content">
+              <div class="option-title">Einbruch und Diebstahl</div>
+            </div>
+          </label>
+          <label class="option">
+            <input type="checkbox" name="gefahr" value="vandalismus">
+            <div class="option-content">
+              <div class="option-title">Vandalismus und Sachbeschädigung</div>
+            </div>
+          </label>
+          <label class="option">
+            <input type="checkbox" name="gefahr" value="zutritt">
+            <div class="option-content">
+              <div class="option-title">Unbefugter Zutritt aufs Gelände</div>
+            </div>
+          </label>
+          <label class="option">
+            <input type="checkbox" name="gefahr" value="brand">
+            <div class="option-content">
+              <div class="option-title">Brand und technische Notfälle</div>
+            </div>
+          </label>
+          <label class="option">
+            <input type="checkbox" name="gefahr" value="personal">
+            <div class="option-content">
+              <div class="option-title">Übergriffe auf Mitarbeitende</div>
+            </div>
+          </label>
+          <label class="option">
+            <input type="checkbox" name="gefahr" value="bargeld">
+            <div class="option-content">
+              <div class="option-title">Geld- und Werttransporte</div>
+            </div>
+          </label>
+        </div>
+        <p class="option-hint">Mehrfachauswahl möglich, oder direkt weiter.</p>
+        <div class="nav">
+          <button class="btn btn-ghost" data-action="back">← Zurück</button>
+          <div class="nav-spacer"></div>
+          <button class="btn btn-primary" data-action="next">Vorfall-Kosten aufdecken →</button>
+        </div>
+      </section>
+
+      <!-- RESULT -->
+      <section class="step" data-step="result">
+        <div class="result-wrap">
+          <div class="result-content">
+            <span class="result-tag">
+              <span class="result-tag-dot"></span>
+              Kosten eines einzelnen Vorfalls
+            </span>
+            <h2 class="result-headline">
+              Ein einziger Vorfall an einem<br>
+              <span class="muted">Standort wie Ihrem kostet:</span>
+            </h2>
+            <div class="result-number">
+              <span class="currency">€</span><span id="totalNumber">0</span>
+            </div>
+            <div class="result-label">realistischer Schaden · pro Vorfall · nicht pro Jahr</div>
+
+            <div class="result-breakdown">
+              <div class="breakdown-item">
+                <div class="breakdown-label">Sachschaden</div>
+                <div class="breakdown-value"><span class="currency">€</span><span id="sachschaden">0</span></div>
+                <div class="breakdown-desc">Diebstahl, Zerstörung und Beschädigung an Maschinen, Ware, Geräten und IT, gedämpft durch Ihre heutige Absicherung.</div>
+              </div>
+              <div class="breakdown-item">
+                <div class="breakdown-label">Betriebsunterbrechung</div>
+                <div class="breakdown-value"><span class="currency">€</span><span id="downtimeLoss">0</span></div>
+                <div class="breakdown-desc"><span id="downtimeDays">0</span> Tage Stillstand, bis der Betrieb wieder läuft. Je schneller die Reaktion vor Ort, desto kürzer.</div>
+              </div>
+              <div class="breakdown-item">
+                <div class="breakdown-label">Folgekosten</div>
+                <div class="breakdown-value"><span class="currency">€</span><span id="folgekosten">0</span></div>
+                <div class="breakdown-desc">Höhere Versicherungsprämien, Selbstbehalt, Aufarbeitung und Vertrauensschaden bei Kunden und Belegschaft.</div>
+              </div>
+            </div>
+
+            <p class="result-diagnosis" id="diagnosis"></p>
+
+            <div class="result-cta-section" id="ctaBlock">
+              <div class="result-cta-pre">Nächster Schritt</div>
+              <h3 class="result-cta-h">
+                Kostenlose Sicherheitsanalyse vor Ort mit IAR<br>
+                <span class="muted">+ konkretes Konzept, das genau diese Zahl senkt</span>
+              </h3>
+              <button class="btn btn-inverted btn-large" id="openGateBtn">
+                Analyse anfragen →
+              </button>
+            </div>
+
+            <form id="gateForm" class="gate">
+              <div class="gate-grid">
+                <div class="gate-field">
+                  <label for="g-name">Ihr Name</label>
+                  <input type="text" id="g-name" name="name" required autocomplete="name">
+                </div>
+                <div class="gate-field">
+                  <label for="g-email">Geschäftliche E-Mail</label>
+                  <input type="email" id="g-email" name="email" required autocomplete="email">
+                </div>
+                <div class="gate-field full">
+                  <label for="g-company">Unternehmen</label>
+                  <input type="text" id="g-company" name="company" required autocomplete="organization">
+                </div>
+                <div class="gate-field">
+                  <label for="g-role">Ihre Rolle</label>
+                  <select id="g-role" name="role" required>
+                    <option value="">Bitte wählen…</option>
+                    <option>Werkleitung / Betriebsleitung</option>
+                    <option>Facility Management</option>
+                    <option>Geschäftsführung</option>
+                    <option>Sicherheitsverantwortlicher</option>
+                    <option>Sonstige</option>
+                  </select>
+                </div>
+                <div class="gate-field">
+                  <label for="g-region">Standort-Region</label>
+                  <select id="g-region" name="region" required>
+                    <option value="">Bitte wählen…</option>
+                    <option>Saarland / Ottweiler</option>
+                    <option>Raum Heilbronn</option>
+                    <option>Baden-Württemberg (sonst)</option>
+                    <option>Rheinland-Pfalz</option>
+                    <option>Andere Region</option>
+                  </select>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-inverted btn-large gate-submit">Sicherheitsanalyse anfragen →</button>
+            </form>
+
+            <div id="thankYou" class="thank-you">
+              <div class="thank-you-h">Passt.</div>
+              <p class="thank-you-p">
+                Ein Sicherheitsberater von IAR meldet sich innerhalb von 24 Stunden für die Vor-Ort-Analyse.<br>
+                Wenn es schneller gehen soll, rufen Sie direkt an:
+              </p>
+              <a id="demoLink" href="#" target="_blank" rel="noopener" class="btn btn-inverted btn-large">
+                Direkt Kontakt aufnehmen →
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <details class="methodology">
+    <summary>Wie wird das berechnet?</summary>
+    <div class="methodology-body">
+      <p>
+        <strong>Kurzfassung:</strong> Die große Zahl oben ist der realistische Schaden eines einzelnen Vorfalls,
+        nicht eine Jahressumme. Wir setzen sie aus drei Bausteinen zusammen: Sachschaden, Betriebsunterbrechung
+        und Folgekosten. Jeder Baustein wird durch Ihre heutige Absicherung gedämpft.
+      </p>
+      <p>
+        <strong>Sachschaden:</strong> Wert der gefährdeten Werte mal einem Schadensanteil je Objekttyp (wie viel
+        bei einem typischen Vorfall betroffen ist, etwa 4 bis 12 Prozent), mal einem Absicherungsfaktor. Wer nur
+        ein Schloss hat, trägt den vollen Schaden. Alarm- und Videotechnik, mobile Streife und ständiger Werkschutz
+        senken diesen Faktor schrittweise, weil schnellere Reaktion den Schaden begrenzt.
+      </p>
+      <p>
+        <strong>Betriebsunterbrechung:</strong> typische Stillstandstage je Objekttyp (Produktion liegt länger
+        still als ein Büro) mal Ihre Tageskosten für Stillstand, ebenfalls gedämpft durch die Reaktionszeit vor Ort.
+        Je schneller jemand eingreift, desto kürzer steht der Betrieb.
+      </p>
+      <p>
+        <strong>Folgekosten:</strong> pauschal rund 15 Prozent auf Sach- und Stillstandsschaden, für höhere
+        Versicherungsprämien, Selbstbehalt, Aufarbeitung und den Vertrauensschaden bei Kunden und Belegschaft.
+      </p>
+      <p>
+        <strong>Was das nicht ist:</strong> eine exakte Risikoanalyse. Es ist eine richtungssichere Schätzung
+        auf Basis von Erfahrungs- und Versicherungswerten. Der echte Schaden hängt von Standort, Tatzeit und
+        Schutzkonzept ab. Erfahrungsgemäß unterschätzen die meisten Betriebe die Kosten eines einzelnen Vorfalls
+        deutlich, weil sie nur an den Sachschaden denken und Stillstand und Folgekosten vergessen.
+      </p>
+    </div>
+  </details>
+
+  <footer class="footer">
+    <span>IAR Sicherheit GmbH · Objektschutz, Werkschutz und Revierdienst</span>
+    <a href="https://iar-sicherheit.de/" target="_blank" rel="noopener">iar-sicherheit.de →</a>
+  </footer>
+
+</div>
+
+<script>
+  // === CONFIG ===
+  const DEMO_URL = 'https://iar-sicherheit.de/kontakt'; // TODO: echten Kontakt-/Kalender-Link eintragen
+
+  // === STATE ===
+  const STEPS = ['intro', 'q1', 'q2', 'q3', 'q4', 'q5', 'result'];
+  const state = {
+    current: 0,
+    objekttyp: null,
+    werte: 500000,
+    stillstand: 10000,
+    absicherung: null,
+    gefahr: [],
+  };
+
+  // === CONSTANTS ===
+  // Schadensanteil je Objekttyp: Anteil der gefährdeten Werte, der bei einem typischen Vorfall betroffen ist
+  const TYPE_SHARE = { produktion: 0.06, logistik: 0.08, handel: 0.10, bank: 0.05, bau: 0.12, buero: 0.04 };
+  // Typische Stillstandstage je Objekttyp, bis der Betrieb wieder läuft
+  const DOWNTIME_DAYS = { produktion: 4, logistik: 2.5, handel: 1.5, bank: 1, bau: 3, buero: 2 };
+  // Absicherung dämpft Schadenshöhe (severity) und Stillstandsdauer (delay)
+  const SEVERITY_F = { keine: 1.0, alarm: 0.75, streife: 0.55, werkschutz: 0.35 };
+  const DELAY_F = { keine: 1.0, alarm: 0.8, streife: 0.6, werkschutz: 0.4 };
+  const FOLGE_RATE = 0.15; // Folgekosten als Aufschlag auf Sach- und Stillstandsschaden
+
+  const TYPE_LABEL = {
+    produktion: 'Produktionsstandort',
+    logistik: 'Logistik- und Lagerstandort',
+    handel: 'Handelsstandort',
+    bank: 'Bank- und Finanzstandort',
+    bau: 'Baustelle',
+    buero: 'Büro- und Verwaltungsstandort',
+  };
+  const ABSICHERUNG_LABEL = {
+    keine: 'ohne ständige Sicherung',
+    alarm: 'mit Alarm- und Videotechnik',
+    streife: 'mit mobiler Streife',
+    werkschutz: 'mit ständigem Werkschutz',
+  };
+  // Empfohlener IAR-Dienst je nach aktueller Absicherung (Eskalationsstufe)
+  const SERVICE_RECO = {
+    keine: 'ein Revierdienst mit regelmäßigen Kontrollgängen, der den Standort überhaupt erst in eine Reaktionskette holt',
+    alarm: 'ein Interventions- und Revierdienst, der auf Ihre Technik aufsetzt und im Alarmfall in Minuten vor Ort ist',
+    streife: 'eine Verdichtung zu festen Werkschutz-Zeiten in den kritischen Fenstern, statt nur stichprobenartiger Gänge',
+    werkschutz: 'eine Feinjustierung des bestehenden Werkschutzes auf die Szenarien, die Ihnen am meisten Sorgen machen',
+  };
+  const GEFAHR_LABELS = {
+    einbruch: 'Einbruch und Diebstahl',
+    vandalismus: 'Vandalismus',
+    zutritt: 'unbefugter Zutritt',
+    brand: 'Brand und Notfälle',
+    personal: 'Übergriffe auf Mitarbeitende',
+    bargeld: 'Geld- und Werttransporte',
+  };
+
+  // === ELEMENTS ===
+  const stepEls = document.querySelectorAll('.step');
+  const progressFill = document.getElementById('progressFill');
+  const topbarLabel = document.getElementById('topbarLabel');
+  const werteInput = document.getElementById('werte');
+  const werteDisplay = document.getElementById('werteDisplay');
+  const werteBadge = document.getElementById('werteBadge');
+  const stillstandInput = document.getElementById('stillstand');
+  const stillstandDisplay = document.getElementById('stillstandDisplay');
+  const stillstandBadge = document.getElementById('stillstandBadge');
+  const totalNumber = document.getElementById('totalNumber');
+  const sachschadenEl = document.getElementById('sachschaden');
+  const downtimeLossEl = document.getElementById('downtimeLoss');
+  const downtimeDaysEl = document.getElementById('downtimeDays');
+  const folgekostenEl = document.getElementById('folgekosten');
+  const diagnosis = document.getElementById('diagnosis');
+  const openGateBtn = document.getElementById('openGateBtn');
+  const ctaBlock = document.getElementById('ctaBlock');
+  const gateForm = document.getElementById('gateForm');
+  const thankYou = document.getElementById('thankYou');
+  const demoLink = document.getElementById('demoLink');
+  demoLink.href = DEMO_URL;
+
+  // === NAVIGATION ===
+  function showStep(index) {
+    stepEls.forEach((el, i) => {
+      el.classList.remove('active', 'prev');
+      if (i === index) el.classList.add('active');
+      else if (i < index) el.classList.add('prev');
+    });
+    state.current = index;
+    updateProgress();
+    updateTopbar();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function updateProgress() {
+    const stepName = STEPS[state.current];
+    const pctMap = { intro: 0, q1: 16, q2: 33, q3: 50, q4: 66, q5: 83, result: 100 };
+    progressFill.style.width = pctMap[stepName] + '%';
+  }
+
+  function updateTopbar() {
+    const stepName = STEPS[state.current];
+    if (stepName === 'intro') topbarLabel.textContent = 'Vorfall-Check · 60 Sek';
+    else if (stepName === 'result') topbarLabel.textContent = 'Ergebnis';
+    else {
+      const num = STEPS.indexOf(stepName);
+      topbarLabel.textContent = `Frage ${num} von 5`;
+    }
+  }
+
+  function canAdvance() {
+    const stepName = STEPS[state.current];
+    if (stepName === 'q1') return state.objekttyp !== null;
+    if (stepName === 'q4') return state.absicherung !== null;
+    return true;
+  }
+
+  function next() {
+    if (!canAdvance()) return;
+    const stepName = STEPS[state.current];
+    if (stepName === 'q5') { reveal(); return; }
+    if (state.current < STEPS.length - 1) showStep(state.current + 1);
+  }
+
+  function back() {
+    if (state.current > 0) showStep(state.current - 1);
+  }
+
+  document.querySelectorAll('[data-action="next"]').forEach(b => b.addEventListener('click', next));
+  document.querySelectorAll('[data-action="back"]').forEach(b => b.addEventListener('click', back));
+
+  // === SLIDERS ===
+  function updateSliderFill(input) {
+    const min = parseFloat(input.min);
+    const max = parseFloat(input.max);
+    const val = parseFloat(input.value);
+    const pct = ((val - min) / (max - min)) * 100;
+    input.style.setProperty('--fill', pct + '%');
+  }
+  updateSliderFill(werteInput);
+  updateSliderFill(stillstandInput);
+
+  werteInput.addEventListener('input', (e) => {
+    state.werte = parseInt(e.target.value, 10);
+    werteDisplay.textContent = formatEuro(state.werte);
+    updateSliderFill(e.target);
+    updateWerteBadge();
+  });
+
+  stillstandInput.addEventListener('input', (e) => {
+    state.stillstand = parseInt(e.target.value, 10);
+    stillstandDisplay.textContent = formatEuro(state.stillstand);
+    updateSliderFill(e.target);
+    updateStillstandBadge();
+  });
+
+  function updateWerteBadge() {
+    if (state.werte <= 250000) werteBadge.textContent = 'überschaubar';
+    else if (state.werte <= 1000000) werteBadge.textContent = 'mittlerer Bestand';
+    else if (state.werte <= 3000000) werteBadge.textContent = 'hoher Bestand';
+    else werteBadge.textContent = 'sehr hoher Bestand';
+  }
+
+  function updateStillstandBadge() {
+    if (state.stillstand === 0) stillstandBadge.textContent = 'kein Stillstand';
+    else if (state.stillstand <= 5000) stillstandBadge.textContent = 'gering';
+    else if (state.stillstand <= 25000) stillstandBadge.textContent = 'spürbar';
+    else stillstandBadge.textContent = 'kritisch';
+  }
+
+  // === RADIO HANDLERS ===
+  function setupRadios(groupName, stateKey, autoStep) {
+    document.querySelectorAll(`input[name="${groupName}"]`).forEach(el => {
+      el.addEventListener('change', (e) => {
+        state[stateKey] = e.target.value;
+        const group = e.target.closest('.options');
+        group.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+        e.target.closest('.option').classList.add('selected');
+        const step = e.target.closest('.step');
+        const nextBtn = step.querySelector('[data-action="next"]');
+        if (nextBtn) nextBtn.disabled = false;
+        setTimeout(() => {
+          if (STEPS[state.current] === autoStep) next();
+        }, 450);
+      });
+    });
+  }
+  setupRadios('objekttyp', 'objekttyp', 'q1');
+  setupRadios('absicherung', 'absicherung', 'q4');
+
+  // === CHECKBOX HANDLER (Q5 Gefahren, Mehrfachauswahl) ===
+  document.querySelectorAll('input[name="gefahr"]').forEach(el => {
+    el.addEventListener('change', (e) => {
+      const val = e.target.value;
+      const label = e.target.closest('.option');
+      if (e.target.checked) {
+        if (!state.gefahr.includes(val)) state.gefahr.push(val);
+        label.classList.add('selected');
+      } else {
+        state.gefahr = state.gefahr.filter(g => g !== val);
+        label.classList.remove('selected');
+      }
+    });
+  });
+
+  // === CALCULATION ===
+  function calculate() {
+    const typeShare = TYPE_SHARE[state.objekttyp];
+    const severity = SEVERITY_F[state.absicherung];
+    const delay = DELAY_F[state.absicherung];
+    const days = DOWNTIME_DAYS[state.objekttyp] * delay;
+
+    const sachschaden = state.werte * typeShare * severity;
+    const downtime = days * state.stillstand;
+    const folge = (sachschaden + downtime) * FOLGE_RATE;
+    const total = sachschaden + downtime + folge;
+
+    const round1k = (n) => Math.round(n / 1000) * 1000;
+    return {
+      sachschaden: round1k(sachschaden),
+      downtime: round1k(downtime),
+      folge: round1k(folge),
+      total: round1k(total),
+      days: Math.round(days * 10) / 10,
+    };
+  }
+
+  function formatEuro(num) {
+    return Math.round(num).toLocaleString('de-DE');
+  }
+
+  function formatDays(num) {
+    return (Math.round(num * 10) / 10).toLocaleString('de-DE');
+  }
+
+  function animateNumber(from, to, duration, el, fmt) {
+    const format = fmt || formatEuro;
+    const start = performance.now();
+    function tick(now) {
+      const t = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - t, 3);
+      const current = from + (to - from) * eased;
+      el.textContent = format(current);
+      if (t < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+
+  function buildDiagnosis(calc) {
+    const typeText = TYPE_LABEL[state.objekttyp];
+    const absText = ABSICHERUNG_LABEL[state.absicherung];
+    const service = SERVICE_RECO[state.absicherung];
+    let line1, line2, line3;
+
+    line1 = `Ihr Standort ist ein ${typeText} ${absText}. Bei einem einzigen Vorfall stehen rund ${formatEuro(calc.sachschaden)} Euro Sachschaden im Raum, dazu etwa ${formatDays(calc.days)} Tage Stillstand für rund ${formatEuro(calc.downtime)} Euro. Mit Folgekosten landet ein Vorfall bei rund ${formatEuro(calc.total)} Euro.`;
+
+    if (state.absicherung === 'keine') {
+      line2 = '<strong>Aktuell reagiert niemand in Echtzeit.</strong> Genau diese Lücke macht den Schaden teuer, weil ein Täter ungestört Zeit hat. Jede Stunde schnellere Reaktion drückt sowohl Sachschaden als auch Stillstand spürbar nach unten.';
+    } else if (state.absicherung === 'werkschutz') {
+      line2 = '<strong>Ihr Schutzniveau ist bereits hoch.</strong> Der Hebel liegt jetzt nicht im Ob. Entscheidend ist das Wie: ob der Werkschutz genau die kritischen Zeitfenster und Szenarien abdeckt, in denen wirklich etwas passieren kann.';
+    } else {
+      line2 = '<strong>Sie haben eine Grundabsicherung, aber eine Lücke zwischen Meldung und Reaktion vor Ort.</strong> In genau dieser Zeitspanne entsteht der Großteil von Sachschaden und Stillstand. Diese Lücke zu verkürzen ist der direkteste Hebel auf die Zahl oben.';
+    }
+
+    if (state.gefahr.length > 0) {
+      const labels = state.gefahr.map(g => GEFAHR_LABELS[g]);
+      let joined;
+      if (labels.length === 1) joined = labels[0];
+      else joined = labels.slice(0, -1).join(', ') + ' und ' + labels[labels.length - 1];
+      line3 = `Sie haben ${joined} als größte Sorge markiert. Für Ihre Lage ist ${service} der naheliegende nächste Schritt. IAR bringt das vor einer Investition kostenlos in eine Vor-Ort-Analyse.`;
+    } else {
+      line3 = `Für Ihre Lage ist ${service} der naheliegende nächste Schritt. IAR bringt das vor einer Investition kostenlos in eine Vor-Ort-Analyse.`;
+    }
+    return line1 + ' ' + line2 + ' ' + line3;
+  }
+
+  // === REVEAL ===
+  function reveal() {
+    const calc = calculate();
+    diagnosis.innerHTML = buildDiagnosis(calc);
+    downtimeDaysEl.textContent = formatDays(calc.days);
+    showStep(STEPS.indexOf('result'));
+    setTimeout(() => {
+      animateNumber(0, calc.total, 1400, totalNumber);
+      animateNumber(0, calc.sachschaden, 1100, sachschadenEl);
+      animateNumber(0, calc.downtime, 1100, downtimeLossEl);
+      animateNumber(0, calc.folge, 1000, folgekostenEl);
+    }, 500);
+  }
+
+  // === LEAD GATE ===
+  openGateBtn.addEventListener('click', () => {
+    ctaBlock.style.display = 'none';
+    gateForm.classList.add('visible');
+  });
+
+  gateForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    gateForm.classList.remove('visible');
+    thankYou.classList.add('visible');
+  });
+
+  // === KEYBOARD NAV ===
+  document.addEventListener('keydown', (e) => {
+    const tag = document.activeElement.tagName;
+    if (e.key === 'Enter' && tag !== 'BUTTON' && tag !== 'INPUT' && tag !== 'SELECT' && tag !== 'TEXTAREA') {
+      if (canAdvance()) next();
+    }
+  });
+
+  // === URL PARAM ===
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('name')) document.getElementById('g-name').value = params.get('name');
+  if (params.get('company')) document.getElementById('g-company').value = params.get('company');
+
+  // Init
+  updateProgress();
+  updateTopbar();
+  updateWerteBadge();
+  updateStillstandBadge();
+  werteDisplay.textContent = formatEuro(state.werte);
+  stillstandDisplay.textContent = formatEuro(state.stillstand);
+</script>
+
+</body>
+</html>
