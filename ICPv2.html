@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Branchen-Landkarte · FL Digital</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0908; --bg2:#141110; --ink:#f6f3ef; --muted:#a9a39c; --faint:#6c6760;
+  --o1:#ffb347; --o2:#f5811b; --o3:#d24405;
+  --grad:linear-gradient(105deg,#ffb347 0%,#f5811b 46%,#d24405 100%);
+  --grad-soft:linear-gradient(105deg,rgba(255,179,71,.16),rgba(210,68,5,.16));
+  --green:#3fb568; --amber:#e2a52b; --red:#e35140; --grey:#6b6b6b;
+  --glass:rgba(255,255,255,.04); --glass-2:rgba(255,255,255,.07);
+  --border:rgba(255,255,255,.09); --border-warm:rgba(245,129,27,.40);
+  --font:'Inter',sans-serif; --lh-h:1.28; --lh-b:1.55;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--font); font-weight:400; line-height:var(--lh-b); font-size:16px; -webkit-font-smoothing:antialiased; overflow-x:hidden}
+body::before{content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
+  background:
+    radial-gradient(900px 540px at 84% -10%, rgba(245,129,27,.30), transparent 56%),
+    radial-gradient(620px 520px at 100% 38%, rgba(210,68,5,.16), transparent 60%),
+    radial-gradient(560px 460px at -4% 8%, rgba(245,129,27,.10), transparent 58%),
+    linear-gradient(180deg,#0d0b0a,#070605 76%);}
+.wrap{position:relative; z-index:2; max-width:1140px; margin:0 auto; padding:64px 26px 96px}
+h1,h2,h3{font-weight:800; line-height:var(--lh-h); letter-spacing:-.02em; margin:0}
+
+/* hero */
+.kicker{font-size:12px; font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:var(--o1); display:flex; gap:13px; align-items:center}
+.kicker::after{content:""; height:1px; flex:1; background:linear-gradient(90deg,var(--o2),transparent)}
+h1{position:relative; font-size:clamp(40px,6.4vw,72px); font-weight:900; margin:22px 0 0}
+h1::before{content:""; position:absolute; left:-3%; top:4%; width:58%; height:118%; background:radial-gradient(closest-side,rgba(245,129,27,.32),transparent 72%); filter:blur(34px); z-index:-1}
+h1 .em{background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent}
+.lede{max-width:760px; margin:20px 0 0; font-size:clamp(16px,1.6vw,19px); color:var(--muted)}
+.lede b{color:var(--ink); font-weight:600}
+.rule{position:relative; max-width:760px; margin:22px 0 0; padding:14px 18px 14px 22px; background:var(--grad-soft); border:1px solid var(--border-warm); border-radius:10px; font-size:13.5px; font-weight:600; letter-spacing:.01em}
+.rule::before{content:""; position:absolute; left:0; top:0; bottom:0; width:4px; border-radius:10px 0 0 10px; background:var(--grad); box-shadow:0 0 14px rgba(245,129,27,.6)}
+
+.stats{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:30px 0 0; max-width:760px}
+.stat{position:relative; background:var(--glass); border:1px solid var(--border); border-radius:14px; padding:16px 18px; overflow:hidden}
+.stat::after{content:""; position:absolute; right:-30px; top:-30px; width:90px; height:90px; background:radial-gradient(closest-side,rgba(245,129,27,.18),transparent); filter:blur(6px)}
+.stat .lab{font-size:11px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--faint)}
+.stat .val{font-size:22px; font-weight:800; margin-top:5px; color:var(--ink)}
+.stat .val .o{background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent}
+@media(max-width:620px){.stats{grid-template-columns:1fr}}
+
+.legend{display:flex; flex-wrap:wrap; gap:11px 22px; margin:30px 0 0; font-size:12px; color:var(--muted)}
+.legend .dotrow{display:flex; align-items:center; gap:8px}
+.dot{width:9px;height:9px;border-radius:50%;display:inline-block}
+.d-on{background:var(--o2); box-shadow:0 0 7px rgba(245,129,27,.75)} .d-off{background:rgba(255,255,255,.14)}
+.sq{width:10px;height:10px;border-radius:3px;display:inline-block;margin-right:7px;vertical-align:-1px}
+.t-g{color:var(--green)} .t-a{color:var(--amber)} .t-r{color:var(--red)}
+
+.reveal{opacity:0; transform:translateY(18px); transition:opacity .65s cubic-bezier(.2,.7,.2,1), transform .65s cubic-bezier(.2,.7,.2,1)}
+.reveal.in{opacity:1; transform:none}
+@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none}}
+
+section{margin-top:66px}
+.sec-h{display:flex; align-items:center; gap:15px; flex-wrap:wrap}
+.sec-h h2{position:relative; font-size:clamp(26px,3.4vw,38px); font-weight:900; padding-bottom:8px}
+.sec-h h2::after{content:""; position:absolute; left:0; bottom:0; width:46px; height:4px; border-radius:3px; background:var(--grad); box-shadow:0 0 12px rgba(245,129,27,.55)}
+.sec-h .tag{font-size:11px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; padding:5px 12px; border-radius:999px}
+.tag-g{color:var(--green); background:rgba(63,181,104,.10); border:1px solid rgba(63,181,104,.32)}
+.tag-a{color:var(--amber); background:rgba(226,165,43,.10); border:1px solid rgba(226,165,43,.32)}
+.tag-r{color:var(--red); background:rgba(227,81,64,.10); border:1px solid rgba(227,81,64,.32)}
+.sec-sub{color:var(--muted); margin:13px 0 0; max-width:830px; font-size:15.5px}
+
+/* matrix */
+.matrix{margin-top:30px; background:var(--glass); border:1px solid var(--border-warm); border-radius:20px; padding:24px; backdrop-filter:blur(6px); box-shadow:0 0 50px rgba(245,129,27,.08), inset 0 0 60px rgba(245,129,27,.03)}
+.matrix svg{width:100%; height:auto; display:block}
+.mx-note{font-size:11.5px; color:var(--faint); margin:13px 4px 0; text-align:center}
+
+/* cards */
+.grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(330px,1fr)); gap:18px; margin-top:26px}
+.card{position:relative; background:var(--glass); border:1px solid var(--border); border-radius:16px; padding:23px 23px 19px; backdrop-filter:blur(6px); overflow:hidden; transition:border-color .3s, background .3s, transform .3s, box-shadow .3s}
+.card::before{content:""; position:absolute; left:0; top:0; bottom:0; width:3px}
+.card.g::before{background:linear-gradient(var(--green),transparent)}
+.card.a::before{background:linear-gradient(var(--amber),transparent)}
+.card:hover{border-color:var(--border-warm); background:var(--glass-2); transform:translateY(-3px); box-shadow:0 12px 40px rgba(210,68,5,.16)}
+.card .num{position:absolute; right:17px; top:12px; font-size:30px; font-weight:900; color:rgba(255,255,255,.06)}
+.card h3{font-size:20px; font-weight:800; margin:0 54px 5px 0}
+.card .def{color:var(--muted); font-size:14px; margin:0 0 15px; min-height:42px}
+.scores{display:grid; grid-template-columns:1fr auto; gap:7px 12px; font-size:11.5px; font-weight:500; align-items:center}
+.scores .lab{color:var(--faint); text-transform:uppercase; letter-spacing:.07em}
+.scores .dots{display:flex; gap:5px; justify-self:end}
+.meta{margin-top:15px; padding-top:14px; border-top:1px solid var(--border)}
+.meta .row{display:flex; gap:9px; font-size:13px; margin-bottom:6px}
+.meta .k{font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--o1); white-space:nowrap; padding-top:3px; min-width:62px}
+.meta .v{color:var(--ink)} .meta .v.ex{color:var(--muted)}
+
+/* no-go */
+.nogo{margin-top:26px; display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:16px}
+.kill{position:relative; border:1px solid rgba(227,81,64,.28); background:rgba(227,81,64,.05); border-radius:14px; padding:21px}
+.kill h3{font-size:17px; font-weight:800; margin:0 0 7px; color:#ee8278}
+.kill p{margin:0; color:var(--muted); font-size:13.5px}
+.kill .ex{display:block; margin-top:9px; font-size:11.5px; font-weight:600; color:var(--red); letter-spacing:.02em}
+
+/* table */
+.tbl{margin-top:28px; overflow-x:auto; border:1px solid var(--border); border-radius:14px}
+table{border-collapse:collapse; width:100%; min-width:680px; font-size:14px}
+th,td{padding:12px 15px; text-align:left; border-bottom:1px solid var(--border)}
+thead th{font-size:10px; font-weight:700; letter-spacing:.13em; text-transform:uppercase; color:var(--faint); background:rgba(255,255,255,.02)}
+tbody tr:hover{background:rgba(245,129,27,.06)}
+td .nm{font-weight:600}
+.pill{font-size:10px; font-weight:700; padding:3px 9px; border-radius:999px}
+.pill.g{color:var(--green); background:rgba(63,181,104,.12)}
+.pill.a{color:var(--amber); background:rgba(226,165,43,.12)}
+.pill.r{color:var(--red); background:rgba(227,81,64,.12)}
+.mini{letter-spacing:2px; font-size:13px; background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent}
+
+.caveat{position:relative; margin-top:38px; padding:17px 19px; border:1px solid var(--border-warm); border-radius:12px; background:var(--grad-soft); color:var(--muted); font-size:14px}
+.caveat b{color:var(--o1); font-weight:700}
+.foot{margin-top:22px; padding-top:22px; border-top:1px solid var(--border); color:var(--faint); font-size:13.5px; max-width:870px}
+.foot b{color:var(--muted); font-weight:700}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="kicker reveal in">FL Digital · GTM Engineering · Branchen-Audit</div>
+  <h1 class="reveal in">Welche Branchen haben Deinen <span class="em">Schmerz</span> wirklich?</h1>
+  <p class="lede reveal in">Branche ist kein Filter. Sie sagt, <b>was</b> verkauft wird, nicht ob der Schmerz existiert. EMPIC und HMM sind beide B2B-Software und beide tot, weil ihnen die Lead-Flut fehlt. Diese Karte ordnet Branchen nach den zwei Achsen, die Deinen Verkauf entscheiden.</p>
+  <div class="rule reveal in">DER FILTER = LEAD-DICHTE × SALES-MOTION. Beide hoch → Kernziel. Nur eins hoch → raus.</div>
+
+  <div class="stats reveal in">
+    <div class="stat"><div class="lab">Branchen</div><div class="val"><span class="o">13</span> bewertet</div></div>
+    <div class="stat"><div class="lab">Achsen</div><div class="val">Lead-Dichte <span class="o">×</span> Sales</div></div>
+    <div class="stat"><div class="lab">Output</div><div class="val">Sende-Reihenfolge</div></div>
+  </div>
+
+  <div class="legend reveal in">
+    <span class="dotrow"><span class="dot d-on"></span><span class="dot d-on"></span><span class="dot d-on"></span><span class="dot d-off"></span> = Score je Achse (0–4)</span>
+    <span>Achsen: Lead-Dichte · Sales-Motion · Enrichment-Bedarf · DACH-TAM</span>
+    <span class="t-g"><span class="sq" style="background:var(--green)"></span>Kernziel</span>
+    <span class="t-a"><span class="sq" style="background:var(--amber)"></span>bedingt prüfen</span>
+    <span class="t-r"><span class="sq" style="background:var(--red)"></span>No-Go</span>
+  </div>
+
+  <!-- MATRIX -->
+  <section class="reveal">
+    <div class="sec-h"><h2>Das Spielfeld</h2></div>
+    <p class="sec-sub">Nur oben rechts ist grün. Oben links sitzen die Firmen mit echtem Vertrieb, aber bekanntem, endlichem Markt: die EMPIC/HMM-Zone. Unten rechts sitzt PLG: viele Anfragen, kein Mensch, der verkauft. Beide Randfelder kosten Dich Sends ohne Antwort.</p>
+    <div class="matrix">
+      <svg viewBox="0 0 960 600" role="img" aria-label="Matrix Lead-Dichte gegen Sales-Motion">
+        <defs>
+          <linearGradient id="zone" x1="0" y1="1" x2="1" y2="0">
+            <stop offset="0" stop-color="#e35140" stop-opacity="0.045"/>
+            <stop offset="0.5" stop-color="#e2a52b" stop-opacity="0.05"/>
+            <stop offset="1" stop-color="#3fb568" stop-opacity="0.14"/>
+          </linearGradient>
+          <radialGradient id="kernglow" cx="0.5" cy="0.5" r="0.5">
+            <stop offset="0" stop-color="#3fb568" stop-opacity="0.22"/>
+            <stop offset="1" stop-color="#3fb568" stop-opacity="0"/>
+          </radialGradient>
+          <filter id="dotglow" x="-80%" y="-80%" width="260%" height="260%">
+            <feGaussianBlur stdDeviation="3.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <marker id="arr" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#a9a39c"/></marker>
+        </defs>
+
+        <rect x="110" y="60" width="790" height="440" rx="14" fill="url(#zone)"/>
+        <ellipse cx="760" cy="160" rx="240" ry="180" fill="url(#kernglow)"/>
+
+        <line x1="505" y1="60" x2="505" y2="500" stroke="rgba(255,255,255,.07)" stroke-dasharray="4 6"/>
+        <line x1="110" y1="280" x2="900" y2="280" stroke="rgba(255,255,255,.07)" stroke-dasharray="4 6"/>
+        <line x1="110" y1="500" x2="922" y2="500" stroke="#a9a39c" stroke-width="1.4" marker-end="url(#arr)"/>
+        <line x1="110" y1="500" x2="110" y2="44" stroke="#a9a39c" stroke-width="1.4" marker-end="url(#arr)"/>
+
+        <text x="908" y="532" text-anchor="end" fill="#a9a39c" font-family="Inter,sans-serif" font-size="13" font-weight="700" letter-spacing="1.5">LEAD-DICHTE →</text>
+        <text x="86" y="62" transform="rotate(-90 86,62)" text-anchor="end" fill="#a9a39c" font-family="Inter,sans-serif" font-size="13" font-weight="700" letter-spacing="1.5">SALES-MOTION →</text>
+
+        <!-- quadrant captions -->
+        <text x="884" y="98" text-anchor="end" fill="#3fb568" font-family="Inter,sans-serif" font-size="21" font-weight="800">Kernziel</text>
+        <text x="124" y="92" text-anchor="start" fill="#e35140" font-family="Inter,sans-serif" font-size="11.5" font-weight="600">Sales ohne Lead-Flut · EMPIC / HMM</text>
+        <text x="884" y="492" text-anchor="end" fill="#e35140" font-family="Inter,sans-serif" font-size="11.5" font-weight="600">Lead-Flut ohne Sales · PLG / Self-Serve</text>
+        <text x="124" y="492" text-anchor="start" fill="#6c6760" font-family="Inter,sans-serif" font-size="11.5">tote Ecke</text>
+
+        <g font-family="Inter,sans-serif" font-size="13.5" fill="#f6f3ef" font-weight="500">
+          <!-- GREEN -->
+          <circle cx="700" cy="112" r="7" fill="#3fb568" filter="url(#dotglow)"/><text x="686" y="116" text-anchor="end">IT-Systemhäuser / MSP</text>
+          <circle cx="844" cy="152" r="7" fill="#3fb568" filter="url(#dotglow)"/><text x="830" y="156" text-anchor="end">Horizontale SMB-SaaS</text>
+          <circle cx="844" cy="194" r="7" fill="#3fb568" filter="url(#dotglow)"/><text x="830" y="198" text-anchor="end">MarTech / SalesTech</text>
+          <circle cx="844" cy="236" r="7" fill="#3fb568" filter="url(#dotglow)"/><text x="830" y="240" text-anchor="end">Marktplätze</text>
+          <circle cx="844" cy="272" r="7" fill="#3fb568" filter="url(#dotglow)"/><text x="830" y="276" text-anchor="end">B2B-Agenturen</text>
+          <!-- AMBER -->
+          <circle cx="482" cy="132" r="7" fill="#e2a52b" filter="url(#dotglow)"/><text x="468" y="136" text-anchor="end">Cyber / GRC</text>
+          <circle cx="648" cy="174" r="7" fill="#e2a52b" filter="url(#dotglow)"/><text x="634" y="178" text-anchor="end">Fintech (SMB)</text>
+          <circle cx="648" cy="216" r="7" fill="#e2a52b" filter="url(#dotglow)"/><text x="634" y="220" text-anchor="end">Vertical-SaaS (fragmentiert)</text>
+          <circle cx="636" cy="258" r="7" fill="#e2a52b" filter="url(#dotglow)"/><text x="622" y="262" text-anchor="end">Beratungspartner</text>
+          <circle cx="648" cy="372" r="7" fill="#e2a52b" filter="url(#dotglow)"/><text x="664" y="376" text-anchor="start">DevTools</text>
+          <!-- RED -->
+          <circle cx="170" cy="124" r="7" fill="#e35140" filter="url(#dotglow)"/><text x="186" y="128" text-anchor="start">geschlossener Markt</text>
+          <circle cx="170" cy="204" r="7" fill="#e35140" filter="url(#dotglow)"/><text x="186" y="208" text-anchor="start">Heavy-Enterprise &lt;100 Logos</text>
+          <circle cx="858" cy="442" r="7" fill="#e35140" filter="url(#dotglow)"/><text x="844" y="446" text-anchor="end">reine PLG-SaaS</text>
+        </g>
+      </svg>
+      <p class="mx-note">Position = Hypothese aus Deinem Listen-Export plus Marktlogik. Pro Firma über Gate 1 verifizieren.</p>
+    </div>
+  </section>
+
+  <!-- TIER A -->
+  <section class="reveal">
+    <div class="sec-h"><h2>Tier A · Kernziel</h2><span class="tag tag-g">jetzt bauen</span></div>
+    <p class="sec-sub">Hohe Lead-Dichte UND echter menschlicher Vertrieb. Hier sitzt Dein Schmerz: teuer eingekaufte anonyme Anfragen, die ein zu kleines Sales-Team nicht priorisiert kriegt.</p>
+    <div class="grid">
+      <article class="card g"><span class="num">01</span>
+        <h3>Horizontale B2B-SaaS für SMB / Mittelstand</h3>
+        <p class="def">HR & Workforce, Spend & Finance, Procurement, Sales- & Marketing-Tools. Verkauft an tausende Firmen quer durch Branchen.</p>
+        <div class="scores">
+          <span class="lab">Lead-Dichte</span><span class="dots"><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-on"></i></span>
+          <span class="lab">Sales-Motion</span><span class="dots"><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-on"></i></span>
+          <span class="lab">Enrichment</span><span class="dots"><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-on"></i></span>
+          <span class="lab">DACH-TAM</span><span class="dots"><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-on"></i></span>
+        </div>
+        <div class="meta">
+          <div class="row"><span class="k">Trigger</span><span class="v">2+ offene SDR/AE-Stellen, aktive Ads, Free Trial</span></div>
+          <div class="row"><span class="k">Aus Liste</span><span class="v ex">shyftplan, gastromatic, finway, tacto, pixx.io</span></div>
+        </div>
+      </article>
+
+      <article class="card g"><span class="num">02</span>
+        <h3>MarTech / AdTech / SalesTech</h3>
+        <p class="def">Tools, die selbst von Inbound leben. Sie verstehen Dein Thema in einem Satz, weil es ihr eigenes ist.</p>
+        <div class="scores">
+          <span class="lab">Lead-Dichte</span><span class="dots"><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-on"></i></span>
+          <span class="lab">Sales-Motion</span><span class="dots"><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-on"></i></span>
+          <span class="lab">Enrichment</span><span class="dots"><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-on"></i></span>
+          <span class="lab">DACH-TAM</span><span class="dots"><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-off"></i></span>
+        </div>
+        <div class="meta">
+          <div class="row"><span class="k">Trigger</span><span class="v">Demo-Funnel, Content-Maschine, Inbound-SDR-Team</span></div>
+          <div class="row"><span class="k">Aus Liste</span><span class="v ex">yoc, future-demand</span></div>
+        </div>
+      </article>
+
+      <article class="card g"><span class="num">03</span>
+        <h3>B2B-Marktplätze & Plattformen</h3>
+        <p class="def">Event, Freelancer, Beschaffung, Logistik. Zweiseitiger Funnel heißt doppelte Anfrage-Flut, doppelter Triage-Schmerz.</p>
+        <div class="scores">
+          <span class="lab">Lead-Dichte</span><span class="dots"><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-on"></i></span>
+          <span class="lab">Sales-Motion</span><span class="dots"><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-off"></i></span>
+          <span class="lab">Enrichment</span><span class="dots"><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-on"></i></span>
+          <span class="lab">DACH-TAM</span><span class="dots"><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-off"></i></span>
+        </div>
+        <div class="meta">
+          <div class="row"><span class="k">Trigger</span><span class="v">"Anbieter werden"-Formulare, Sales-Hiring beidseitig</span></div>
+          <div class="row"><span class="k">Aus Liste</span><span class="v ex">eventinc, contractor.de</span></div>
+        </div>
+      </article>
+
+      <article class="card g"><span class="num">04</span>
+        <h3>B2B-Agenturen</h3>
+        <p class="def">Performance, Growth, Recruiting & Personalmarketing, SaaS-Marketing. Bekommen Inbound in jeder Qualität, selten mit Qualifizierungs-Layer. Dein zweiter ICP, Buyer-Sprache kennst Du.</p>
+        <div class="scores">
+          <span class="lab">Lead-Dichte</span><span class="dots"><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-on"></i></span>
+          <span class="lab">Sales-Motion</span><span class="dots"><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-off"></i></span>
+          <span class="lab">Enrichment</span><span class="dots"><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-on"></i></span>
+          <span class="lab">DACH-TAM</span><span class="dots"><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-on"></i></span>
+        </div>
+        <div class="meta">
+          <div class="row"><span class="k">Trigger</span><span class="v">Lead-Formular ohne Routing, Wachstum über Empfehlung</span></div>
+          <div class="row"><span class="k">Vorteil</span><span class="v">Du sprichst ihre Sprache nativ</span></div>
+        </div>
+      </article>
+
+      <article class="card g"><span class="num">05</span>
+        <h3>IT-Systemhäuser / MSP / Managed Services</h3>
+        <p class="def">Projektgeschäft, kein PLG-Ausweg, dauerhaft Pipeline-hungrig. Technische Käufer verstehen "Pipeline-Architektur" sofort.</p>
+        <div class="scores">
+          <span class="lab">Lead-Dichte</span><span class="dots"><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-off"></i></span>
+          <span class="lab">Sales-Motion</span><span class="dots"><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-on"></i></span>
+          <span class="lab">Enrichment</span><span class="dots"><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-off"></i></span>
+          <span class="lab">DACH-TAM</span><span class="dots"><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-on"></i></span>
+        </div>
+        <div class="meta">
+          <div class="row"><span class="k">Trigger</span><span class="v">neue Herstellerpartnerschaft, M&amp;A-Welle, mehrere Sales/Pre-Sales-Stellen</span></div>
+          <div class="row"><span class="k">Risiko</span><span class="v">"bauen wir selbst" → Betrieb plus Signal-Logik kontern</span></div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- TIER B -->
+  <section class="reveal">
+    <div class="sec-h"><h2>Tier B · bedingt</h2><span class="tag tag-a">pro Account Gate 1 prüfen</span></div>
+    <p class="sec-sub">Kann passen, kann die HMM-Falle sein. Hier entscheidet nicht die Branche, sondern die einzelne Firma. Erst Lead-Dichte verifizieren, dann erst einen Send investieren.</p>
+    <div class="grid">
+      <article class="card a"><span class="num">06</span>
+        <h3>Vertical-SaaS für fragmentierte Großbranchen</h3>
+        <p class="def">Gastro, Handwerk, Bau, Logistik, Pflege. Fit NUR wenn der Endmarkt fragmentiert ist (tausende Logos). Geschlossener Payer-Markt = sofort Tier C.</p>
+        <div class="scores">
+          <span class="lab">Lead-Dichte</span><span class="dots"><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-off"></i></span>
+          <span class="lab">Sales-Motion</span><span class="dots"><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-off"></i></span>
+          <span class="lab">Enrichment</span><span class="dots"><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-off"></i></span>
+          <span class="lab">DACH-TAM</span><span class="dots"><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-on"></i></span>
+        </div>
+        <div class="meta">
+          <div class="row"><span class="k">Prüfen</span><span class="v">Endmarkt fragmentiert oder geschlossen?</span></div>
+          <div class="row"><span class="k">Aus Liste</span><span class="v ex">gastromatic = Fit · HMM = Falle</span></div>
+        </div>
+      </article>
+
+      <article class="card a"><span class="num">07</span>
+        <h3>Cybersecurity / Compliance / GRC-SaaS</h3>
+        <p class="def">Starker Vertrieb, aber teils enterprise-lastig mit endlichem Käuferkreis. Lead-Dichte schwankt stark.</p>
+        <div class="scores">
+          <span class="lab">Lead-Dichte</span><span class="dots"><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-off"></i><i class="dot d-off"></i></span>
+          <span class="lab">Sales-Motion</span><span class="dots"><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-on"></i></span>
+          <span class="lab">Enrichment</span><span class="dots"><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-off"></i></span>
+          <span class="lab">DACH-TAM</span><span class="dots"><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-off"></i></span>
+        </div>
+        <div class="meta">
+          <div class="row"><span class="k">Prüfen</span><span class="v">SMB-breit oder Enterprise-ABM?</span></div>
+          <div class="row"><span class="k">Aus Liste</span><span class="v ex">akarion, ipoint-systems</span></div>
+        </div>
+      </article>
+
+      <article class="card a"><span class="num">08</span>
+        <h3>Fintech / Insurtech (B2B, SMB-gerichtet)</h3>
+        <p class="def">SMB-Spend und Finanz-Tools passen. Sobald es Richtung Banken/Versicherer-eKYC kippt, wird der Markt endlich → Tier C.</p>
+        <div class="scores">
+          <span class="lab">Lead-Dichte</span><span class="dots"><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-off"></i></span>
+          <span class="lab">Sales-Motion</span><span class="dots"><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-on"></i></span>
+          <span class="lab">Enrichment</span><span class="dots"><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-off"></i></span>
+          <span class="lab">DACH-TAM</span><span class="dots"><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-off"></i></span>
+        </div>
+        <div class="meta">
+          <div class="row"><span class="k">Prüfen</span><span class="v">Käufer = viele SMB oder wenige Institute?</span></div>
+          <div class="row"><span class="k">Aus Liste</span><span class="v ex">finway = Fit · nect = Richtung Falle</span></div>
+        </div>
+      </article>
+
+      <article class="card a"><span class="num">09</span>
+        <h3>DevTools / Infrastruktur-SaaS</h3>
+        <p class="def">Risiko ist die Motion, nicht der Markt: viel PLG/Self-Serve killt den Erstkontakt, den Du anreicherst. Nur bei echtem Sales-led-Modell rein.</p>
+        <div class="scores">
+          <span class="lab">Lead-Dichte</span><span class="dots"><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-off"></i></span>
+          <span class="lab">Sales-Motion</span><span class="dots"><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-off"></i><i class="dot d-off"></i></span>
+          <span class="lab">Enrichment</span><span class="dots"><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-off"></i><i class="dot d-off"></i></span>
+          <span class="lab">DACH-TAM</span><span class="dots"><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-off"></i><i class="dot d-off"></i></span>
+        </div>
+        <div class="meta">
+          <div class="row"><span class="k">Prüfen</span><span class="v">Self-Serve-Signup oder "Demo anfragen"?</span></div>
+          <div class="row"><span class="k">Aus Liste</span><span class="v ex">kubermatic</span></div>
+        </div>
+      </article>
+
+      <article class="card a"><span class="num">10</span>
+        <h3>Implementierungs- & Beratungspartner</h3>
+        <p class="def">SAP-, Salesforce-, HubSpot-Partner. Inbound aus dem Partner-Ökosystem, sales-led. Größe und Inbound-Volumen pro Haus prüfen.</p>
+        <div class="scores">
+          <span class="lab">Lead-Dichte</span><span class="dots"><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-off"></i></span>
+          <span class="lab">Sales-Motion</span><span class="dots"><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-off"></i></span>
+          <span class="lab">Enrichment</span><span class="dots"><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-off"></i></span>
+          <span class="lab">DACH-TAM</span><span class="dots"><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-on"></i><i class="dot d-off"></i></span>
+        </div>
+        <div class="meta">
+          <div class="row"><span class="k">Prüfen</span><span class="v">eigener Vertrieb oder reines Empfehlungsgeschäft?</span></div>
+          <div class="row"><span class="k">Aus Liste</span><span class="v ex">demicon</span></div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- TIER C -->
+  <section class="reveal">
+    <div class="sec-h"><h2>Tier C · No-Go</h2><span class="tag tag-r">raus, bevor es einen Send kostet</span></div>
+    <p class="sec-sub">Das Muster, das Dich EMPIC und HMM gekostet hat. Sales-Motion allein reicht nie. Trifft eines dieser Merkmale zu, ist die Firma raus, egal wie gut sie sonst aussieht.</p>
+    <div class="nogo">
+      <div class="kill"><h3>Geschlossener, namentlich bekannter Markt</h3><p>Verkauft an einen endlichen Kreis, den die Firma auswendig kennt: Behörden, gesetzliche Kassen, Netzbetreiber/EVU, Verteidigung, Zentralbanken, Börsen. Kein anonymer Inbound zum Anreichern.<span class="ex">EMPIC (Luftfahrt-Regulatoren) · HMM (Krankenkassen)</span></p></div>
+      <div class="kill"><h3>Reine PLG / Self-Serve-SaaS</h3><p>Nutzer registrieren sich selbst, niemand verkauft. Es gibt keinen Erstkontakt, vor dem Dein Vertrieb den Entscheider sehen müsste.<span class="ex">kein Sales-Team = kein Käufer für Dich</span></p></div>
+      <div class="kill"><h3>Heavy-Enterprise / ABM-only</h3><p>Unter ~100 globale Logos, jeder Account namentlich bearbeitet. Enrichment einer eingehenden Mail bringt nichts, weil es keine Mail-Flut gibt.<span class="ex">Richtung swissquant (Quant-Finance)</span></p></div>
+      <div class="kill"><h3>Regulierte Nische mit endlichem Payer-Set</h3><p>Verkauf an eine Handvoll Abteilungen in einem regulierten Markt. Bekannte Käufer, lange Zyklen, keine Triage-Not.<span class="ex">elpro (Pharma-Coldchain) · avelios (Klinik-IS, grenzwertig)</span></p></div>
+    </div>
+  </section>
+
+  <!-- TABLE -->
+  <section class="reveal">
+    <div class="sec-h"><h2>Scoring auf einen Blick</h2></div>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Branche</th><th>Tier</th><th>Lead-Dichte</th><th>Sales</th><th>Enrich.</th><th>TAM</th></tr></thead>
+        <tbody>
+          <tr><td><span class="nm">Horizontale SMB-SaaS</span></td><td><span class="pill g">A</span></td><td class="mini">●●●●</td><td class="mini">●●●●</td><td class="mini">●●●●</td><td class="mini">●●●●</td></tr>
+          <tr><td><span class="nm">MarTech / SalesTech</span></td><td><span class="pill g">A</span></td><td class="mini">●●●●</td><td class="mini">●●●●</td><td class="mini">●●●●</td><td class="mini">●●●○</td></tr>
+          <tr><td><span class="nm">B2B-Marktplätze</span></td><td><span class="pill g">A</span></td><td class="mini">●●●●</td><td class="mini">●●●○</td><td class="mini">●●●●</td><td class="mini">●●●○</td></tr>
+          <tr><td><span class="nm">B2B-Agenturen</span></td><td><span class="pill g">A</span></td><td class="mini">●●●●</td><td class="mini">●●●○</td><td class="mini">●●●●</td><td class="mini">●●●●</td></tr>
+          <tr><td><span class="nm">IT-Systemhäuser / MSP</span></td><td><span class="pill g">A</span></td><td class="mini">●●●○</td><td class="mini">●●●●</td><td class="mini">●●●○</td><td class="mini">●●●●</td></tr>
+          <tr><td><span class="nm">Vertical-SaaS (fragmentiert)</span></td><td><span class="pill a">B</span></td><td class="mini">●●●○</td><td class="mini">●●●○</td><td class="mini">●●●○</td><td class="mini">●●●●</td></tr>
+          <tr><td><span class="nm">Cyber / Compliance / GRC</span></td><td><span class="pill a">B</span></td><td class="mini">●●○○</td><td class="mini">●●●●</td><td class="mini">●●●○</td><td class="mini">●●●○</td></tr>
+          <tr><td><span class="nm">Fintech / Insurtech (SMB)</span></td><td><span class="pill a">B</span></td><td class="mini">●●●○</td><td class="mini">●●●●</td><td class="mini">●●●○</td><td class="mini">●●●○</td></tr>
+          <tr><td><span class="nm">DevTools / Infra-SaaS</span></td><td><span class="pill a">B</span></td><td class="mini">●●●○</td><td class="mini">●●○○</td><td class="mini">●●○○</td><td class="mini">●●○○</td></tr>
+          <tr><td><span class="nm">Beratungs-/Impl.-Partner</span></td><td><span class="pill a">B</span></td><td class="mini">●●●○</td><td class="mini">●●●○</td><td class="mini">●●●○</td><td class="mini">●●●○</td></tr>
+          <tr><td><span class="nm">Geschlossener Markt</span></td><td><span class="pill r">C</span></td><td class="mini" style="color:var(--red);-webkit-text-fill-color:var(--red)">●○○○</td><td class="mini" style="color:var(--faint);-webkit-text-fill-color:var(--faint)">●●●●</td><td class="mini" style="color:var(--red);-webkit-text-fill-color:var(--red)">●○○○</td><td class="mini" style="color:var(--faint);-webkit-text-fill-color:var(--faint)">—</td></tr>
+          <tr><td><span class="nm">Reine PLG-SaaS</span></td><td><span class="pill r">C</span></td><td class="mini" style="color:var(--faint);-webkit-text-fill-color:var(--faint)">●●●●</td><td class="mini" style="color:var(--red);-webkit-text-fill-color:var(--red)">●○○○</td><td class="mini" style="color:var(--red);-webkit-text-fill-color:var(--red)">●○○○</td><td class="mini" style="color:var(--faint);-webkit-text-fill-color:var(--faint)">—</td></tr>
+          <tr><td><span class="nm">Heavy-Enterprise &lt;100 Logos</span></td><td><span class="pill r">C</span></td><td class="mini" style="color:var(--red);-webkit-text-fill-color:var(--red)">●○○○</td><td class="mini" style="color:var(--faint);-webkit-text-fill-color:var(--faint)">●●●○</td><td class="mini" style="color:var(--red);-webkit-text-fill-color:var(--red)">●●○○</td><td class="mini" style="color:var(--red);-webkit-text-fill-color:var(--red)">●○○○</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <div class="caveat reveal"><b>Lesehinweis.</b> Die Scores sind Hypothese aus Deinem Listen-Export plus Marktlogik, nicht web-verifiziert. Sie sortieren die Reihenfolge, in der Du Branchen in Gate 1 Deiner Prospeo-Ansage fütterst. Den Lead-Dichte-Check (laufen Ads, gibt es einen Inbound-Funnel, sind mehrere Sales-Rollen offen) machst Du pro Firma.</div>
+
+  <div class="foot reveal"><b>Nächster Schritt:</b> Starte mit Tier A, je eine Branche pro Test-Batch (50 Sends, ein Angle, Kill bei unter 3% Reply). B2B-Agenturen und horizontale SMB-SaaS zuerst, weil dort Buyer-Sprache und Lead-Dichte am sichersten sind. Tier B nur mit bestandenem Gate-1-Check. Tier C nie.</div>
+
+</div>
+<script>
+(function(){
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in'); io.unobserve(e.target);}})},{threshold:.12});
+  document.querySelectorAll('.reveal:not(.in)').forEach(function(el){io.observe(el);});
+})();
+</script>
+</body>
+</html>
