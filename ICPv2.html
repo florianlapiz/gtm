@@ -160,6 +160,18 @@ td .nm{font-weight:600}
           <filter id="dotglow" x="-80%" y="-80%" width="260%" height="260%">
             <feGaussianBlur stdDeviation="3.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
           </filter>
+          <filter id="glowgreen" x="-180%" y="-180%" width="460%" height="460%">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="8" result="wide">
+              <animate attributeName="stdDeviation" values="6.5;10;6.5" dur="3s" repeatCount="indefinite"/>
+            </feGaussianBlur>
+            <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="near"/>
+            <feMerge>
+              <feMergeNode in="wide"/>
+              <feMergeNode in="near"/>
+              <feMergeNode in="near"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
           <marker id="arr" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#a9a39c"/></marker>
         </defs>
 
@@ -182,11 +194,11 @@ td .nm{font-weight:600}
 
         <g font-family="Inter,sans-serif" font-size="13.5" fill="#f6f3ef" font-weight="500">
           <!-- GREEN -->
-          <circle cx="700" cy="112" r="7" fill="#3fb568" filter="url(#dotglow)"/><text x="686" y="116" text-anchor="end">IT-Systemhäuser / MSP</text>
-          <circle cx="844" cy="152" r="7" fill="#3fb568" filter="url(#dotglow)"/><text x="830" y="156" text-anchor="end">Horizontale SMB-SaaS</text>
-          <circle cx="844" cy="194" r="7" fill="#3fb568" filter="url(#dotglow)"/><text x="830" y="198" text-anchor="end">MarTech / SalesTech</text>
-          <circle cx="844" cy="236" r="7" fill="#3fb568" filter="url(#dotglow)"/><text x="830" y="240" text-anchor="end">Marktplätze</text>
-          <circle cx="844" cy="272" r="7" fill="#3fb568" filter="url(#dotglow)"/><text x="830" y="276" text-anchor="end">B2B-Agenturen</text>
+          <circle cx="700" cy="112" r="7" fill="#3fb568" filter="url(#glowgreen)"/><text x="686" y="116" text-anchor="end">IT-Systemhäuser / MSP</text>
+          <circle cx="844" cy="152" r="7" fill="#3fb568" filter="url(#glowgreen)"/><text x="830" y="156" text-anchor="end">Horizontale SMB-SaaS</text>
+          <circle cx="844" cy="194" r="7" fill="#3fb568" filter="url(#glowgreen)"/><text x="830" y="198" text-anchor="end">MarTech / SalesTech</text>
+          <circle cx="844" cy="236" r="7" fill="#3fb568" filter="url(#glowgreen)"/><text x="830" y="240" text-anchor="end">Marktplätze</text>
+          <circle cx="844" cy="272" r="7" fill="#3fb568" filter="url(#glowgreen)"/><text x="830" y="276" text-anchor="end">B2B-Agenturen</text>
           <!-- AMBER -->
           <circle cx="482" cy="132" r="7" fill="#e2a52b" filter="url(#dotglow)"/><text x="468" y="136" text-anchor="end">Cyber / GRC</text>
           <circle cx="648" cy="174" r="7" fill="#e2a52b" filter="url(#dotglow)"/><text x="634" y="178" text-anchor="end">Fintech (SMB)</text>
