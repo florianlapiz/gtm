@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <title>Event-Automatisierungs-Check | eBrain</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="3-Minuten-Selbsttest für Eventmanager. 8 Fragen, dein Automatisierungs-Score auf 3 Achsen: Admin, Kosten, Teilnehmer-Erlebnis. Plus 14 Tage eBrain kostenlos testen.">
+<meta name="description" content="2-Minuten-Selbsttest für Eventmanager. 5 Fragen, dein Automatisierungs-Score auf 3 Achsen: Admin, Kosten, Teilnehmer-Erlebnis. Plus 14 Tage eBrain kostenlos testen.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -131,7 +131,7 @@
     gap: 16px;
   }
   .brand-logo-img {
-    height: 28px;
+    height: 32px;
     width: auto;
     display: block;
   }
@@ -178,6 +178,7 @@
   .q-wrap.animate-in .options .option:nth-child(1) { animation: slideUpFade 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.2s backwards; }
   .q-wrap.animate-in .options .option:nth-child(2) { animation: slideUpFade 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.27s backwards; }
   .q-wrap.animate-in .options .option:nth-child(3) { animation: slideUpFade 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.34s backwards; }
+  .q-wrap.animate-in .options .option:nth-child(4) { animation: slideUpFade 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.41s backwards; }
 
   /* ============================================================
      INTRO HERO — violet full-bleed
@@ -515,6 +516,38 @@
     color: var(--white);
   }
   .option-text { flex: 1; padding-top: 4px; }
+
+  /* Reveal — the benefit appears DURING the quiz, right after the answer */
+  .quiz-reveal {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    margin-bottom: 0;
+    background: var(--black);
+    border-radius: 16px;
+    color: var(--white);
+    font-size: 15.5px;
+    line-height: 1.5;
+    transition: max-height 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease, margin-bottom 0.5s ease, padding 0.5s ease;
+    padding: 0 22px;
+  }
+  .quiz-reveal.visible {
+    max-height: 220px;
+    opacity: 1;
+    margin-bottom: 32px;
+    padding: 18px 22px;
+  }
+  .quiz-reveal .reveal-label {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--lemon);
+    margin-bottom: 8px;
+  }
+  .quiz-reveal strong { color: var(--lemon); font-weight: 700; }
 
   .nav {
     display: flex;
@@ -1149,16 +1182,16 @@
 <header class="header">
   <div class="header-inner">
     <div class="brand-lockup">
-      <img src="assets/logo.png" alt="eBrain" class="brand-logo-img">
+      <img src="data:image/png;base64,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" alt="eBrain" class="brand-logo-img">
     </div>
-    <div class="header-meta">Event-Automatisierungs-Check <span class="dot"></span> 3 Min</div>
+    <div class="header-meta">Event-Automatisierungs-Check <span class="dot"></span> 2 Min</div>
   </div>
 </header>
 <!-- INTRO HERO — full violet -->
 <div class="screen" id="screen-intro">
   <section class="section bg-violet">
     <div class="section-inner">
-      <div class="intro-eyebrow">Für Eventmanager &amp; Agenturen &mdash; 3 Min</div>
+      <div class="intro-eyebrow">Für Eventmanager &amp; Agenturen &mdash; 2 Min</div>
 
       <h1 class="display-hero">
         Wie viel Admin-Zeit<br>
@@ -1166,7 +1199,7 @@
       </h1>
 
       <p class="lede">
-        8 Fragen entscheiden, ob Dein Eventmanagement Dich mitzieht oder Dir Zeit zurückgibt.
+        5 Fragen entscheiden, ob Dein Eventmanagement Dich mitzieht oder Dir Zeit zurückgibt.
         Am Ende: <strong>Dein Automatisierungs-Score auf drei Achsen</strong> &mdash; Admin-Zeit,
         Kosten, Teilnehmer-Erlebnis &mdash; plus konkrete Hebel, wo eBrain Dich entlastet.
       </p>
@@ -1189,11 +1222,11 @@
       <div class="intro-stats">
         <div class="stat-cell">
           <div class="label">Fragen</div>
-          <div class="value"><span class="num">8</span></div>
+          <div class="value"><span class="num">5</span></div>
         </div>
         <div class="stat-cell">
           <div class="label">Minuten</div>
-          <div class="value"><span class="num">3</span></div>
+          <div class="value"><span class="num">2</span></div>
         </div>
         <div class="stat-cell">
           <div class="label">Trial</div>
@@ -1222,10 +1255,11 @@
         <h2 class="quiz-question" id="q-question"></h2>
         <p class="quiz-cost" id="q-cost"></p>
         <div class="options" id="q-options"></div>
+        <div class="quiz-reveal" id="q-reveal"></div>
       </div>
       <div class="nav">
         <button class="btn btn-outline" id="btn-back" onclick="goBack()">Zurück</button>
-        <span class="nav-hint">Antwort klicken &mdash; auto-weiter</span>
+        <span class="nav-hint" id="nav-hint">Antwort klicken</span>
         <button class="btn btn-violet" id="btn-next" onclick="goNext()" disabled>Weiter</button>
       </div>
     </div>
@@ -1333,7 +1367,7 @@
       <div id="modules-list"></div>
 
       <div class="breakdown">
-        <div class="breakdown-title">Komplett-Übersicht aller 8 Hebel</div>
+        <div class="breakdown-title">Komplett-Übersicht aller 5 Hebel</div>
         <div id="breakdown-list"></div>
       </div>
     </div>
@@ -1353,7 +1387,7 @@
             </p>
           </div>
           <div>
-            <a href="https://ebrain.events/trial" class="btn btn-violet" id="cta-trial" target="_blank" rel="noopener">14 Tage kostenlos testen</a>
+            <a href="https://ebrain.events/pricing/" class="btn btn-violet" id="cta-trial" target="_blank" rel="noopener">14 Tage kostenlos testen</a>
             <div class="btn-mini">Kein Vertrag &middot; Keine Kreditkarte</div>
           </div>
         </div>
@@ -1368,7 +1402,7 @@
             </p>
           </div>
           <div>
-            <a href="https://calendly.com/ebrain-demo/30min" class="btn btn-outline" id="cta-demo" target="_blank" rel="noopener">Demo buchen</a>
+            <a href="https://ebrain.events/solution/" class="btn btn-outline" id="cta-demo" target="_blank" rel="noopener">Demo buchen</a>
           </div>
         </div>
       </div>
@@ -1393,8 +1427,8 @@
   // CONFIG — easy to swap by Florian / eBrain team
   // ============================================================
   const LEAD_WEBHOOK_URL = ""; // TODO: Make.com webhook für Lead-Tracking eintragen
-  const TRIAL_URL = "https://ebrain.events/trial"; // TODO: echter Trial-Link
-  const DEMO_URL = "https://calendly.com/ebrain-demo/30min"; // TODO: echter Calendly-Slot
+  const TRIAL_URL = "https://ebrain.events/pricing/";
+  const DEMO_URL = "https://ebrain.events/solution/";
   const SOURCE_TAG = "ebrain-automation-check";
 
   const urlParams = new URLSearchParams(window.location.search);
@@ -1415,96 +1449,70 @@
       hebel: "Event-Setup",
       module: "KI-Website-Erstellung",
       dimensions: [DIM.ADMIN],
-      question: "Wie lange brauchst Du, um eine neue Event-Seite live zu haben?",
-      cost: "Jeder Tag, an dem Deine Event-Seite hängt, ist ein Tag, an dem Du Anmeldungen, Sichtbarkeit und Vorlauf verlierst &mdash; und Dein Team beschäftigt ist statt produktiv.",
+      question: "Dein Kunde will übermorgen einladen. Wie schnell steht die Anmeldeseite?",
+      cost: "Nicht in der Theorie. Denk an Dein letztes Event: Knopfdruck oder Tagesprojekt?",
+      reveal: "Du sagst der KI, worum es geht &mdash; die komplette Seite steht in Minuten, im eigenen Brand-Design.",
       options: [
-        { score: 1, text: "Ein paar Stunden, wenn ich ungestört bin." },
-        { score: 2, text: "Unter 30 Minuten &mdash; quasi auf Knopfdruck." },
-        { score: 0, text: "Mehrere Tage. Agentur, IT oder Templates müssen ran." }
-      ]
-    },
-    {
-      hebel: "Registrierung",
-      module: "Teilnehmerregistrierung",
-      dimensions: [DIM.ADMIN],
-      question: "Wie melden sich Teilnehmer aktuell an?",
-      cost: "Manuelle Anmeldeprozesse fressen Dein Team auf &mdash; und die Hälfte der Daten landet doppelt erfasst in drei Systemen.",
-      options: [
-        { score: 0, text: "Excel-Listen, E-Mail oder PDF-Formulare. Vieles per Hand." },
-        { score: 2, text: "Self-Service-Portal mit automatischer Datenverarbeitung." },
-        { score: 1, text: "Online-Formular, aber die Daten landen in mehreren Systemen." }
+        { score: 2, text: "In Minuten, quasi auf Knopfdruck." },
+        { score: 1, text: "Ein paar Stunden konzentrierte Arbeit." },
+        { score: 0, text: "Mehrere Tage. Agentur, IT oder Templates müssen ran." },
+        { score: 0, text: "Weiß ich nicht, das übernimmt jemand anderes." }
       ]
     },
     {
       hebel: "Kommunikation",
       module: "Communication Center",
       dimensions: [DIM.ADMIN],
-      question: "Wie verschickst Du Einladungen, Reminder und Last-Minute-Updates?",
-      cost: "Verteiler-Chaos kostet Dich nicht nur Zeit &mdash; Du verlierst Teilnehmer, weil wichtige Infos in Spam oder gar nicht ankommen.",
+      question: "Der Veranstaltungsort ändert sich 24 Stunden vorher. Wie schnell wissen es alle Teilnehmer?",
+      cost: "Ohne dass nachts jemand einzeln Mails tippt. Wie läuft das bei Dir wirklich?",
+      reveal: "Das Communication Center schickt die Änderung segmentiert an alle raus, KI-getextet, in Minuten.",
       options: [
-        { score: 2, text: "Aus einem zentralen System mit Segmenten, Templates und Tracking." },
-        { score: 0, text: "Mail-Verteiler oder manuell, oft last-minute zusammengeklickt." },
-        { score: 1, text: "Über ein Tool, aber Texte schreibe ich jedes Mal neu." }
+        { score: 2, text: "Automatisch in Minuten, segmentiert aus einem System." },
+        { score: 1, text: "Ein paar Stunden Handarbeit, aber es klappt." },
+        { score: 0, text: "Ehrlich: Das wird jedes Mal Stress." },
+        { score: 0, text: "Weiß ich nicht, hatte ich zum Glück noch nicht." }
       ]
     },
     {
       hebel: "Tool-Stack",
       module: "Reporting + Ticketing",
       dimensions: [DIM.COST],
-      question: "Wie viele separate Tools nutzt Du pro Event?",
-      cost: "Jedes Tool kostet Lizenz, Lernkurve und Daten-Brüche. 6+ Tools heißt: 6+ Stellen, an denen etwas schiefgehen kann &mdash; und Du jedes Mal die Daten zusammenkopieren musst.",
+      question: "Zähl kurz durch: Wie viele Tools laufen bei einem Event parallel?",
+      cost: "Excel, Mail, Hotelportal, Badge-Drucker, Umfrage, Reporting. Wie viele Logins sind es bei Dir?",
+      reveal: "Eine Plattform ersetzt 5 bis 8 Einzeltools &mdash; eine Datenbasis, ein Login.",
       options: [
-        { score: 1, text: "3-5 Tools, teilweise integriert." },
-        { score: 2, text: "1-2 zentrale Tools, alles miteinander verbunden." },
-        { score: 0, text: "6+ Tools (Excel, Mail, Hotel-Portal, Badge-Drucker, Reporting, Survey&hellip;)." }
-      ]
-    },
-    {
-      hebel: "Kontingente",
-      module: "Kontingent-Management",
-      dimensions: [DIM.COST],
-      question: "Wie hältst Du Hotelzimmer, Transport und Sessions live im Blick?",
-      cost: "Manuelle Kontingente führen zu Überbuchungen oder leeren Plätzen &mdash; beide kosten Dich messbar Geld. Realtime ist hier kein Nice-to-have, sondern Margenrettung.",
-      options: [
-        { score: 0, text: "Excel-Listen und manuelle Abgleiche &mdash; oft mit Lücken." },
-        { score: 1, text: "Dashboard vorhanden, aber Updates kommen verzögert." },
-        { score: 2, text: "Realtime-Monitoring, Kontingente passen sich automatisch an." }
+        { score: 2, text: "1 bis 2, alles miteinander verbunden." },
+        { score: 1, text: "3 bis 5, teilweise integriert." },
+        { score: 0, text: "6 oder mehr, ich kopiere Daten von Hand zusammen." },
+        { score: 0, text: "Weiß ich nicht, das ist über die Zeit gewachsen." }
       ]
     },
     {
       hebel: "Teilnehmer-Support",
       module: "Emily-Chatbot",
       dimensions: [DIM.EXP],
-      question: "Wer beantwortet Teilnehmerfragen vor und während des Events?",
-      cost: "Wenn Dein Team manuell Mails beantwortet, ist es nicht mit dem Event beschäftigt &mdash; und Teilnehmer warten Stunden auf Antworten, die ein Chatbot sofort liefern kann.",
+      question: "Ein Teilnehmer fragt um 22 Uhr: Wo ist Saal B, gibt es was Vegetarisches? Wer antwortet?",
+      cost: "Jetzt, sofort, ohne dass Dein Team abends aufs Handy schaut. Geht das bei Dir?",
+      reveal: "Emily, der KI-Agent, beantwortet genau solche Fragen sofort &mdash; Tag und Nacht.",
       options: [
-        { score: 1, text: "FAQ-Seite, der Rest landet im Inbox-Chaos." },
-        { score: 2, text: "Chatbot oder Self-Service, Team springt nur bei Sonderfällen ein." },
-        { score: 0, text: "Ich oder mein Team &mdash; manuell, oft hektisch." }
-      ]
-    },
-    {
-      hebel: "Check-in &amp; Badges",
-      module: "Badge &amp; Check-in",
-      dimensions: [DIM.EXP],
-      question: "Wie läuft der Vor-Ort-Check-in?",
-      cost: "Eine Schlange am Empfang ist der erste Eindruck, den Dein Teilnehmer mitnimmt. Papierlisten und manueller Badge-Druck zerschießen das.",
-      options: [
-        { score: 2, text: "QR-Scan, Badges automatisch, Live-Anwesenheitsdaten." },
-        { score: 0, text: "Papierlisten, lange Schlangen, gestresstes Team." },
-        { score: 1, text: "Tablet-Listen, aber Badges müssen separat gedruckt werden." }
+        { score: 2, text: "Ein KI-Assistent antwortet sofort, rund um die Uhr." },
+        { score: 1, text: "FAQ-Seite, den Rest fängt mein Team ein." },
+        { score: 0, text: "Ich oder mein Team, manuell und oft hektisch." },
+        { score: 0, text: "Weiß ich nicht, kommt eher selten vor." }
       ]
     },
     {
       hebel: "Daten &amp; Entscheidungen",
       module: "Predictive Forecasting",
       dimensions: [DIM.COST, DIM.EXP],
-      question: "Wie triffst Du Entscheidungen während und nach dem Event?",
-      cost: "Ohne Live-Daten reagierst Du erst, wenn der Schaden da ist. Mit Live-Daten + Predictive Insights kannst Du noch während des Events nachsteuern.",
+      question: "Jemand fragt Dich jetzt: Wie viele Zusagen, wie hoch die No-Show-Gefahr? Hast Du die Zahl in 10 Sekunden?",
+      cost: "Live, während das Event läuft. Nicht in drei Wochen im Nachbericht.",
+      reveal: "Das Steuerungscockpit zeigt Live-KPIs und warnt Dich vor &mdash; Du steuerst, statt zu reagieren.",
       options: [
-        { score: 2, text: "Live-Daten und Predictive Insights, ich kann sofort eingreifen." },
-        { score: 1, text: "Reports nach dem Event, aber selten handlungsrelevant." },
-        { score: 0, text: "Aus dem Bauch. Daten kommen Wochen später &mdash; wenn überhaupt." }
+        { score: 2, text: "Ja, live im Dashboard, ich kann sofort nachsteuern." },
+        { score: 1, text: "Ich müsste nachschauen und zusammenrechnen." },
+        { score: 0, text: "Nein, die Zahlen kommen erst nach dem Event." },
+        { score: 0, text: "Weiß ich nicht." }
       ]
     }
   ];
@@ -1572,6 +1580,7 @@
   const state = {
     currentIndex: 0,
     answers: new Array(QUESTIONS.length).fill(null),
+    selected: new Array(QUESTIONS.length).fill(null),
     lead: {
       firstname: prefillFirstname,
       company: prefillCompany,
@@ -1623,16 +1632,30 @@
 
     const optsWrap = $('q-options');
     optsWrap.innerHTML = '';
-    const letters = ['A', 'B', 'C'];
+    const letters = ['A', 'B', 'C', 'D'];
     q.options.forEach((opt, i) => {
       const btn = document.createElement('button');
       btn.className = 'option';
       btn.type = 'button';
-      if (state.answers[state.currentIndex] === opt.score) btn.classList.add('selected');
+      if (state.selected[state.currentIndex] === i) btn.classList.add('selected');
       btn.innerHTML = `<div class="option-marker">${letters[i]}</div><div class="option-text">${opt.text}</div>`;
-      btn.onclick = () => selectOption(opt.score);
+      btn.onclick = () => selectOption(i);
       optsWrap.appendChild(btn);
     });
+
+    const reveal = $('q-reveal');
+    reveal.classList.remove('visible');
+    reveal.innerHTML = '';
+    $('btn-next').style.display = 'none';
+    $('nav-hint').textContent = 'Antwort klicken';
+
+    // Returning to an already-answered question: restore reveal + Weiter button
+    if (state.answers[state.currentIndex] !== null && q.reveal) {
+      reveal.innerHTML = `<span class="reveal-label">Mit eBrain</span>${q.reveal}`;
+      reveal.classList.add('visible');
+      $('btn-next').style.display = 'inline-flex';
+      $('nav-hint').textContent = 'Weiter, wenn Du bereit bist';
+    }
 
     $('btn-back').style.visibility = state.currentIndex === 0 ? 'hidden' : 'visible';
     $('btn-next').disabled = state.answers[state.currentIndex] === null;
@@ -1646,17 +1669,27 @@
     wrap.classList.add('animate-in');
   }
 
-  function selectOption(score) {
-    state.answers[state.currentIndex] = score;
-    const optsWrap = $('q-options');
+  function selectOption(idx) {
     const opts = QUESTIONS[state.currentIndex].options;
+    state.selected[state.currentIndex] = idx;
+    state.answers[state.currentIndex] = opts[idx].score;
+    const optsWrap = $('q-options');
     Array.from(optsWrap.children).forEach((btn, i) => {
-      btn.classList.toggle('selected', opts[i].score === score);
+      btn.classList.toggle('selected', i === idx);
     });
     $('btn-next').disabled = false;
 
+    const reveal = $('q-reveal');
+    const revealText = QUESTIONS[state.currentIndex].reveal;
     clearAdvance();
-    advanceTimeout = setTimeout(() => { advanceTimeout = null; goNext(); }, 380);
+    if (revealText) {
+      reveal.innerHTML = `<span class="reveal-label">Mit eBrain</span>${revealText}`;
+      requestAnimationFrame(() => reveal.classList.add('visible'));
+      $('btn-next').style.display = 'inline-flex';
+      $('nav-hint').textContent = 'Weiter, wenn Du bereit bist';
+    } else {
+      advanceTimeout = setTimeout(() => { advanceTimeout = null; goNext(); }, 380);
+    }
   }
 
   function goNext() {
@@ -1680,6 +1713,7 @@
   function startQuiz() {
     state.currentIndex = 0;
     state.answers = new Array(QUESTIONS.length).fill(null);
+    state.selected = new Array(QUESTIONS.length).fill(null);
     showScreen('screen-quiz');
     renderQuestion();
   }
@@ -1687,6 +1721,7 @@
   function restart() {
     state.currentIndex = 0;
     state.answers = new Array(QUESTIONS.length).fill(null);
+    state.selected = new Array(QUESTIONS.length).fill(null);
     state.lead = { firstname: prefillFirstname, company: prefillCompany, email: "", role: "" };
     showScreen('screen-intro');
   }
@@ -1763,7 +1798,7 @@
     if (overall <= 60) return {
       cls: 'mid',
       name: 'Halb-digital',
-      impact: 'Solider Stand, aber Tool-Brüche zwischen Registrierung, Kommunikation und Check-in kosten Dich am meisten. Die nächsten 1-2 Hebel entscheiden, ob Du wirklich Zeit zurückgewinnst oder weiter Daten kopierst.'
+      impact: 'Solider Stand, aber Tool-Brüche zwischen Setup, Kommunikation und Live-Steuerung kosten Dich am meisten. Die nächsten 1-2 Hebel entscheiden, ob Du wirklich Zeit zurückgewinnst oder weiter Daten kopierst.'
     };
     return {
       cls: 'low',
@@ -1920,14 +1955,9 @@
       list.appendChild(row);
     });
 
-    const utm = `?utm_source=ebrain-check&utm_medium=diagnostic&utm_campaign=automation-score`
-              + `&firstname=${encodeURIComponent(state.lead.firstname)}`
-              + `&company=${encodeURIComponent(state.lead.company)}`
-              + `&email=${encodeURIComponent(state.lead.email)}`;
+    const utm = `?utm_source=ebrain-check&utm_medium=diagnostic&utm_campaign=automation-score`;
     $('cta-trial').href = TRIAL_URL + utm;
-    $('cta-demo').href  = DEMO_URL  + (DEMO_URL.includes('?') ? '&' : '?')
-                          + `name=${encodeURIComponent(state.lead.firstname)}`
-                          + `&email=${encodeURIComponent(state.lead.email)}`;
+    $('cta-demo').href  = DEMO_URL + utm;
 
     showScreen('screen-result');
   }
