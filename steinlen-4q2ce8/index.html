@@ -40,7 +40,6 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: var(--header-h);
-  scroll-snap-type: y proximity;
 }
 img, svg { display: block; max-width: 100%; }
 body {
@@ -478,18 +477,14 @@ a { color: inherit; }
 .case {
   background: var(--cream);
   color: var(--ink);
-  min-height: calc(100vh - var(--header-h));
   display: flex;
   align-items: center;
-  padding: 36px 0;
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
+  padding: 28px 0;
   position: relative;
 }
-.case:nth-child(even) {
-  background: #EFEBE4;
-}
-.case-inner { width: 100%; }
+.case:first-of-type { padding-top: 64px; }
+.case:last-of-type { padding-bottom: 64px; }
+.case-inner { width: min(980px, calc(100% - 2 * var(--pad))); }
 .case-card {
   background: #fff;
   border: 1px solid var(--line-light);
@@ -855,14 +850,15 @@ a { color: inherit; }
   .top .brand-tag { display: none; }
 }
 @media (max-width: 720px) {
-  :root { --pad: 18px; --header-h: 60px; }
+  :root { --pad: 16px; --header-h: 60px; }
   .top { overflow: hidden; }
   .top-meta { display: none; }
   .brand-name { white-space: nowrap; }
   .stats { grid-template-columns: 1fr; }
   .case-top { flex-direction: column; }
   .badge-frist { align-items: flex-start; text-align: left; width: 100%; }
-  .case-card { padding: 24px 22px 28px; }
+  .case-card { padding: 26px 22px 28px; }
+  .case { padding: 14px 0; }
   .hero h1 { font-size: 32px; }
   .hero-angebot { font-size: 22px; max-width: none; }
   .overview .ov-name { white-space: normal; }
